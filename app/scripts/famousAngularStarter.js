@@ -64,8 +64,6 @@ angular.module('famousAngularStarter',
     'SERVER_CONFIG_BASE_URL', 'SERVER_CONFIG_PORT',
     function (auth, $scope, $location, $http, SERVER_CONFIG_BASE_URL, SERVER_CONFIG_PORT) {
 
-      console.log(auth);
-
       $scope.user = '';
       $scope.pass = '';
 
@@ -101,7 +99,7 @@ angular.module('famousAngularStarter',
       $scope.doGoogleAuthWithPopup = function () {
         $scope.$parent.message = 'loading...';
         $scope.loading = true;
-        //console.log(auth);
+
         auth.signin({
           popup: true,
           connection: 'google-oauth2',
@@ -133,7 +131,7 @@ angular.module('famousAngularStarter',
             }
           })
           .error(function (data) {
-            console.log(data);
+            // error
           });
       };
     }]
