@@ -49,12 +49,36 @@ angular.module('famousAngularStarter',
 
       $log.debug('debugging on');
       auth.hookEvents();
-      $location.path('/login');
+      //$location.path('/login');
+
+      $rootScope.doLogin = function () {
+//        $scope.$parent.message = 'loading...';
+//        $scope.loading = true;
+
+        auth.signin({
+          connection: 'Username-Password-Authentication',
+//          username: $scope.user,
+//          password: $scope.pass,
+          popup: true,
+          scope: 'openid name email'
+        }).then(function () {
+            // Success callback
+            $location.path('/');
+          }, function () {
+            // Error callback
+          });
+      };
+
+//      if (!auth.isAuthenticated) {
+//        //$location.path('/login');
+//        $rootScope.doLogin();
+//      }
 
       $rootScope.$on('$routeChangeStart', function (e, nextRoute, currentRoute) {
         if (nextRoute.$$route && nextRoute.$$route.requiresLogin) {
           if (!auth.isAuthenticated) {
-            $location.path('/login');
+            //$location.path('/login');
+//            $rootScope.doLogin();
           }
         }
       });
@@ -95,6 +119,8 @@ angular.module('famousAngularStarter',
             // Error callback
           });
       };
+
+      $scope.doLogin();
 
       $scope.doGoogleAuthWithPopup = function () {
         $scope.$parent.message = 'loading...';
