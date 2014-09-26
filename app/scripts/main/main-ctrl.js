@@ -16,13 +16,4 @@ angular.module('famousAngularStarter')
       $scope.rotateY.set($scope.rotateY.get() + adjustedSpeed);
     }, 1);
 
-    var apiCall = function(){
-      var api = $resource('http://localhost:3000/secured/ping');
-      api.get({}, function (data) {
-        console.log('data=', data);
-      });
-    };
-
-    apiCall();
-
   });

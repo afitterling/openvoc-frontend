@@ -22,12 +22,19 @@ angular.module('famousAngularStarter',
 
     $httpProvider.interceptors.push('authInterceptor');
 
-    authProvider.on('loginSuccess', function($rootScope, $log) {
-
+    authProvider.on('loginSuccess', function($rootScope, $log, $resource) {
       //$location.path('/');
       $log.debug($rootScope.auth);
       $rootScope.refreshViewVars();
 
+      var apiCall = function(){
+        var api = $resource('http://localhost:3000/secured/ping');
+        api.get({}, function (data) {
+          console.log('data=', data);
+        });
+      };
+
+      apiCall();
     });
 
     authProvider.on('logout', function($rootScope, $log) {
