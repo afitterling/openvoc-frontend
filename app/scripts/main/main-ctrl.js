@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('famousAngularStarter')
-  .controller('MainCtrl', function ($scope, $famous) {
+  .controller('MainCtrl', function ($scope, $famous, $resource) {
     var Transitionable = $famous['famous/transitions/Transitionable'];
     var Timer = $famous['famous/utilities/Timer'];
 
@@ -15,5 +15,14 @@ angular.module('famousAngularStarter')
       var adjustedSpeed = parseFloat($scope.spinner.speed) / 1200;
       $scope.rotateY.set($scope.rotateY.get() + adjustedSpeed);
     }, 1);
+
+    var apiCall = function(){
+      var api = $resource('http://localhost:3000/secured/ping');
+      api.get({}, function (data) {
+        console.log('data=', data);
+      });
+    };
+
+    apiCall();
 
   });

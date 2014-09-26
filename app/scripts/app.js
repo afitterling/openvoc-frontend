@@ -22,6 +22,20 @@ angular.module('famousAngularStarter',
 
     $httpProvider.interceptors.push('authInterceptor');
 
+    authProvider.on('loginSuccess', function($rootScope, $log) {
+
+      //$location.path('/');
+      $log.debug($rootScope.auth);
+      $rootScope.refreshViewVars();
+
+    });
+
+    authProvider.on('logout', function($rootScope, $log) {
+      //$location.path('/');
+      $log.debug($rootScope.auth);
+      $rootScope.refreshViewVars();
+    });
+
     $stateProvider
       .state('home', {
         url: '/',
@@ -54,38 +68,55 @@ angular.module('famousAngularStarter',
     function ($log, auth, $location, $rootScope) {
 
       $log.debug('debugging on');
+
       auth.hookEvents();
 
       $location.path('/');
 
-      $rootScope.doLogin = function () {
-//        $scope.$parent.message = 'loading...';
-//        $scope.loading = true;
+      $rootScope.auth = auth;
 
-        auth.signin({
-          connection: 'Username-Password-Authentication',
-//          username: $scope.user,
-//          password: $scope.pass,
-          popup: true,
-          scope: 'openid name email'
-        }).then(function () {
-            // Success callback
-            $location.path('/');
-          }, function () {
-            // Error callback
-          });
+      $rootScope.handleSession = function () {
+        if (!auth.isAuthenticated) {
+
+          auth.signin({
+            connection: 'Username-Password-Authentication',
+            popup: true,
+            scope: 'openid name email'
+          }).then(function () {
+              // Success callback
+              $rootScope.refreshViewVars();
+            }, function () {
+              // Error callback
+            });
+        }
+
+        if (auth.isAuthenticated) {
+          auth.signout();
+          $rootScope.refreshViewVars();
+        }
+
       };
 
-//      if (!auth.isAuthenticated) {
-//        //$location.path('/login');
-//        $rootScope.doLogin();
-//      }
+      $rootScope.logout = function () {
+        auth.signout(function () {
+        });
+      };
+
+
+      $rootScope.refreshViewVars = function(){
+        if (!auth.isAuthenticated) {
+          $rootScope.sessionAction = 'Login';
+        }
+        if (auth.isAuthenticated) {
+          $rootScope.sessionAction = 'Logout';
+        }
+      };
 
       $rootScope.$on('$routeChangeStart', function (e, nextRoute, currentRoute) {
         if (nextRoute.$$route && nextRoute.$$route.requiresLogin) {
           if (!auth.isAuthenticated) {
             //$location.path('/login');
-//            $rootScope.doLogin();
+            //$rootScope.doLogin();
           }
         }
       });
@@ -115,8 +146,8 @@ angular.module('famousAngularStarter',
 
         auth.signin({
           connection: 'Username-Password-Authentication',
-//          username: $scope.user,
-//          password: $scope.pass,
+          // username: $scope.user,
+          // password: $scope.pass,
           popup: true,
           scope: 'openid name email'
         }).then(function () {
