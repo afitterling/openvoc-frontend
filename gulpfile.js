@@ -10,7 +10,7 @@ gulp.task('connect', function () {
   connect.server({
     root: 'app',
     livereload: true,
-    port: 9000
+    port: 8080
   });
 });
 
