@@ -29,6 +29,12 @@ angular.module('famousAngularStarter',
         controller: 'MainCtrl'//,
         //requiresLogin: true
       })
+      .state('demo', {
+        url: '/demo',
+        templateUrl: 'partials/demo.html',
+        controller: 'MainCtrl'//,
+        //requiresLogin: true
+      })
       .state('login', {
         url: '/login',
         templateUrl: 'partials/login.html',
@@ -49,7 +55,8 @@ angular.module('famousAngularStarter',
 
       $log.debug('debugging on');
       auth.hookEvents();
-      //$location.path('/login');
+
+      $location.path('/');
 
       $rootScope.doLogin = function () {
 //        $scope.$parent.message = 'loading...';
