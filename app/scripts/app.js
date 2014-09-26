@@ -111,6 +111,7 @@ angular.module('famousAngularStarter',
           $rootScope.sessionAction = 'Logout';
         }
       };
+      $rootScope.refreshViewVars();
 
       $rootScope.$on('$routeChangeStart', function (e, nextRoute, currentRoute) {
         if (nextRoute.$$route && nextRoute.$$route.requiresLogin) {
