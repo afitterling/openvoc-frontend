@@ -16,4 +16,10 @@ angular.module('famousAngularStarter')
       $scope.rotateY.set($scope.rotateY.get() + adjustedSpeed);
     }, 1);
 
+
+    var source = new EventSource('http://localhost:3000/sse');
+    source.addEventListener('message', function(data){
+      console.log(data);
+    }, false);
+
   });
