@@ -7,7 +7,7 @@ angular.module('famousAngularStarter',
       'famous.angular' ])
 
   .constant('SERVER_CONFIG_BASE_URL', 'http://localhost')
-  .constant('SERVER_CONFIG_PORT', '3000')
+  .constant('SERVER_CONFIG_PORT', '8080')
 
   .config(function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
 
@@ -28,7 +28,7 @@ angular.module('famousAngularStarter',
       $rootScope.refreshViewVars();
 
       var apiCall = function(){
-        var api = $resource('http://localhost:3000/secured/ping');
+        var api = $resource('http://localhost:8080/secured/ping');
         api.get({}, function (data) {
           console.log('data=', data);
         });
