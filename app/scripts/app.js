@@ -35,6 +35,7 @@ angular.module('famousAngularStarter',
       };
 
       apiCall();
+
     });
 
     authProvider.on('logout', function($rootScope, $log) {
@@ -56,11 +57,11 @@ angular.module('famousAngularStarter',
         controller: 'MainCtrl'//,
         //requiresLogin: true
       })
-      .state('login', {
-        url: '/login',
-        templateUrl: 'partials/login.html',
-        controller: 'LoginCtrl'
-      })
+//      .state('login', {
+//        url: '/login',
+//        templateUrl: 'partials/login.html',
+//        controller: 'LoginCtrl'
+//      })
       .state('jade', {
         url: '/jade',
         templateUrl: 'partials/jade.html',

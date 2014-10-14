@@ -16,21 +16,14 @@ angular.module('famousAngularStarter')
       $scope.rotateY.set($scope.rotateY.get() + adjustedSpeed);
     }, 1);
 
-
-//    var source = new EventSource('http://localhost:8080/sse');
-//    source.addEventListener('message', function(data){
-//      console.log(data);
-//    }, false);
-
-
-    $http.post('http://localhost:8080/topictest', {data: 'sample load'}).
-      success(function(data, status, headers, config) {
-        // this callback will be called asynchronously
-        // when the response is available
-      }).
-      error(function(data, status, headers, config) {
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
-      });
+//    $http.post('http://localhost:8080/topictest', {data: 'sample load'}).
+//      success(function(data, status, headers, config) {
+//        // this callback will be called asynchronously
+//        // when the response is available
+//      }).
+//      error(function(data, status, headers, config) {
+//        // called asynchronously if an error occurs
+//        // or server returns response with an error status.
+//      });
 
   });
