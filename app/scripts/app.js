@@ -22,13 +22,20 @@ angular.module('famousAngularStarter',
 
     $httpProvider.interceptors.push('authInterceptor');
 
-    authProvider.on('loginSuccess', function($rootScope, $log, $resource) {
+    authProvider.on('loginSuccess', function($rootScope, $log, $resource, $http) {
+
+      //rootScope load from disk
+      $rootScope.conf = {
+        BASEHREF: '/fetest',
+        APIURL: 'http://sp33c.de/auth0/api'
+      };
+
       //$location.path('/');
       $log.debug($rootScope.auth);
       $rootScope.refreshViewVars();
 
       var apiCall = function(){
-        var api = $resource('http://localhost:8080/secured/ping');
+        var api = $resource($rootScope.conf.APIURL + '/secured/ping');
         api.get({}, function (data) {
           console.log('data=', data);
         });
@@ -79,7 +86,7 @@ angular.module('famousAngularStarter',
 
       auth.hookEvents();
 
-      $location.path('/');
+      //$location.path('/');
 
       $rootScope.auth = auth;
 
@@ -140,7 +147,7 @@ angular.module('famousAngularStarter',
 
       function onLoginSuccess() {
         $scope.$parent.message = '';
-        $location.path('/');
+        //$location.path('/');
         $scope.loading = false;
       }
 
@@ -179,7 +186,7 @@ angular.module('famousAngularStarter',
           scope: 'openid name email'
         }).then(function () {
             // Success callback
-            $location.path('/');
+            //$location.path('/');
           }, function () {
             // Error callback
           });
