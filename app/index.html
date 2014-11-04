@@ -34,7 +34,6 @@
           <div class="nav">
               <ul id="navigation-menu">
                   <li class="nav-link"><a ng-bind="auth.profile.email"></a></li>
-                  <!--
                                   <li class="nav-link"><a href="javascript:void(0)">Products</a></li>
                                   <li class="nav-link"><a href="javascript:void(0)">About Us</a></li>
                                   <li class="nav-link"><a href="javascript:void(0)">Contact</a></li>
@@ -56,19 +55,18 @@
                                           </li>
                                       </ul>
                                   </li>
-                  -->
+
               </ul>
           </div>
+
           <div class="navigation-tools">
-              <!--<div class="search-bar">-->
-              <!--<div class="search-and-submit">-->
-              <!--<input type="search" placeholder="Enter Search" />-->
-              <!--<button type="submit">-->
-              <!--<img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon.png" alt="Search Icon">-->
-              <!--</button>-->
-              <!--</div>-->
-              <!--</div>-->
-              <a ng-click="handleSession()" class="button" ng-bind="sessionAction"></a>
+              <div class="nav">
+                  <ul id="navigation-menu">
+                      <li class="nav-link">
+                          <button type="submit" ng-click="handleSession()" ng-bind="sessionAction"></button>
+                      </li>
+                  </ul>
+              </div>
           </div>
       </div>
     </header>
