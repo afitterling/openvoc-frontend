@@ -24,10 +24,9 @@ angular.module('famousAngularStarter',
 
     authProvider.on('loginSuccess', function($rootScope, $log, $resource, $http) {
 
-      //rootScope load from disk
+      //@TODO load from disk
       $rootScope.conf = {
-        BASEHREF: '/fetest',
-        APIURL: 'http://sp33c.de/auth0/api'
+        API_BASEURL: 'http://sp33c.de/auth0/api'
       };
 
       //$location.path('/');
@@ -35,7 +34,7 @@ angular.module('famousAngularStarter',
       $rootScope.refreshViewVars();
 
       var apiCall = function(){
-        var api = $resource($rootScope.conf.APIURL + '/secured/ping');
+        var api = $resource($rootScope.conf.AP_BASEURL + '/secured/ping');
         api.get({}, function (data) {
           console.log('data=', data);
         });
@@ -54,7 +53,7 @@ angular.module('famousAngularStarter',
     $stateProvider
       .state('home', {
         url: '/',
-        templateUrl: 'partials/main.html',
+        templateUrl: 'partials/demo.html',
         controller: 'MainCtrl'//,
         //requiresLogin: true
       })
