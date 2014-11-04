@@ -34,7 +34,7 @@ angular.module('famousAngularStarter',
       $rootScope.refreshViewVars();
 
       var apiCall = function(){
-        var api = $resource($rootScope.conf.AP_BASEURL + '/secured/ping');
+        var api = $resource($rootScope.conf.API_BASEURL + '/secured/ping');
         api.get({}, function (data) {
           console.log('data=', data);
         });

@@ -32,7 +32,7 @@
           <a href="" class="navigation-menu-button" id="js-mobile-menu">MENU</a>
           <div class="nav">
               <ul id="navigation-menu">
-                  <li class="nav-link"><a>{{auth.profile.email}}</a></li>
+                  <li class="nav-link"><a ng-bind="auth.profile.email"></a></li>
                   <!--
                                   <li class="nav-link"><a href="javascript:void(0)">Products</a></li>
                                   <li class="nav-link"><a href="javascript:void(0)">About Us</a></li>
@@ -67,7 +67,7 @@
               <!--</button>-->
               <!--</div>-->
               <!--</div>-->
-              <a ng-click="handleSession()" class="button">{{sessionAction}}</a>
+              <a ng-click="handleSession()" class="button" ng-bind="sessionAction"></a>
           </div>
       </div>
     </header>
