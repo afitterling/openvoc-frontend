@@ -63,6 +63,10 @@ angular.module('famousAngularStarter',
         controller: 'MainCtrl'//,
         //requiresLogin: true
       })
+      .state('404', {
+        url: '/404',
+        templateUrl: 'partials/404.html'
+      })
 //      .state('login', {
 //        url: '/login',
 //        templateUrl: 'partials/login.html',
@@ -74,7 +78,7 @@ angular.module('famousAngularStarter',
         controller: 'MainCtrl'
       });
 
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/404');
     $locationProvider.html5Mode(true).hashPrefix('!');
 
   })
