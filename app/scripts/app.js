@@ -6,9 +6,6 @@ angular.module('famousAngularStarter',
       'ngResource', 'ui.router',
       'famous.angular' ])
 
-  .constant('SERVER_CONFIG_BASE_URL', 'http://localhost')
-  .constant('SERVER_CONFIG_PORT', '8080')
-
   .config(function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
 
     $logProvider.debugEnabled(true);
