@@ -40,7 +40,7 @@ angular.module('famousAngular',
       $http.get('settings.json').success(function(settings){
         $log.debug('settings', settings);
         $rootScope.conf = settings;
-        doAfterSettingsLoaded();
+        //doAfterSettingsLoaded();
       });
 
     });
