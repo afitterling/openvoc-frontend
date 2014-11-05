@@ -72,9 +72,9 @@ angular.module('famousAngular',
         //requiresLogin: true
       })
     $stateProvider
-      .state('voc', {
-        url: '/voc',
-        templateUrl: 'partials/table.html',
+      .state('restricted', {
+        url: '/restricted',
+        templateUrl: 'partials/restricted.html',
         //controller: 'MainCtrl'//,
         data: {
           restricted: true
@@ -92,11 +92,9 @@ angular.module('famousAngular',
   .run(['$log', 'auth', '$location', '$rootScope',
     function ($log, auth, $location, $rootScope) {
 
-      //$log.debug('debugging on');
-
       auth.hookEvents();
 
-      $location.path('/voc');
+//      $location.path('/voc');
 
       $rootScope.auth = auth;
 
