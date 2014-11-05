@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('MainCtrl', ['$scope', '$famous', '$resource', '$http', function ($scope, $famous, $resource, $http) {
+  .controller('MainCtrl', ['$log', '$scope', '$famous', '$resource', '$http', function ($log, $scope, $famous, $resource, $http) {
     var Transitionable = $famous['famous/transitions/Transitionable'];
     var Timer = $famous['famous/utilities/Timer'];
 

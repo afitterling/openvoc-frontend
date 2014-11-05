@@ -19,25 +19,28 @@ angular.module('famousAngular',
 
     authProvider.on('loginSuccess', ['$rootScope', '$log', '$resource', '$http', function ($rootScope, $log, $resource, $http) {
 
-      $log.debug($rootScope.auth);
-
       $rootScope.refreshViewVars();
 
       var apiCall = function(){
         var api = $resource($rootScope.conf.API_BASEURL + '/secured/ping');
         api.get({}, function (data) {
-          console.log('data=', data);
+          //console.log('data=', data);
         });
       };
 
       var doAfterSettingsLoaded = function(){
         apiCall();
+        $log.debug($rootScope.auth);
       };
 
       //load settings
       $http.get('settings.json').success(function(settings){
-        $log.debug('settings', settings);
+        // set log provider
         $logProvider.debugEnabled(settings.debug);
+
+        $log.debug('debug', settings.debug);
+        $log.debug('settings', settings);
+
         $rootScope.conf = settings;
         doAfterSettingsLoaded();
       });
@@ -46,7 +49,7 @@ angular.module('famousAngular',
 
     authProvider.on('logout', [ '$rootScope', '$log', function($rootScope, $log) {
       //$location.path('/');
-      $log.debug($rootScope.auth);
+      //$log.debug($rootScope.auth);
       $rootScope.refreshViewVars();
     }]);
 
@@ -76,7 +79,7 @@ angular.module('famousAngular',
   .run(['$log', 'auth', '$location', '$rootScope',
     function ($log, auth, $location, $rootScope) {
 
-      $log.debug('debugging on');
+      //$log.debug('debugging on');
 
       auth.hookEvents();
 
