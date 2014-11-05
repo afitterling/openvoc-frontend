@@ -71,6 +71,12 @@ angular.module('famousAngular',
         data: {}
       })
 
+      .state('error', {
+        url: '/error',
+        templateUrl: 'partials/error.html',
+        data: {}
+      })
+
       .state('restricted', {
         url: '/restricted',
         templateUrl: 'partials/restricted.html',
