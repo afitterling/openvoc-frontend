@@ -81,7 +81,7 @@ angular.module('famousAngular',
 
       auth.hookEvents();
 
-//      $location.path('/voc');
+      $location.path('/voc');
 
       $rootScope.auth = auth;
 
@@ -95,6 +95,7 @@ angular.module('famousAngular',
           }).then(function () {
               // Success callback
               $rootScope.refreshViewVars();
+//              $location.path('/voc');
             }, function () {
               // Error callback
             });
@@ -113,6 +114,9 @@ angular.module('famousAngular',
         });
       };
 
+      $rootScope.goTo = function(arg){
+        $location.path(arg);
+      };
 
       $rootScope.refreshViewVars = function(){
         if (!auth.isAuthenticated) {
