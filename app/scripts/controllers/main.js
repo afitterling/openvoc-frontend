@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('MainCtrl', function ($scope, $famous, $resource, $http) {
+  .controller('MainCtrl', ['$scope', '$famous', '$resource', '$http', function ($scope, $famous, $resource, $http) {
     var Transitionable = $famous['famous/transitions/Transitionable'];
     var Timer = $famous['famous/utilities/Timer'];
 
@@ -16,14 +16,4 @@ angular.module('famousAngular')
       $scope.rotateY.set($scope.rotateY.get() + adjustedSpeed);
     }, 1);
 
-//    $http.post('http://localhost:8080/topictest', {data: 'sample load'}).
-//      success(function(data, status, headers, config) {
-//        // this callback will be called asynchronously
-//        // when the response is available
-//      }).
-//      error(function(data, status, headers, config) {
-//        // called asynchronously if an error occurs
-//        // or server returns response with an error status.
-//      });
-
-  });
+  }]);

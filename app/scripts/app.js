@@ -17,7 +17,7 @@ angular.module('famousAngular',
 
     $httpProvider.interceptors.push('authInterceptor');
 
-    authProvider.on('loginSuccess', function($rootScope, $log, $resource, $http) {
+    authProvider.on('loginSuccess', ['$rootScope', '$log', '$resource', '$http', function ($rootScope, $log, $resource, $http) {
 
       $log.debug($rootScope.auth);
 
@@ -42,13 +42,13 @@ angular.module('famousAngular',
         doAfterSettingsLoaded();
       });
 
-    });
+    }]);
 
-    authProvider.on('logout', function($rootScope, $log) {
+    authProvider.on('logout', [ '$rootScope', '$log', function($rootScope, $log) {
       //$location.path('/');
       $log.debug($rootScope.auth);
       $rootScope.refreshViewVars();
-    });
+    }]);
 
     $stateProvider
       .state('home', {
