@@ -8,8 +8,6 @@ angular.module('famousAngular',
 
   .config(['$httpProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
 
-    $logProvider.debugEnabled(true);
-
     authProvider.init({
       domain: 'journal-sp33c.auth0.com',
       clientID: 'BcSTdHaYpZHynNIUMXdleiYkaQDp2mMF',
@@ -19,45 +17,69 @@ angular.module('famousAngular',
 
     $httpProvider.interceptors.push('authInterceptor');
 
-    authProvider.on('loginSuccess', function($rootScope, $log, $resource, $http) {
-
-      $log.debug($rootScope.auth);
+    authProvider.on('loginSuccess', ['$location', '$rootScope', '$log', '$resource', '$http', function ($location, $rootScope, $log, $resource, $http) {
 
       $rootScope.refreshViewVars();
+      $location.path('/restricted');
 
       var apiCall = function(){
         var api = $resource($rootScope.conf.API_BASEURL + '/secured/ping');
         api.get({}, function (data) {
-          console.log('data=', data);
+          //console.log('data=', data);
         });
       };
 
       var doAfterSettingsLoaded = function(){
         apiCall();
+        $log.debug($rootScope.auth);
       };
 
       //load settings
       $http.get('settings.json').success(function(settings){
+        // set log provider
+        $logProvider.debugEnabled(settings.debug);
+
+        $log.debug('debug', settings.debug);
         $log.debug('settings', settings);
+
         $rootScope.conf = settings;
-        //doAfterSettingsLoaded();
+        doAfterSettingsLoaded();
       });
 
+    }]);
+
+    authProvider.on('logout', [ '$rootScope', '$log', function($rootScope, $log) {
+      //$location.path('/');
+      $rootScope.refreshViewVars();
+    }]);
+
+    authProvider.on('authenticated', function($location) {
+      // This is after a refresh of the page
+      // If the user is still authenticated, you get this event
     });
 
-    authProvider.on('logout', function($rootScope, $log) {
-      //$location.path('/');
-      $log.debug($rootScope.auth);
-      $rootScope.refreshViewVars();
+    //@TODO
+    authProvider.on('loginFailure', function($location, error) {
+      $location.path('/error');
     });
 
     $stateProvider
       .state('home', {
         url: '/',
         templateUrl: 'partials/main.html',
-        controller: 'MainCtrl'//,
-        //requiresLogin: true
+        controller: 'MainCtrl',
+        data: {}
       })
+
+      .state('restricted', {
+        url: '/restricted',
+        templateUrl: 'partials/restricted.html',
+        //controller: 'MainCtrl'//,
+        data: {
+          restricted: true
+        }
+      })
+
       .state('404', {
         url: '/404',
         templateUrl: 'partials/404.html'
@@ -70,11 +92,7 @@ angular.module('famousAngular',
   .run(['$log', 'auth', '$location', '$rootScope',
     function ($log, auth, $location, $rootScope) {
 
-      $log.debug('debugging on');
-
       auth.hookEvents();
-
-      //$location.path('/');
 
       $rootScope.auth = auth;
 
@@ -96,15 +114,20 @@ angular.module('famousAngular',
         if (auth.isAuthenticated) {
           auth.signout();
           $rootScope.refreshViewVars();
+          $location.path('/');
         }
 
       };
 
       $rootScope.logout = function () {
         auth.signout(function () {
+
         });
       };
 
+      $rootScope.goTo = function(arg){
+        $location.path(arg);
+      };
 
       $rootScope.refreshViewVars = function(){
         if (!auth.isAuthenticated) {
@@ -116,13 +139,16 @@ angular.module('famousAngular',
       };
       $rootScope.refreshViewVars();
 
-      $rootScope.$on('$routeChangeStart', function (e, nextRoute, currentRoute) {
-        if (nextRoute.$$route && nextRoute.$$route.requiresLogin) {
-          if (!auth.isAuthenticated) {
-            //$location.path('/login');
-            //$rootScope.doLogin();
-          }
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        //event.preventDefault();
+
+        $log.debug(toParams, toState, fromState, fromParams);
+
+        // block restricted
+        if (!auth.isAuthenticated && toState.data.restricted) {
+          $location.path('/');
         }
+
       });
 
     }]
