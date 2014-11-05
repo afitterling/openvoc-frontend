@@ -53,11 +53,22 @@ angular.module('famousAngular',
       $rootScope.refreshViewVars();
     }]);
 
+    authProvider.on('authenticated', function($location) {
+      // This is after a refresh of the page
+      // If the user is still authenticated, you get this event
+    });
+
+    //@TODO
+    authProvider.on('loginFailure', function($location, error) {
+      $location.path('/error');
+    });
+
     $stateProvider
       .state('home', {
         url: '/',
         templateUrl: 'partials/main.html',
-        controller: 'MainCtrl'//,
+        controller: 'MainCtrl',
+        data: {}
         //requiresLogin: true
       })
     $stateProvider
@@ -65,7 +76,9 @@ angular.module('famousAngular',
         url: '/voc',
         templateUrl: 'partials/table.html',
         //controller: 'MainCtrl'//,
-        requiresLogin: true
+        data: {
+          restricted: true
+        }
       })
       .state('404', {
         url: '/404',
@@ -131,11 +144,16 @@ angular.module('famousAngular',
       };
       $rootScope.refreshViewVars();
 
-      $rootScope.$on('$stateChangeStart', function (e, nextRoute, currentRoute) {
-        if (!auth.isAuthenticated) {
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        //event.preventDefault();
+
+        $log.debug(toParams, toState, fromState, fromParams);
+
+        // block restricted
+        if (!auth.isAuthenticated && toState.data.restricted) {
           $location.path('/');
-          //$rootScope.doLogin();
         }
+
       });
 
     }]
