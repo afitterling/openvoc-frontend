@@ -17,9 +17,10 @@ angular.module('famousAngular',
 
     $httpProvider.interceptors.push('authInterceptor');
 
-    authProvider.on('loginSuccess', ['$rootScope', '$log', '$resource', '$http', function ($rootScope, $log, $resource, $http) {
+    authProvider.on('loginSuccess', ['$location', '$rootScope', '$log', '$resource', '$http', function ($location, $rootScope, $log, $resource, $http) {
 
       $rootScope.refreshViewVars();
+      $location.path('/restricted');
 
       var apiCall = function(){
         var api = $resource($rootScope.conf.API_BASEURL + '/secured/ping');
@@ -49,7 +50,6 @@ angular.module('famousAngular',
 
     authProvider.on('logout', [ '$rootScope', '$log', function($rootScope, $log) {
       //$location.path('/');
-      //$log.debug($rootScope.auth);
       $rootScope.refreshViewVars();
     }]);
 
@@ -69,9 +69,8 @@ angular.module('famousAngular',
         templateUrl: 'partials/main.html',
         controller: 'MainCtrl',
         data: {}
-        //requiresLogin: true
       })
-    $stateProvider
+
       .state('restricted', {
         url: '/restricted',
         templateUrl: 'partials/restricted.html',
@@ -80,6 +79,7 @@ angular.module('famousAngular',
           restricted: true
         }
       })
+
       .state('404', {
         url: '/404',
         templateUrl: 'partials/404.html'
@@ -94,8 +94,6 @@ angular.module('famousAngular',
 
       auth.hookEvents();
 
-//      $location.path('/voc');
-
       $rootScope.auth = auth;
 
       $rootScope.handleSession = function () {
@@ -108,7 +106,6 @@ angular.module('famousAngular',
           }).then(function () {
               // Success callback
               $rootScope.refreshViewVars();
-              $location.path('/voc');
             }, function () {
               // Error callback
             });
