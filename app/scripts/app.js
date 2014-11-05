@@ -8,8 +8,6 @@ angular.module('famousAngular',
 
   .config(['$httpProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
 
-    $logProvider.debugEnabled(true);
-
     authProvider.init({
       domain: 'journal-sp33c.auth0.com',
       clientID: 'BcSTdHaYpZHynNIUMXdleiYkaQDp2mMF',
@@ -33,14 +31,15 @@ angular.module('famousAngular',
       };
 
       var doAfterSettingsLoaded = function(){
-        apiCall();
+        //apiCall();
       };
 
       //load settings
       $http.get('settings.json').success(function(settings){
         $log.debug('settings', settings);
+        $logProvider.debugEnabled(settings.debug);
         $rootScope.conf = settings;
-        //doAfterSettingsLoaded();
+        doAfterSettingsLoaded();
       });
 
     });
@@ -95,7 +94,7 @@ angular.module('famousAngular',
           }).then(function () {
               // Success callback
               $rootScope.refreshViewVars();
-//              $location.path('/voc');
+              $location.path('/voc');
             }, function () {
               // Error callback
             });
@@ -104,13 +103,14 @@ angular.module('famousAngular',
         if (auth.isAuthenticated) {
           auth.signout();
           $rootScope.refreshViewVars();
+          $location.path('/');
         }
 
       };
 
       $rootScope.logout = function () {
         auth.signout(function () {
-          $location.path('/');
+
         });
       };
 
