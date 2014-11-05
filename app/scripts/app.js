@@ -58,6 +58,13 @@ angular.module('famousAngular',
         controller: 'MainCtrl'//,
         //requiresLogin: true
       })
+    $stateProvider
+      .state('voc', {
+        url: '/voc',
+        templateUrl: 'partials/table.html',
+        //controller: 'MainCtrl'//,
+        requiresLogin: true
+      })
       .state('404', {
         url: '/404',
         templateUrl: 'partials/404.html'
@@ -74,7 +81,7 @@ angular.module('famousAngular',
 
       auth.hookEvents();
 
-      //$location.path('/');
+      //$location.path('/voc');
 
       $rootScope.auth = auth;
 
@@ -116,12 +123,10 @@ angular.module('famousAngular',
       };
       $rootScope.refreshViewVars();
 
-      $rootScope.$on('$routeChangeStart', function (e, nextRoute, currentRoute) {
-        if (nextRoute.$$route && nextRoute.$$route.requiresLogin) {
-          if (!auth.isAuthenticated) {
-            //$location.path('/login');
-            //$rootScope.doLogin();
-          }
+      $rootScope.$on('$stateChangeStart', function (e, nextRoute, currentRoute) {
+        if (!auth.isAuthenticated) {
+          $location.path('/');
+          //$rootScope.doLogin();
         }
       });
 
