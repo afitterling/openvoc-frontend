@@ -49,28 +49,36 @@
                     <!--<li class="nav-link"><a href="javascript:void(0)">About Us</a></li>-->
                     <!--<li class="nav-link"><a href="javascript:void(0)">Contact</a></li>-->
                     <li class="nav-link more"><a href="javascript:void(0)">Profile</a>
-                        <ul class="submenu">
-                            <li><a href="javascript:void(0)" ng-click="handleSession()">Sign-In</a></li>
-                            <li><a href="javascript:void(0)">Sign-Up</a></li>
+                        <ul class="submenu" ng-show="!auth.profile">
+                            <li><a href="javascript:void(0)" ng-click="handleSession()">Sign in</a></li>
+                            <li><a href="javascript:void(0)">Sign up</a></li>
+                        </ul>
+                        <ul class="submenu" ng-show="auth.profile">
+                            <li><a href="javascript:void(0)" ng-click="handleSession()">Log out</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
             <div class="navigation-tools">
-                <!--<div class="search-bar">-->
-                    <!--<div class="search-and-submit">-->
+
+                <div class="search-bar">
+                    <div class="search-and-submit">
+                        <span class="profile name">{{auth.profile.email}}</span>
                         <!--<input type="search" placeholder="Enter Search" />-->
                         <!--<button type="submit">-->
                             <!--<img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon.png" alt="Search Icon">-->
                         <!--</button>-->
-                    <!--</div>-->
-                <!--</div>-->
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
 
-    <div ui-view></div>
+    <section class="main">
+        <div ui-view></div>
+    </section>
+
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
     <script src="bower_components/angular/angular.js"></script>

@@ -620,7 +620,7 @@ header.navigation {
     color: $hero-color;
 
     button {
-      @include button(simple, $base-background-color);
+      @include button(simple, #ccc);
       font-size: $base-font-size;
       outline: none;
     }
@@ -651,4 +651,16 @@ header.navigation {
       }
     }
   }
+}
+
+.profile.name {
+  font-weight: 600;
+  color: #fff;
+}
+
+section {
+  @include outer-container;
+  aside { @include span-columns(3); }
+  article { @include span-columns(9); }
+  margin-top: 1.7rem;
 }
