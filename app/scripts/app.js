@@ -6,7 +6,7 @@ angular.module('famousAngular',
       'ngResource', 'ui.router',
       'famous.angular' ])
 
-  .config(function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
+  .config(['$httpProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
 
     $logProvider.debugEnabled(true);
 
@@ -21,12 +21,8 @@ angular.module('famousAngular',
 
     authProvider.on('loginSuccess', function($rootScope, $log, $resource, $http) {
 
-      //@TODO load from disk
-      $rootScope.conf = {
-        API_BASEURL: 'http://localhost:8080/'
-      };
-
       $log.debug($rootScope.auth);
+
       $rootScope.refreshViewVars();
 
       var apiCall = function(){
@@ -36,7 +32,16 @@ angular.module('famousAngular',
         });
       };
 
-      apiCall();
+      var doAfterSettingsLoaded = function(){
+        apiCall();
+      };
+
+      //load settings
+      $http.get('settings.json').success(function(settings){
+        $log.debug('settings', settings);
+        $rootScope.conf = settings;
+        doAfterSettingsLoaded();
+      });
 
     });
 
@@ -61,7 +66,7 @@ angular.module('famousAngular',
     $urlRouterProvider.otherwise('/404');
     $locationProvider.html5Mode(true).hashPrefix('!');
 
-  })
+  }])
   .run(['$log', 'auth', '$location', '$rootScope',
     function ($log, auth, $location, $rootScope) {
 
