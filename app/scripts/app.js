@@ -25,7 +25,7 @@ angular.module('famousAngular',
       var apiCall = function(){
         var api = $resource($rootScope.conf.API_BASEURL + '/secured/ping');
         api.get({}, function (data) {
-          //console.log('data=', data);
+          $log.debug('api data', data);
         });
       };
 
