@@ -140,15 +140,10 @@ angular.module('famousAngular',
       $rootScope.refreshViewVars();
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-        //event.preventDefault();
-
-        $log.debug(toParams, toState, fromState, fromParams);
-
         // block restricted
         if (!auth.isAuthenticated && toState.data.restricted) {
           $location.path('/');
         }
-
       });
 
     }]
