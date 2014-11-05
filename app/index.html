@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" ng-app="famousAngularStarter">
+<html class="no-js" ng-app="famousAngular">
   <head>
     <meta charset="utf-8">
     <title>Famo.us/Angular</title>
@@ -25,32 +25,90 @@
   </head>
   <body>
 
-    <header class="navigation">
-      <div class="navigation-wrapper">
-          <a href="javascript:void(0)" class="logo">
-              <img ng-show="auth.profile" ng-src="{{auth.profile.picture}}" alt="Avator">
-          </a>
-          <a href="" class="navigation-menu-button" id="js-mobile-menu">MENU</a>
-          <div class="nav">
-              <ul id="navigation-menu">
-                  <li class="nav-link"><a ng-bind="auth.profile.email"></a></li>
-              </ul>
+    <div class="hero" ng-show="!auth.profile">
+      <div class="hero-inner">
+          <a href="" class="hero-logo"><img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/placeholder_logo_1.png
+    " alt="Logo Image"></a>
+          <div class="hero-copy">
+              <h1>Short description of Product</h1>
+              <p>A few reasons why this product is worth using, who it's for and why they need it.</p>
           </div>
-
-          <div class="navigation-tools">
-              <div class="nav">
-                  <ul id="navigation-menu">
-                      <li class="nav-link">
-                          <button type="submit" ng-click="handleSession()" ng-bind="sessionAction"></button>
-                      </li>
-                  </ul>
-              </div>
-          </div>
+          <button ng-click="handleSession()">Sign up!</button>
       </div>
+    </div>
+
+    <header class="navigation">
+        <div class="navigation-wrapper">
+            <a href="javascript:void(0)" class="logo">
+                <img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/placeholder_logo_1.png" alt="Logo Image">
+            </a>
+            <a href="" class="navigation-menu-button" id="js-mobile-menu">MENU</a>
+            <div class="nav">
+                <ul id="navigation-menu">
+                    <!--<li class="nav-link"><a href="javascript:void(0)">Products</a></li>-->
+                    <!--<li class="nav-link"><a href="javascript:void(0)">About Us</a></li>-->
+                    <!--<li class="nav-link"><a href="javascript:void(0)">Contact</a></li>-->
+                    <li class="nav-link more"><a href="javascript:void(0)">Profile</a>
+                        <ul class="submenu" ng-show="!auth.profile">
+                            <li><a href="javascript:void(0)" ng-click="handleSession()">Sign in</a></li>
+                            <li><a href="javascript:void(0)">Sign up</a></li>
+                        </ul>
+                        <ul class="submenu" ng-show="auth.profile">
+                            <li><a href="javascript:void(0)" ng-click="handleSession()">Log out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="navigation-tools">
+
+                <div class="search-bar">
+                    <div class="search-and-submit">
+                        <span class="profile name">{{auth.profile.email}}</span>
+                        <!--<input type="search" placeholder="Enter Search" />-->
+                        <!--<button type="submit">-->
+                            <!--<img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon.png" alt="Search Icon">-->
+                        <!--</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
 
-    <div ui-view></div>
+    <section class="main">
+        <div ui-view></div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-logo">
+            <img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/placeholder_logo_1.png" alt="Logo image">
+        </div>
+        <div class="footer-links">
+            <ul>
+                <li><h3>Content</h3></li>
+                <li><a href="javascript:void(0)">About</a></li>
+                <li><a href="javascript:void(0)">Contact</a></li>
+                <li><a href="javascript:void(0)">Products</a></li>
+            </ul>
+            <ul>
+                <li><h3>Follow Us</h3></li>
+                <li><a href="javascript:void(0)">Facebook</a></li>
+                <li><a href="javascript:void(0)">Twitter</a></li>
+                <li><a href="javascript:void(0)">YouTube</a></li>
+            </ul>
+            <ul>
+                <li><h3>Legal</h3></li>
+                <li><a href="javascript:void(0)">Terms and Conditions</a></li>
+                <li><a href="javascript:void(0)">Privacy Policy</a></li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <p>Disclaimer area lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum, nostrum repudiandae saepe.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -76,5 +134,30 @@
     <!-- endinject -->
     <!-- endbuild -->
 
+  <script>
+      $(document).ready(function() {
+          var menu = $('#navigation-menu');
+          var menuToggle = $('#js-mobile-menu');
+          var signUp = $('.sign-up');
+
+          $(menuToggle).on('click', function(e) {
+              e.preventDefault();
+              menu.slideToggle(function(){
+                  if(menu.is(':hidden')) {
+                      menu.removeAttr('style');
+                  }
+              });
+          });
+
+          // underline under the active nav item
+          $(".nav .nav-link").click(function() {
+              $(".nav .nav-link").each(function() {
+                  $(this).removeClass("active-nav-item");
+              });
+              $(this).addClass("active-nav-item");
+              $(".nav .more").removeClass("active-nav-item");
+          });
+      });
+  </script>
   </body>
 </html>

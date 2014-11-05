@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('famousAngularStarter',
+angular.module('famousAngular',
     ['auth0', 'ngAnimate', 'ngCookies',
       'ngTouch', 'ngSanitize',
       'ngResource', 'ui.router',
       'famous.angular' ])
 
-  .config(function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
+  .config(['$httpProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
 
     $logProvider.debugEnabled(true);
 
@@ -21,13 +21,8 @@ angular.module('famousAngularStarter',
 
     authProvider.on('loginSuccess', function($rootScope, $log, $resource, $http) {
 
-      //@TODO load from disk
-      $rootScope.conf = {
-        API_BASEURL: 'http://sp33c.de/auth0/api'
-      };
-
-      //$location.path('/');
       $log.debug($rootScope.auth);
+
       $rootScope.refreshViewVars();
 
       var apiCall = function(){
@@ -37,7 +32,16 @@ angular.module('famousAngularStarter',
         });
       };
 
-      apiCall();
+      var doAfterSettingsLoaded = function(){
+        apiCall();
+      };
+
+      //load settings
+      $http.get('settings.json').success(function(settings){
+        $log.debug('settings', settings);
+        $rootScope.conf = settings;
+        //doAfterSettingsLoaded();
+      });
 
     });
 
@@ -50,35 +54,19 @@ angular.module('famousAngularStarter',
     $stateProvider
       .state('home', {
         url: '/',
-        templateUrl: 'partials/demo.html',
-        controller: 'MainCtrl'//,
-        //requiresLogin: true
-      })
-      .state('demo', {
-        url: '/demo',
-        templateUrl: 'partials/demo.html',
+        templateUrl: 'partials/main.html',
         controller: 'MainCtrl'//,
         //requiresLogin: true
       })
       .state('404', {
         url: '/404',
         templateUrl: 'partials/404.html'
-      })
-//      .state('login', {
-//        url: '/login',
-//        templateUrl: 'partials/login.html',
-//        controller: 'LoginCtrl'
-//      })
-      .state('jade', {
-        url: '/jade',
-        templateUrl: 'partials/jade.html',
-        controller: 'MainCtrl'
       });
 
     $urlRouterProvider.otherwise('/404');
     $locationProvider.html5Mode(true).hashPrefix('!');
 
-  })
+  }])
   .run(['$log', 'auth', '$location', '$rootScope',
     function ($log, auth, $location, $rootScope) {
 
@@ -137,83 +125,6 @@ angular.module('famousAngularStarter',
         }
       });
 
-    }])
-  .controller('LoginCtrl', ['auth', '$scope', '$location', '$http',
-    'SERVER_CONFIG_BASE_URL', 'SERVER_CONFIG_PORT',
-    function (auth, $scope, $location, $http, SERVER_CONFIG_BASE_URL, SERVER_CONFIG_PORT) {
-
-      $scope.user = '';
-      $scope.pass = '';
-
-      function onLoginSuccess() {
-        $scope.$parent.message = '';
-        //$location.path('/');
-        $scope.loading = false;
-      }
-
-      function onLoginFailed() {
-        $scope.$parent.message = 'invalid credentials';
-        $scope.loading = false;
-      }
-
-      $scope.doLogin = function () {
-        $scope.$parent.message = 'loading...';
-        $scope.loading = true;
-
-        auth.signin({
-          connection: 'Username-Password-Authentication',
-          // username: $scope.user,
-          // password: $scope.pass,
-          popup: true,
-          scope: 'openid name email'
-        }).then(function () {
-            // Success callback
-            $location.path('/');
-          }, function () {
-            // Error callback
-          });
-      };
-
-      $scope.doLogin();
-
-      $scope.doGoogleAuthWithPopup = function () {
-        $scope.$parent.message = 'loading...';
-        $scope.loading = true;
-
-        auth.signin({
-          popup: true,
-          connection: 'google-oauth2',
-          scope: 'openid name email'
-        }).then(function () {
-            // Success callback
-            //$location.path('/');
-          }, function () {
-            // Error callback
-          });
-      };
-
-      $scope.doSignup = function () {
-        $http({method: 'POST',
-          url: SERVER_CONFIG_BASE_URL + ':' + SERVER_CONFIG_PORT + '/signup/',
-          data: {
-            email: $scope.signup.user,
-            password: $scope.signup.pass
-          }})
-          .success(function (data, status) {
-            if (status === 200) {
-              auth.signin({
-                // Make sure that connection matches
-                // your server-side connection id
-                connection: 'Username-Password-Authentication',
-                username: $scope.signup.user,
-                password: $scope.signup.pass
-              }, onLoginSuccess, onLoginFailed);
-            }
-          })
-          .error(function (data) {
-            // error
-          });
-      };
     }]
-  )
-;
+  );
+

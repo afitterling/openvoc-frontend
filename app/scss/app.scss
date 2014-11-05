@@ -19,8 +19,7 @@
 // Layout
 @import 'layout/global';
 
-// Demo specific code
-
+$base-spacing: 1.1rem;
 
 body {
   margin: 0;
@@ -592,3 +591,161 @@ header.navigation {
   }
 }
 
+// hero unit
+
+.hero {
+  $hero-background-top: darken($base-accent-color, 25);
+  $hero-background-bottom: adjust-hue($hero-background-top, -70);
+  $hero-color: white;
+  $gradient-angle: 10deg;
+  $hero-image: 'https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/mountains.png';
+
+  @include background(url($hero-image), linear-gradient($gradient-angle, $hero-background-bottom, $hero-background-top), no-repeat $hero-background-top scroll);
+
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: cover;
+  padding-bottom: 4em;
+
+  .hero-logo img {
+    height: 3em;
+    margin-bottom: 2.5em;
+  }
+
+  .hero-inner {
+    @include outer-container;
+    @include clearfix;
+    padding: 3em;
+    margin: auto;
+    text-align: center;
+    color: $hero-color;
+
+    button {
+      @include button(simple, #ccc);
+      font-size: $base-font-size;
+      outline: none;
+    }
+
+    .hero-copy {
+      text-align: center;
+
+      h1 {
+        font-size: 1.6em;
+        margin-bottom: .5em;
+
+        @include media($large-screen) {
+          font-size: 1.8em;
+        }
+      }
+
+      p {
+        font-family: $serif;
+        margin: auto;
+        margin-bottom: 3em;
+        font-weight: 200;
+        line-height: 1.4em;
+
+        @include media($large-screen) {
+          font-size: 1.1em;
+          max-width: 40%;
+        }
+      }
+    }
+  }
+}
+
+.profile.name {
+  font-weight: 600;
+  color: #fff;
+}
+
+// main content
+section.main {
+  @include outer-container;
+  aside { @include span-columns(3); }
+  article { @include span-columns(9); }
+  margin-top: 1.7rem;
+  min-height: 800px;
+}
+
+
+// footer
+.footer {
+  $footer-background: desaturate(darken($base-accent-color, 20), 30);
+  $footer-color: white;
+  $footer-link-color: transparentize($footer-color, .6);
+  $footer-disclaimer-color: transparentize($footer-color, .6);
+
+  background: $footer-background;
+  padding: $base-spacing*2 $gutter;
+  width: 100%;
+
+  .footer-logo {
+    text-align: center;
+    margin-bottom: 2em;
+
+    img {
+      height: 3em;
+    }
+  }
+
+  .footer-links {
+    @include clearfix;
+    margin-bottom: $base-spacing;
+
+    @include media($medium-screen) {
+      @include shift(3);
+    }
+  }
+
+  ul {
+    margin-bottom: $base-spacing*2;
+
+    @include media($medium-screen) {
+      @include span-columns(3);
+      @include omega(3n);
+      @include clearfix;
+    }
+  }
+
+
+  li {
+    text-align: center;
+
+    @include media($medium-screen) {
+      text-align: left;
+    }
+  }
+
+  li a {
+    color: $footer-link-color;
+
+    &:hover {
+      color: transparentize($footer-color, 0);
+    }
+  }
+
+  li h3 {
+    color: $footer-color;
+    font-size: 1em;
+    font-weight: 800;
+    margin-bottom: .4em;
+  }
+
+  hr {
+    border: 1px solid transparentize($footer-disclaimer-color, .3);
+    margin: 0 auto $base-spacing;
+    width: 12em;
+  }
+
+  p {
+    color: $footer-disclaimer-color;
+    font-size: .9em;
+    line-height: 1.5em;
+    margin: auto;
+    max-width: 35em;
+    text-align: center;
+  }
+}
+
+//end
