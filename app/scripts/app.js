@@ -81,7 +81,7 @@ angular.module('famousAngular',
 
       auth.hookEvents();
 
-      //$location.path('/voc');
+//      $location.path('/voc');
 
       $rootScope.auth = auth;
 
@@ -109,6 +109,7 @@ angular.module('famousAngular',
 
       $rootScope.logout = function () {
         auth.signout(function () {
+          $location.path('/');
         });
       };
 
