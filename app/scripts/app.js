@@ -31,7 +31,7 @@ angular.module('famousAngular',
       };
 
       var doAfterSettingsLoaded = function(){
-        //apiCall();
+        apiCall();
       };
 
       //load settings
