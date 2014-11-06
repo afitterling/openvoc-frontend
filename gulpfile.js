@@ -46,7 +46,7 @@ gulp.task('watch', ['connect'], function () {
   gulp.watch('app/images/**/*', ['images']);
 });
 
-gulp.task('build', ['html','styles','images','fonts','partials','settings']);
+gulp.task('build', ['sass', 'html','styles','images','fonts','partials','settings']);
 
 gulp.task('default', ['connect', 'watch'], function () {
   gulp.start('build');

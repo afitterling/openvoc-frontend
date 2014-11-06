@@ -9,10 +9,10 @@
     "angular-sanitize": "latest",
     "angular-resource": "latest",
     "angular-ui-router": "latest",
-    "underscore": "~1.6.0",
-    "famous-angular": "0.4.0"
+    "underscore": "latest"
   },
   "devDependencies": {
     "angular-mocks": "latest"
   }
 }
+
