@@ -1,20 +1,18 @@
 {
-  "name": "famousAngularStarter",
+  "name": "famousAngular",
   "version": "0.4.0",
   "dependencies": {
-    "angular": "1.2.22",
-    "angular-animate": "1.2.22",
-    "angular-cookies": "1.2.22",
-    "angular-touch": "1.2.22",
-    "angular-sanitize": "1.2.22",
-    "angular-resource": "1.2.22",
-    "angular-ui-router": "0.2.x",
-    "angular-route": "1.2.22",
-    "bootstrap-sass-official": "3.1.1",
-    "famous-angular": "0.4.0",
-    "underscore": "~1.6.0"
+    "angular": "latest",
+    "angular-animate": "latest",
+    "angular-cookies": "latest",
+    "angular-touch": "latest",
+    "angular-sanitize": "latest",
+    "angular-resource": "latest",
+    "angular-ui-router": "latest",
+    "underscore": "~1.6.0",
+    "famous-angular": "0.4.0"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.22"
+    "angular-mocks": "latest"
   }
 }
