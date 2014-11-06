@@ -31,7 +31,7 @@ angular.module('famousAngular',
       var apiCall = function(){
         var api = $resource($rootScope.conf.API_BASEURL + '/secured/ping');
         api.get({}, function (data) {
-          //console.log('data=', data);
+          $log.debug('api data', data);
         });
       };
 
@@ -74,6 +74,12 @@ angular.module('famousAngular',
         url: '/',
         templateUrl: 'partials/main.html',
         controller: 'MainCtrl',
+        data: {}
+      })
+
+      .state('error', {
+        url: '/error',
+        templateUrl: 'partials/error.html',
         data: {}
       })
 
@@ -146,15 +152,10 @@ angular.module('famousAngular',
       $rootScope.refreshViewVars();
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-        //event.preventDefault();
-
-        $log.debug(toParams, toState, fromState, fromParams);
-
         // block restricted
         if (!auth.isAuthenticated && toState.data.restricted) {
           $location.path('/');
         }
-
       });
 
     }]
