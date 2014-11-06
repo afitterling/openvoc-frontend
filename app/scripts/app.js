@@ -1,10 +1,16 @@
 'use strict';
 
 angular.module('famousAngular',
-    ['auth0', 'ngAnimate', 'ngCookies',
-      'ngTouch', 'ngSanitize',
-      'ngResource', 'ui.router',
-      'famous.angular' ])
+    [
+      'auth0',
+      'ngAnimate',
+      'ngCookies',
+      'ngTouch',
+      'ngSanitize',
+      'ngResource',
+      'ui.router',
+//      'famous.angular'
+    ])
 
   .config(['$httpProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
 
