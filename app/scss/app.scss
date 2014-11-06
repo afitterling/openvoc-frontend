@@ -36,13 +36,13 @@ body {
   -webkit-backface-visibility: visible;
 }
 
-.full-screen {
-  position: fixed;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-}
+//.full-screen {
+//  position: fixed;
+//  bottom: 0;
+//  top: 0;
+//  left: 0;
+//  right: 0;
+//}
 
 
 footer {
@@ -665,7 +665,7 @@ section.main {
   aside { @include span-columns(3); }
   article { @include span-columns(9); }
   margin-top: 1.7rem;
-  min-height: 800px;
+  min-height: 400px;
 }
 
 .table-borders {
