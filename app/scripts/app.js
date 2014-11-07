@@ -9,7 +9,7 @@ angular.module('famousAngular',
       'ngSanitize',
       'ngResource',
       'ui.router',
-//      'famous.angular'
+      'famous.angular'
     ])
 
   .config(['$httpProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
