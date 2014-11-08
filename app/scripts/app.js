@@ -26,7 +26,7 @@ angular.module('famousAngular',
     authProvider.on('loginSuccess', ['$location', '$rootScope', '$log', '$resource', '$http', function ($location, $rootScope, $log, $resource, $http) {
 
       $rootScope.refreshViewVars();
-      $location.path('/restricted');
+      $location.path('/profile');
 
       var apiCall = function(){
         var api = $resource($rootScope.conf.API_BASEURL + '/secured/ping');
@@ -83,9 +83,9 @@ angular.module('famousAngular',
         data: {}
       })
 
-      .state('restricted', {
-        url: '/restricted',
-        templateUrl: 'partials/restricted.html',
+      .state('profile', {
+        url: '/profile',
+        templateUrl: 'partials/profile.html',
         //controller: 'MainCtrl'//,
         data: {
           restricted: true
@@ -158,18 +158,12 @@ angular.module('famousAngular',
         }
       });
 
-      $(document).ready(function() {
+      $rootScope.toggleMenu = function(){
         var menu = $('#navigation-menu');
-        var menuToggle = $('#js-mobile-menu');
-        var signUp = $('.sign-up');
-
-        $(menuToggle).on('click', function(e) {
-          e.preventDefault();
-          menu.slideToggle(function(){
-            if(menu.is(':hidden')) {
-              menu.removeAttr('style');
-            }
-          });
+        menu.slideToggle(function(){
+          if(menu.is(':hidden')) {
+            menu.removeAttr('style');
+          }
         });
 
         // underline under the active nav item
@@ -180,6 +174,11 @@ angular.module('famousAngular',
           $(this).addClass("active-nav-item");
           $(".nav .more").removeClass("active-nav-item");
         });
+      };
+
+      $(document).ready(function() {
+        var menuToggle = $('#js-mobile-menu');
+        var signUp = $('.sign-up');
       });
 
     }]
