@@ -48,7 +48,7 @@
                 <ul id="navigation-menu">
                     <!--<li class="nav-link"><a href="javascript:void(0)">About Us</a></li>-->
                     <!--<li class="nav-link"><a href="javascript:void(0)">Contact</a></li>-->
-                    <li class="nav-link more"><a href="javascript:void(0)">Profile</a>
+                    <li class="nav-link more"><a href="javascript:void(0)" ng-click="goTo('/profile')">Profile</a>
                         <ul class="submenu" ng-show="!auth.profile">
                             <li><a href="javascript:void(0)" ng-click="handleSession()">Sign in</a></li>
                             <li><a href="javascript:void(0)">Sign up</a></li>
@@ -57,14 +57,14 @@
                             <li><a href="javascript:void(0)" ng-click="handleSession()">Log out</a></li>
                         </ul>
                     </li>
-                    <!--<li class="nav-link"><a href="javascript:void(0)" ng-click="goTo('/voc');">Vocabulary</a></li>-->
+                    <li class="nav-link"><a href="javascript:void(0)" ng-click="goTo('/');">Frontpage</a></li>
                 </ul>
             </div>
             <div class="navigation-tools">
 
                 <div class="search-bar">
                     <div class="search-and-submit">
-                        <span class="profile name" ng-bind="auth.profile.email"></span>
+                        <span class="profile name" ng-click="goTo('/profile')" ng-bind="auth.profile.email"></span>
                         <!--<input type="search" placeholder="Enter Search" />-->
                         <!--<button type="submit">-->
                             <!--<img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon.png" alt="Search Icon">-->
