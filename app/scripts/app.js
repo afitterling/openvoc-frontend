@@ -75,14 +75,16 @@ angular.module('famousAngular',
         templateUrl: 'partials/main.html',
         controller: 'MainCtrl',
         data: {}
-      })
+      });
 
+    $stateProvider
       .state('error', {
         url: '/error',
         templateUrl: 'partials/error.html',
         data: {}
-      })
+      });
 
+    $stateProvider
       .state('profile', {
         url: '/profile',
         templateUrl: 'partials/profile.html',
@@ -90,8 +92,9 @@ angular.module('famousAngular',
         data: {
           restricted: true
         }
-      })
+      });
 
+    $stateProvider
       .state('404', {
         url: '/404',
         templateUrl: 'partials/404.html'
@@ -152,8 +155,12 @@ angular.module('famousAngular',
       $rootScope.refreshViewVars();
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        $log.debug('toState:', toState);
         // block restricted
         if (!auth.isAuthenticated && toState.data.restricted) {
+          //block transition
+          $log.debug('page restricted!');
+          event.preventDefault();
           $location.path('/');
         }
       });
