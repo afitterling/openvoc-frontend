@@ -1,7 +1,8 @@
 <!doctype html>
-<html class="no-js" ng-app="famousAngularStarter">
+<html class="no-js" ng-app="famousAngular">
 <head>
     <meta charset="utf-8">
+    <base href="/"></base>
     <title>Famo.us/Angular</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
@@ -45,6 +46,8 @@
                     <span ng-show="auth.profile">Sign Out</span>
                     </button>
                 </a></li>
+                <li ng-show="auth.profile" class=""><a ng-click="goTo('data')">Data</a></li>
+                <li ng-show="auth.profile" class=""><a ng-click="goTo('profile')">Profile</a></li>
             </ul>
         </div>
         <!--/.nav-collapse -->
@@ -63,7 +66,7 @@
 <!--<script src="bower_components/angular-route/angular-route.js"></script>-->
 
 <script src="bower_components/underscore/underscore.js"></script>
-<script src="bower_components/famous/famous-global.js"></script>
+<script src="bower_components/famous/dist/famous-global.js"></script>
 <script src="bower_components/famous-angular/dist/famous-angular.js"></script>
 
 <!-- Auth0 widget script and AngularJS module -->
@@ -72,7 +75,8 @@
 
 <!-- build:js({app,.tmp}) scripts/main.js -->
 <script src="scripts/app.js"></script>
-<script src="scripts/main/main-ctrl.js"></script>
+<script src="scripts/controllers/main.js"></script>
+<script src="scripts/controllers/data.js"></script>
 <!-- inject:partials -->
 <!-- endinject -->
 <!-- endbuild -->

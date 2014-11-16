@@ -9,7 +9,7 @@ angular.module('famousAngular',
       'ngSanitize',
       'ngResource',
       'ui.router',
-      'famous.angular'
+//      'famous.angular'
     ])
 
   .config(['$httpProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
@@ -64,7 +64,6 @@ angular.module('famousAngular',
       // If the user is still authenticated, you get this event
     });
 
-    //@TODO
     authProvider.on('loginFailure', function($location, error) {
       $location.path('/error');
     });
@@ -75,6 +74,16 @@ angular.module('famousAngular',
         templateUrl: 'partials/main.html',
         controller: 'MainCtrl',
         data: {}
+      });
+
+    $stateProvider
+      .state('data', {
+        url: '/data',
+        templateUrl: 'partials/data.html',
+        controller: 'DataCtrl',
+        data: {
+          restricted: true
+        }
       });
 
     $stateProvider
@@ -165,28 +174,6 @@ angular.module('famousAngular',
         }
       });
 
-      $rootScope.toggleMenu = function(){
-        var menu = $('#navigation-menu');
-        menu.slideToggle(function(){
-          if(menu.is(':hidden')) {
-            menu.removeAttr('style');
-          }
-        });
-
-        // underline under the active nav item
-        $(".nav .nav-link").click(function() {
-          $(".nav .nav-link").each(function() {
-            $(this).removeClass("active-nav-item");
-          });
-          $(this).addClass("active-nav-item");
-          $(".nav .more").removeClass("active-nav-item");
-        });
-      };
-
-      $(document).ready(function() {
-        var menuToggle = $('#js-mobile-menu');
-        var signUp = $('.sign-up');
-      });
 
     }]
   );
