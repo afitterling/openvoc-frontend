@@ -35,19 +35,19 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Journal</a>
+            <a class="navbar-brand" ng-click="goTo('/')">Journal</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <!--<li class="active"><a href="#">Home</a></li>-->
-                <li><a ng-click="handleSession()">
-                    <button class="btn btn-default btn-sm">
-                    <span ng-hide="auth.profile">Sign In/Up</span>
-                    <span ng-show="auth.profile">Sign Out</span>
-                    </button>
-                </a></li>
                 <li ng-show="auth.profile" class=""><a ng-click="goTo('data')">Data</a></li>
                 <li ng-show="auth.profile" class=""><a ng-click="goTo('profile')">Profile</a></li>
+                <li><a ng-click="handleSession()">
+                    <button class="btn btn-default btn-sm">
+                        <span ng-hide="auth.profile">Sign In/Up</span>
+                        <span ng-show="auth.profile">Sign Out</span>
+                    </button>
+                </a></li>
             </ul>
         </div>
         <!--/.nav-collapse -->
