@@ -1,17 +1,18 @@
 'use strict';
 
-angular.module('famousAngularStarter',
-    ['auth0', 'ngAnimate', 'ngCookies',
-      'ngTouch', 'ngSanitize',
-      'ngResource', 'ui.router',
-      'famous.angular' ])
+angular.module('famousAngular',
+    [
+      'auth0',
+      'ngAnimate',
+      'ngCookies',
+      'ngTouch',
+      'ngSanitize',
+      'ngResource',
+      'ui.router',
+      'famous.angular'
+    ])
 
-  .constant('SERVER_CONFIG_BASE_URL', 'http://localhost')
-  .constant('SERVER_CONFIG_PORT', '8080')
-
-  .config(function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
-
-    $logProvider.debugEnabled(true);
+  .config(['$httpProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
 
     authProvider.init({
       domain: 'journal-sp33c.auth0.com',
@@ -22,63 +23,91 @@ angular.module('famousAngularStarter',
 
     $httpProvider.interceptors.push('authInterceptor');
 
-    authProvider.on('loginSuccess', function($rootScope, $log, $resource) {
-      //$location.path('/');
-      $log.debug($rootScope.auth);
+    authProvider.on('loginSuccess', ['$location', '$rootScope', '$log', '$resource', '$http', function ($location, $rootScope, $log, $resource, $http) {
+
       $rootScope.refreshViewVars();
+      $location.path('/profile');
 
       var apiCall = function(){
-        var api = $resource('http://localhost:8080/secured/ping');
+        var api = $resource($rootScope.conf.API_BASEURL + '/secured/ping');
         api.get({}, function (data) {
-          console.log('data=', data);
+          $log.debug('api data', data);
         });
       };
 
-      apiCall();
+      var doAfterSettingsLoaded = function(){
+        apiCall();
+        $log.debug($rootScope.auth);
+      };
+
+      //load settings
+      $http.get('settings.json').success(function(settings){
+        // set log provider
+        $logProvider.debugEnabled(settings.debug);
+
+        $log.debug('debug', settings.debug);
+        $log.debug('settings', settings);
+
+        $rootScope.conf = settings;
+        doAfterSettingsLoaded();
+      });
+
+    }]);
+
+    authProvider.on('logout', [ '$rootScope', '$log', function($rootScope, $log) {
+      //$location.path('/');
+      $rootScope.refreshViewVars();
+    }]);
+
+    authProvider.on('authenticated', function($location) {
+      // This is after a refresh of the page
+      // If the user is still authenticated, you get this event
     });
 
-    authProvider.on('logout', function($rootScope, $log) {
-      //$location.path('/');
-      $log.debug($rootScope.auth);
-      $rootScope.refreshViewVars();
+    //@TODO
+    authProvider.on('loginFailure', function($location, error) {
+      $location.path('/error');
     });
 
     $stateProvider
       .state('home', {
         url: '/',
         templateUrl: 'partials/main.html',
-        controller: 'MainCtrl'//,
-        //requiresLogin: true
-      })
-      .state('demo', {
-        url: '/demo',
-        templateUrl: 'partials/demo.html',
-        controller: 'MainCtrl'//,
-        //requiresLogin: true
-      })
-      .state('login', {
-        url: '/login',
-        templateUrl: 'partials/login.html',
-        controller: 'LoginCtrl'
-      })
-      .state('jade', {
-        url: '/jade',
-        templateUrl: 'partials/jade.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        data: {}
       });
 
-    $urlRouterProvider.otherwise('/');
+    $stateProvider
+      .state('error', {
+        url: '/error',
+        templateUrl: 'partials/error.html',
+        data: {}
+      });
+
+    $stateProvider
+      .state('profile', {
+        url: '/profile',
+        templateUrl: 'partials/profile.html',
+        //controller: 'MainCtrl'//,
+        data: {
+          restricted: true
+        }
+      });
+
+    $stateProvider
+      .state('404', {
+        url: '/404',
+        templateUrl: 'partials/404.html'
+      });
+
+    $urlRouterProvider.otherwise('/404');
     $locationProvider.html5Mode(true).hashPrefix('!');
 
-  })
+  }])
   .run(['$log', 'auth', '$location', '$rootScope',
     function ($log, auth, $location, $rootScope) {
 
-      $log.debug('debugging on');
-
       auth.hookEvents();
-
-      $location.path('/');
 
       $rootScope.auth = auth;
 
@@ -100,15 +129,20 @@ angular.module('famousAngularStarter',
         if (auth.isAuthenticated) {
           auth.signout();
           $rootScope.refreshViewVars();
+          $location.path('/');
         }
 
       };
 
       $rootScope.logout = function () {
         auth.signout(function () {
+
         });
       };
 
+      $rootScope.goTo = function(arg){
+        $location.path(arg);
+      };
 
       $rootScope.refreshViewVars = function(){
         if (!auth.isAuthenticated) {
@@ -120,92 +154,40 @@ angular.module('famousAngularStarter',
       };
       $rootScope.refreshViewVars();
 
-      $rootScope.$on('$routeChangeStart', function (e, nextRoute, currentRoute) {
-        if (nextRoute.$$route && nextRoute.$$route.requiresLogin) {
-          if (!auth.isAuthenticated) {
-            //$location.path('/login');
-            //$rootScope.doLogin();
-          }
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        $log.debug('toState:', toState);
+        // block restricted
+        if (!auth.isAuthenticated && toState.data.restricted) {
+          //block transition
+          $log.debug('page restricted!');
+          event.preventDefault();
+          $location.path('/');
         }
       });
 
-    }])
-  .controller('LoginCtrl', ['auth', '$scope', '$location', '$http',
-    'SERVER_CONFIG_BASE_URL', 'SERVER_CONFIG_PORT',
-    function (auth, $scope, $location, $http, SERVER_CONFIG_BASE_URL, SERVER_CONFIG_PORT) {
+      $rootScope.toggleMenu = function(){
+        var menu = $('#navigation-menu');
+        menu.slideToggle(function(){
+          if(menu.is(':hidden')) {
+            menu.removeAttr('style');
+          }
+        });
 
-      $scope.user = '';
-      $scope.pass = '';
-
-      function onLoginSuccess() {
-        $scope.$parent.message = '';
-        $location.path('/');
-        $scope.loading = false;
-      }
-
-      function onLoginFailed() {
-        $scope.$parent.message = 'invalid credentials';
-        $scope.loading = false;
-      }
-
-      $scope.doLogin = function () {
-        $scope.$parent.message = 'loading...';
-        $scope.loading = true;
-
-        auth.signin({
-          connection: 'Username-Password-Authentication',
-          // username: $scope.user,
-          // password: $scope.pass,
-          popup: true,
-          scope: 'openid name email'
-        }).then(function () {
-            // Success callback
-            $location.path('/');
-          }, function () {
-            // Error callback
+        // underline under the active nav item
+        $(".nav .nav-link").click(function() {
+          $(".nav .nav-link").each(function() {
+            $(this).removeClass("active-nav-item");
           });
+          $(this).addClass("active-nav-item");
+          $(".nav .more").removeClass("active-nav-item");
+        });
       };
 
-      $scope.doLogin();
+      $(document).ready(function() {
+        var menuToggle = $('#js-mobile-menu');
+        var signUp = $('.sign-up');
+      });
 
-      $scope.doGoogleAuthWithPopup = function () {
-        $scope.$parent.message = 'loading...';
-        $scope.loading = true;
-
-        auth.signin({
-          popup: true,
-          connection: 'google-oauth2',
-          scope: 'openid name email'
-        }).then(function () {
-            // Success callback
-            $location.path('/');
-          }, function () {
-            // Error callback
-          });
-      };
-
-      $scope.doSignup = function () {
-        $http({method: 'POST',
-          url: SERVER_CONFIG_BASE_URL + ':' + SERVER_CONFIG_PORT + '/signup/',
-          data: {
-            email: $scope.signup.user,
-            password: $scope.signup.pass
-          }})
-          .success(function (data, status) {
-            if (status === 200) {
-              auth.signin({
-                // Make sure that connection matches
-                // your server-side connection id
-                connection: 'Username-Password-Authentication',
-                username: $scope.signup.user,
-                password: $scope.signup.pass
-              }, onLoginSuccess, onLoginFailed);
-            }
-          })
-          .error(function (data) {
-            // error
-          });
-      };
     }]
-  )
-;
+  );
+

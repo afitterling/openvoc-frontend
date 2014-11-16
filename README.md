@@ -1,5 +1,9 @@
-famous-angular-starter
+Basic AngularJS Auth0 App based on Famo.us
 ======================
+
+Please patch Famo.us for scrolling in app mode:
+https://github.com/thomasstreet/famous-angular-docs/blob/master/faq/index.md
+
 
 Starter repo for Famo.us/Angular
 
