@@ -1,4 +1,4 @@
 {
-  "API_BASEURL": "http://localhost:8080/",
+  "API_BASEURL": "http://localhost:8080/api/",
   "debug": true
 }
