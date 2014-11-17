@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('DataCtrl', ['$timeout', '$log', '$scope', '$resource', '$http', function ($timeout, $log, $scope, $resource, $http) {
+  .controller('DataCtrl', ['$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', function ($rootScope, $timeout, $log, $scope, $resource, $http) {
 
     var self = this;
 
@@ -11,14 +11,15 @@ angular.module('famousAngular')
       // the patch request will update on those fields the model changed server side
       { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
 
-    self.items = Items.query(function (data) {
+    self.items = Items.query({user_id: $scope.auth.profile.user_id}, function (data) {
       console.log(data);
     });
 
     $scope.addItem = function (item) {
       $scope.success = null;
 
-      Items.save(item, function (success) {
+      item.user_id = $scope.auth.profile.user_id;
+      Items.save({item: item}, function (success) {
         self.items.push(success);
         $scope.success = true;
         $scope.item = {};

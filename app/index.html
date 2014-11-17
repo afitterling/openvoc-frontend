@@ -2,6 +2,7 @@
 <html class="no-js" ng-app="famousAngular">
 <head>
     <meta charset="utf-8">
+    <!--<base href="/journal-staging/"></base>-->
     <base href="/"></base>
     <title>Famo.us/Angular</title>
     <meta name="description" content="">
@@ -17,6 +18,13 @@
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
 
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="css/app.css">
@@ -56,6 +64,8 @@
 
 <div class="container" ui-view></div>
 
+<!-- build:js({app,.tmp}) scripts/main.js -->
+
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -63,17 +73,11 @@
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-<!--<script src="bower_components/angular-route/angular-route.js"></script>-->
 
 <script src="bower_components/underscore/underscore.js"></script>
 <script src="bower_components/famous/dist/famous-global.js"></script>
 <script src="bower_components/famous-angular/dist/famous-angular.js"></script>
 
-<!-- Auth0 widget script and AngularJS module -->
-<script src="//cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>
-<script src="//cdn.auth0.com/w2/auth0-angular-1.1.min.js"></script>
-
-<!-- build:js({app,.tmp}) scripts/main.js -->
 <script src="scripts/app.js"></script>
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/data.js"></script>
@@ -82,6 +86,13 @@
 <!-- inject:partials -->
 <!-- endinject -->
 <!-- endbuild -->
+<!-- Auth0 widget script and AngularJS module -->
+<script src="//cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>
+<script src="//cdn.auth0.com/w2/auth0-angular-1.1.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
 </body>
 </html>
