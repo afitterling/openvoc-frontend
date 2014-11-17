@@ -1,6 +1,9 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
     <!-- editable list to display editable tables -->
-    <editable-list model="ctrl.items" columns="['desc']" actions="[{name: 'delete', callback: null}]"></editable-list>
+    <editable-list model="ctrl.items" columns="['desc']" actions="[{name: 'delete', callback: null}]"
+                    update-func="updateItem(item)"
+            ></editable-list>
+    <!-- item arg wird durchgereicht von editable! -->
 
     <!-- new item -->
     <form name="formItem" ng-submit="addItem(item)">

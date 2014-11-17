@@ -10,7 +10,8 @@ angular.module('famousAngular.formHelpers.editables', [])
       scope: {
         items: '=model',
         columns: '=',
-        actions: '='
+        actions: '=',
+        updateFunc: '&'
       },
       link: function (scope, elm, attrs) {
       }
@@ -26,15 +27,19 @@ angular.module('famousAngular.formHelpers.editables', [])
       replace : true,
       scope: {
         model: '=',
-        column: '='
+        column: '=',
+        updateFunc: '&'
       },
       link: function (scope, elm, attrs) {
         scope.toggleState = function(){
+          if (scope.editState) return;
           console.log('triggered');
           scope.editState = true;
         };
         scope.endEditMode = function(){
           scope.editState = false;
+          console.log(scope.model);
+          scope.$parent.updateFunc({item: scope.model});
         };
       }
     };
