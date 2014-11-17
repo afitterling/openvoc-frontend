@@ -18,8 +18,10 @@ angular.module('famousAngular.formHelpers.editables', [])
       link: function (scope, elm, attrs) {
         // run callbacks given by params
         // but they need to be designed as & in scope beforehand
-        scope.runCallback = function (callback) {
-          scope.$eval(callback)();
+        scope.runCallback = function (callback, item) {
+          var fn = scope[callback];
+          var fnParams = [{item: item}];
+          fn.apply(null, fnParams);
         };
       }
     };

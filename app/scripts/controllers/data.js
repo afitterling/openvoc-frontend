@@ -57,7 +57,10 @@ angular.module('famousAngular')
     };
 
     $scope.deleteItem = function (item) {
-      console.log('delete being triggered');
+      console.log(item);
+      Items.delete({id: item.id}, function(success){
+        self.items.splice(self.items.indexOf(item), 1);
+      });
     };
 
   }]);
