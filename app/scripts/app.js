@@ -9,7 +9,9 @@ angular.module('famousAngular',
       'ngSanitize',
       'ngResource',
       'ui.router',
-//      'famous.angular'
+      'directives.formHelpers',
+      'famousAngular.formHelpers.editables',
+      'famous.angular'
     ])
 
   .config(['$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider',

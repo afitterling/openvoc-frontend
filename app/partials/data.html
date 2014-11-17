@@ -1,12 +1,11 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
-    <table class="table table-hover">
-        <tr ng-repeat="item in ctrl.items"><td>{{item.desc}}</td></tr>
-    </table>
-    <hr>
+    <!-- editable list to display editable tables -->
+    <editable-list model="ctrl.items" columns="['id','desc']"></editable-list>
+
     <form name="formItem" ng-submit="addItem(item)">
         <div class="input-group">
             <span class="input-group-addon">Add</span>
-            <input type="text" ng-model="item.desc" class="form-control">
+            <input submit-state state="success" ng-disabled="pending" type="text" ng-model="item.desc" ng-disabled="submitted" class="form-control">
             <span class="input-group-addon success">Enter</span>
         </div>
     </form>
