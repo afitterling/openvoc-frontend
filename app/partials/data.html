@@ -1,7 +1,8 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
     <!-- editable list to display editable tables -->
-    <editable-list model="ctrl.items" columns="['desc']" actions="[{name: 'delete', callback: null}]"
+    <editable-list model="ctrl.items" columns="['desc']" actions="[{name: 'delete', callback: 'deleteFunc' }]"
                     update-func="updateItem(item)"
+                    delete-func="deleteItem(item)"
             ></editable-list>
     <!-- item arg wird durchgereicht von editable! -->
 
@@ -13,4 +14,5 @@
             <span class="input-group-addon success">Enter</span>
         </div>
     </form>
+    <br><br>
 </div>

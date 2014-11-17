@@ -11,9 +11,16 @@ angular.module('famousAngular.formHelpers.editables', [])
         items: '=model',
         columns: '=',
         actions: '=',
-        updateFunc: '&'
+        updateFunc: '&',
+        // -------------------
+        deleteFunc: '&'
       },
       link: function (scope, elm, attrs) {
+        // run callbacks given by params
+        // but they need to be designed as & in scope beforehand
+        scope.runCallback = function (callback) {
+          scope.$eval(callback)();
+        };
       }
     };
   }])

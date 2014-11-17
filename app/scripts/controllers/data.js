@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('DataCtrl', ['$log', '$scope', '$resource', '$http', function ($log, $scope, $resource, $http) {
+  .controller('DataCtrl', ['$timeout', '$log', '$scope', '$resource', '$http', function ($timeout, $log, $scope, $resource, $http) {
 
     var self = this;
 
     // @TODO service
+
     var Items = $resource($scope.conf.API_BASEURL + '/items/:id', {id: '@id'},
+      // the patch request will update on those fields the model changed server side
       { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
 
     self.items = Items.query(function (data) {
@@ -26,14 +28,36 @@ angular.module('famousAngular')
       });
     };
 
+    // update model
+    // we use a trick here:
+    // as the editable allows editable per attr of one obj/item we end up in having multiple change/update requests per obj or id
+    // as of this fact we update with timeouts/promises and cancel the pre chosen promises if other fields got edited as well
+    // as the parameter is always the whole model this won't matter
+    var cancelUpdate = {};
     $scope.updateItem = function (item) {
-      $log.debug('update triggered', item);
-      $scope.success = null;
-      Items.update(item, function (success) {
-        $scope.success = true;
-      }, function (error) {
-        $scope.success = false;
-      });
+      $log.debug('cancelUpdate', cancelUpdate);
+      if (angular.isDefined(cancelUpdate[item.id])) {
+        if (cancelUpdate[item.id].status !== 1) { // 1 => resolved
+          cancelUpdate[item.id]();
+        }
+      }
+      cancelUpdate[item.id] = $timeout(function(){
+        $log.debug('update triggered', item);
+        $scope.success = null;
+        Items.update(item, function (success) {
+          $scope.success = true;
+          delete cancelUpdate[item.id]; // delete the promise from list as we know it ran through
+          $log.debug('cancelUpdate', cancelUpdate);
+        }, function (error) {
+          $scope.success = false;
+          $log.debug('cancelUpdate', cancelUpdate);
+        });
+      }, 5000);
+      $log.debug('cancelUpdate', cancelUpdate);
+    };
+
+    $scope.deleteItem = function (item) {
+      console.log('delete being triggered');
     };
 
   }]);
