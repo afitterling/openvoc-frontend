@@ -1,8 +1,13 @@
-<div class="partial">
-    <form name="item" ng-submit="">
+<div class="partial" ng-controller="DataCtrl as ctrl">
+    <table class="table table-hover">
+        <tr ng-repeat="item in ctrl.items"><td>{{item.desc}}</td></tr>
+    </table>
+    <hr>
+    <form name="formItem" ng-submit="item=addItem(item)">
         <div class="input-group">
-            <span class="input-group-addon"></span>
-            <input type="text" class="form-control">
+            <span class="input-group-addon">Add</span>
+            <input type="text" ng-model="item.desc" class="form-control">
+            <span class="input-group-addon success">Enter</span>
         </div>
     </form>
 </div>

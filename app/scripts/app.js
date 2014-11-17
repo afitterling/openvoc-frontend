@@ -88,7 +88,7 @@ angular.module('famousAngular',
       .state('data', {
         url: '/data',
         templateUrl: 'partials/data.html',
-        controller: 'DataCtrl',
+        //controller: 'DataCtrl', // see the partial ng-ctrl
         data: {
           restricted: true
         }

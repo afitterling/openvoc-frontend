@@ -7,4 +7,10 @@ angular.module('famousAngular')
     self.items = Items.query(function (data) {
       console.log(data);
     });
+
+    $scope.addItem = function (item) {
+      console.log(item);
+      return {};
+    };
+
   }]);
