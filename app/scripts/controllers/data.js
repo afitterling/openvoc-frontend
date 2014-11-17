@@ -12,11 +12,12 @@ angular.module('famousAngular')
     });
 
     $scope.addItem = function (item) {
-      console.log(item);
-      Items.save(item, function(success){
-//        console.log(success);
+
+      Items.save(item, function (success) {
         self.items.push(success);
-        return {};
+        $scope.item = {};
+      }, function (error) {
+        $scope.item = item;
       });
     };
 
