@@ -5,16 +5,41 @@ angular.module('famousAngular.formHelpers.editables', [])
   .directive('editableList', ['$parse', function ($parse) {
     return {
       restrict: 'E',
-      template: '<table class="table table-hover"><tr ng-repeat="item in items"><td ng-repeat="column in columns">{{item[column]}}</td></tr></table>',
+      templateUrl: 'components/forms/editable_list.html',
       replace : true,
       scope: {
         items: '=model',
-        columns: '='
+        columns: '=',
+        actions: '='
       },
       link: function (scope, elm, attrs) {
       }
     };
   }])
+
+  .directive('editable', ['$parse', function ($parse) {
+    return {
+      restrict: 'E',
+      template: '<td ng-click="toggleState()"><span ng-hide="editState">{{model[column]}}</span>' +
+        '<span ng-show="editState"><form ng-submit="endEditMode()">' +
+        '<input type="text" ng-required="true" ng-model="model[column]"></input></form></span></button></td>',
+      replace : true,
+      scope: {
+        model: '=',
+        column: '='
+      },
+      link: function (scope, elm, attrs) {
+        scope.toggleState = function(){
+          console.log('triggered');
+          scope.editState = true;
+        };
+        scope.endEditMode = function(){
+          scope.editState = false;
+        };
+      }
+    };
+  }])
+
 
   .directive('new', [function() {
     return {

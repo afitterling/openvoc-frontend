@@ -5,6 +5,7 @@ angular.module('famousAngular')
 
     var self = this;
 
+    // @TODO service
     var Items = $resource($scope.conf.API_BASEURL + '/items', {id: '@id'},
       { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
 

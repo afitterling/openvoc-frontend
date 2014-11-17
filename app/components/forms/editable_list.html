@@ -1,0 +1,12 @@
+<table class="table table-hover">
+    <tr ng-repeat="item in items">
+        <td ng-repeat="column in columns" ng-click="editField(column)">
+            <editable model="item" column="column"></editable>
+        </td>
+        <td style="width: 20%;">
+            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                <button type="button" class="btn btn-default" ng-repeat="action in actions">{{action.name}}</button>
+            </div>
+        </td>
+    </tr>
+</table>
