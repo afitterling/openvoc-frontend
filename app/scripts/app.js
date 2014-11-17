@@ -12,7 +12,10 @@ angular.module('famousAngular',
 //      'famous.angular'
     ])
 
-  .config(['$httpProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
+  .config(['$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider',
+    function ($httpProvider, $resourceProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
+
+    $resourceProvider.defaults.stripTrailingSlashes = false;
 
     authProvider.init({
       domain: 'journal-sp33c.auth0.com',
@@ -44,6 +47,11 @@ angular.module('famousAngular',
       $http.get('settings.json').success(function(settings){
         // set log provider
         $logProvider.debugEnabled(settings.debug);
+
+        // strip of trailing slash of BASE_URL
+        if (settings.API_BASEURL.substr(-1) === '/') {
+          settings.API_BASEURL = settings.API_BASEURL.substr(0, settings.API_BASEURL.length - 1);
+        }
 
         $log.debug('debug', settings.debug);
         $log.debug('settings', settings);
