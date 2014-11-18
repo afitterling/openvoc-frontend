@@ -1,18 +1,26 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
     <!-- editable list to display editable tables -->
     <editable-list model="ctrl.items" columns="['desc']" actions="[{name: 'delete', callback: 'deleteFunc' }]"
-                    update-func="updateItem(item)"
-                    delete-func="deleteItem(item)"
+                   update-func="updateItem(item)"
+                   delete-func="deleteItem(item)"
             ></editable-list>
     <!-- item arg wird durchgereicht von editable! -->
 
-    <!-- new item -->
-    <form name="formItem" ng-submit="addItem(item)">
-        <div class="input-group">
-            <span class="input-group-addon">Add</span>
-            <input submit-state state="success" ng-disabled="pending" type="text" ng-model="item.desc" ng-disabled="submitted" class="form-control">
-            <span class="input-group-addon success">Enter</span>
+    <div class="row">
+        <div class="col-lg-6">
+            <form name="formAdd" ng-submit="addItem(item)">
+                <div class="input-group">
+                    <input type="text" name="item.desc" ng-model="item.desc" ng-required="true" class="form-control">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" ng-disabled="!formAdd.$valid" type="button">Add!</button>
+                    </span>
+                </div>
+                <!-- /input-group -->
+            </form>
         </div>
-    </form>
+        <!-- /.col-lg-6 -->
+    </div>
+    <!-- /.row -->
+
     <br><br>
 </div>
