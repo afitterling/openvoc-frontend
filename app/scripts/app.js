@@ -116,7 +116,10 @@ angular.module('famousAngular',
     $stateProvider
       .state('404', {
         url: '/404',
-        templateUrl: 'partials/404.html'
+        templateUrl: 'partials/404.html',
+        data: {
+          restricted: null
+        }
       });
 
     $urlRouterProvider.otherwise('/404');
