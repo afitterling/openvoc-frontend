@@ -182,7 +182,7 @@ angular.module('famousAngular',
         if (!auth.isAuthenticated && toState.data.restricted) {
           //block transition
           $log.debug('page restricted!');
-          event.preventDefault();
+//          event.preventDefault();
           $location.path('/');
         }
       });
