@@ -3,7 +3,8 @@
 var gulp = require('gulp'),
   connect = require('gulp-connect'),
   sass = require('gulp-sass'),
-  rename = require('gulp-rename');
+  rename = require('gulp-rename'),
+  htmlreplace = require('gulp-html-replace');
 
 require('require-dir')('./gulp');
 
@@ -14,6 +15,21 @@ gulp.task('connect', function () {
     port: 9000
   });
 });
+
+//     <!--build:basehref  -->
+//<base href="/journal-staging/"/>
+//  <!-- endbuild -->
+
+//gulp.task('basehref', function () {
+//  gulp.src('app/basehref/index.html')
+//    .pipe(htmlreplace({
+//      basehref: {
+//        src: '/journal-staging/',
+//        tpl: '<base href="%s"></base>'
+//      }
+//    }))
+//    .pipe(gulp.dest('app/'));
+//});
 
 gulp.task('sass', function () {
   gulp.src('./app/scss/**/*.scss')
