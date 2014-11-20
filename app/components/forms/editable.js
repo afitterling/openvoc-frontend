@@ -30,9 +30,7 @@ angular.module('famousAngular.formHelpers.editables', [])
   .directive('editable', ['$parse', function ($parse) {
     return {
       restrict: 'E',
-      template: '<td ng-click="toggleState()"><span ng-hide="editState">{{model[column]}}</span>' +
-        '<span ng-show="editState"><form ng-submit="endEditMode()">' +
-        '<input type="text" ng-required="true" ng-model="model[column]"></input></form></span></button></td>',
+      templateUrl: 'components/forms/editable.html',
       replace : true,
       scope: {
         model: '=',
