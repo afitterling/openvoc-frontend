@@ -179,9 +179,9 @@ angular.module('famousAngular',
         $log.debug('toState:', toState);
         // block restricted
         if (!auth.isAuthenticated && toState.data.restricted) {
+          //event.preventDefault();
           //block transition
           $log.debug('page restricted!');
-//          event.preventDefault();
           $location.path('/');
         }
       });
