@@ -68,14 +68,14 @@ angular.module('famousAngular',
       $rootScope.refreshViewVars();
     }]);
 
-    authProvider.on('authenticated', function($location) {
+    authProvider.on('authenticated', ['$location', function($location) {
       // This is after a refresh of the page
       // If the user is still authenticated, you get this event
-    });
+    }]);
 
-    authProvider.on('loginFailure', function($location, error) {
+    authProvider.on('loginFailure', ['$location', function($location) {
       $location.path('/error');
-    });
+    }]);
 
     $stateProvider
       .state('home', {
