@@ -121,7 +121,7 @@ angular.module('famousAngular',
         }
       });
 
-    $urlRouterProvider.otherwise('/404');
+    $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true).hashPrefix('!');
 
   }])
