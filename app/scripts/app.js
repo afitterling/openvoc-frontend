@@ -22,8 +22,7 @@ angular.module('famousAngular',
     authProvider.init({
       domain: 'journal-sp33c.auth0.com',
       clientID: 'BcSTdHaYpZHynNIUMXdleiYkaQDp2mMF',
-      callbackURL: location.href,
-      loginUrl: '/login'
+      callbackURL: location.href
     });
 
     $httpProvider.interceptors.push('authInterceptor');
