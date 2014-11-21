@@ -30,8 +30,9 @@ angular.module('famousAngular',
       $httpProvider.interceptors.push('jwtInterceptor');
 
       authProvider.init({
-        domain: 'journal-sp33c.auth0.com',
-        clientID: 'BcSTdHaYpZHynNIUMXdleiYkaQDp2mMF',
+        domain: AUTH0_DOMAIN,
+        clientID: AUTH0_CLIENT_ID,
+//        loginUrl: '/login',
         callbackURL: location.href
       });
 
@@ -240,13 +241,15 @@ angular.module('famousAngular',
 //          $location.path('/');
 //        }
 
-        if (!auth.isAuthenticated) {
+        if (!auth.isAuthenticated || toState.data.restricted) {
           var token = store.get('token');
+          $log.debug('got token:', token);
           if (token) {
             if (!jwtHelper.isTokenExpired(token)) {
               auth.authenticate(store.get('profile'), token);
             } else {
               $location.path('/');
+              $log.debug('page restricted!');
             }
           }
         }
