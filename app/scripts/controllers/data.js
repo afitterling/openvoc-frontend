@@ -5,11 +5,14 @@ angular.module('famousAngular')
     function ($rootScope, $timeout, $log, $scope, $resource, $http) {
 
     $log.debug('DataCtrl runs:', true);
-    $log.debug('Conf in DataCtrl:', $scope.conf);
+
+    var conf = $scope.conf;
+
+    $log.debug('Conf in DataCtrl:', conf);
 
     var self = this;
 
-    var Items = $resource(Settings.conf.API_BASEURL + '/items/:id', {id: '@id'},
+    var Items = $resource(conf.API_BASEURL + '/items/:id', {id: '@id'},
       // the patch request will update on those fields the model changed server side
       { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
 

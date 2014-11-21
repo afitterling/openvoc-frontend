@@ -107,7 +107,7 @@ angular.module('famousAngular',
         //controller: 'DataCtrl', // see the partial ng-ctrl
         resolve: {
           conf: ['Settings',  function (Settings) {
-              return Settings.promise.then(function (data) { return data; });
+              return Settings;
             }]
         },
         controller: ['$scope', 'conf', function ($scope, conf) {
@@ -148,13 +148,13 @@ angular.module('famousAngular',
     $locationProvider.html5Mode(true).hashPrefix('!');
 
   }])
-  .run(['$log', 'auth', '$location', '$rootScope', 'Settings',
-    function ($log, auth, $location, $rootScope, Settings) {
+  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Items',
+    function ($log, auth, $location, $rootScope, Settings, Items) {
 
 
       // @TODO resolve in dataCtrl or other ctrls
-      Settings.promise.then(function (data) {
-        //
+      Settings.then(function (conf) {
+//        Items.fetch();
       });
 
       auth.hookEvents();

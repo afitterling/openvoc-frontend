@@ -35,7 +35,7 @@ angular.module('famousAngular')
 
     this.$get = function () {
 
-      return new Settings(deferred);
+      return new Settings(deferred.promise);
 
     };
 
