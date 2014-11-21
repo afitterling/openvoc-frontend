@@ -3,6 +3,7 @@
 angular.module('famousAngular',
     [
       'auth0',
+      'angular-jwt',
       'ngAnimate',
       'ngCookies',
       'ngTouch',
@@ -14,10 +15,8 @@ angular.module('famousAngular',
       'famous.angular'
     ])
 
-  .config(['$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', '$logProvider', '$locationProvider', '$urlRouterProvider',
-    function ($httpProvider, $resourceProvider, $stateProvider, authProvider, $logProvider, $locationProvider, $urlRouterProvider) {
-
-    $resourceProvider.defaults.stripTrailingSlashes = false;
+  .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider',  '$logProvider', '$locationProvider', '$urlRouterProvider',
+    function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider) {
 
     authProvider.init({
       domain: 'journal-sp33c.auth0.com',
@@ -25,41 +24,56 @@ angular.module('famousAngular',
       callbackURL: location.href
     });
 
-    $httpProvider.interceptors.push('authInterceptor');
+    var conf;
+    //@TODO return $q in appLaunchProvider
+    // wait in dataCtrl until resolved
+    // read the app base config, api url, etc.........
+    SettingsProvider.readConf().then(function (data) {
+      conf = data;
+//      SettingsProvider.setConf(conf);
+    });
 
-    authProvider.on('loginSuccess', ['$location', '$rootScope', '$log', '$resource', '$http', function ($location, $rootScope, $log, $resource, $http) {
+    $resourceProvider.defaults.stripTrailingSlashes = false;
 
-      $rootScope.refreshViewVars();
+    $httpProvider.interceptors.push('jwtInterceptor');
+
+    authProvider.on('loginSuccess', ['Settings', 'auth', 'Items', '$location', '$rootScope', '$log', '$resource', '$http',
+      function (Settings, auth, Items, $location, $rootScope, $log, $resource, $http) {
+
+      // resolves on auth0 profile success
+      auth.profilePromise.then(function(profile) {
+        $rootScope.profile = profile;
+        $log.debug('profile resolved:', profile);
+
+        //Items.fetch();
+//        apiCall();
+
+      });
+
+//      $rootScope.refreshViewVars();
       $location.path('/profile');
 
-      var apiCall = function(){
-        var api = $resource($rootScope.conf.API_BASEURL + '/secured/ping');
-        api.get({}, function (data) {
-          $log.debug('api data: ', data);
-        });
-      };
+//      var apiCall = function(){
+//        var api = $resource(conf.API_BASEURL + '/secured/ping');
+//        api.get({}, function (data) {
+//          $log.debug('api data: ', data);
+//        });
+//      };
 
-      var doAfterSettingsLoaded = function(){
-        apiCall();
-        $log.debug($rootScope.auth);
-      };
+//      var doAfterSettingsLoaded = function(settings){
+
+//        $log.debug($rootScope.auth.profile.user_id); @TODO error
+//        var Items = $resource(settings.API_BASEURL + '/items/:id', {id: '@id'},
+//        // the patch request will update on those fields the model changed server side
+//        { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
+//
+//        $rootScope.items = Items.query({user_id: auth.profile.user_id}, function (data) {
+//          console.log(data);
+//        });
+
+//      };
 
       //load settings
-      $http.get('settings.json').success(function(settings){
-        // set log provider
-        $logProvider.debugEnabled(settings.debug);
-
-        // strip of trailing slash of BASE_URL
-        if (settings.API_BASEURL.substr(-1) === '/') {
-          settings.API_BASEURL = settings.API_BASEURL.substr(0, settings.API_BASEURL.length - 1);
-        }
-
-        $log.debug('debug', settings.debug);
-        $log.debug('settings', settings);
-
-        $rootScope.conf = settings;
-        doAfterSettingsLoaded();
-      });
 
     }]);
 
@@ -71,6 +85,7 @@ angular.module('famousAngular',
     authProvider.on('authenticated', ['$location', function($location) {
       // This is after a refresh of the page
       // If the user is still authenticated, you get this event
+//      console.log('authenticated');
     }]);
 
     authProvider.on('loginFailure', ['$location', function($location) {
@@ -90,6 +105,14 @@ angular.module('famousAngular',
         url: '/data',
         templateUrl: 'partials/data.html',
         //controller: 'DataCtrl', // see the partial ng-ctrl
+        resolve: {
+          conf: ['Settings',  function (Settings) {
+              return Settings.promise.then(function (data) { return data; });
+            }]
+        },
+        controller: ['$scope', 'conf', function ($scope, conf) {
+          $scope.conf = conf;
+        }],
         data: {
           restricted: true
         }
@@ -125,33 +148,57 @@ angular.module('famousAngular',
     $locationProvider.html5Mode(true).hashPrefix('!');
 
   }])
-  .run(['$log', 'auth', '$location', '$rootScope',
-    function ($log, auth, $location, $rootScope) {
+  .run(['$log', 'auth', '$location', '$rootScope', 'Settings',
+    function ($log, auth, $location, $rootScope, Settings) {
+
+
+      // @TODO resolve in dataCtrl or other ctrls
+      Settings.promise.then(function (data) {
+        //
+      });
 
       auth.hookEvents();
 
-      $rootScope.auth = auth;
+//      console.log(auth);
+//      auth.profilePromise.then(function(profile) {
+//        $rootScope.profile = profile;
+//        console.log('resolved');
+//      });
 
       $rootScope.handleSession = function () {
         if (!auth.isAuthenticated) {
 
           auth.signin({
-            connection: 'Username-Password-Authentication',
-            popup: true,
-            scope: 'openid name email'
-          }).then(function () {
-              // Success callback
-              $rootScope.refreshViewVars();
-            }, function () {
-              // Error callback
-            });
+            authParams: {
+              scope: 'openid profile' // This is if you want the full JWT
+            }
+          }, function() {
+            $location.path('/profile');
+            $log.debug('login success:', true);
+          }, function(err) {
+            console.log('Error:', err);
+          });
+//        }
+
+//          auth.signin({
+//            connection: 'Username-Password-Authentication',
+//            popup: true,
+//            scope: 'openid name email'
+//          }).then(function () {
+//              // Success callback
+//              $rootScope.refreshViewVars();
+//            }, function () {
+//              // Error callback
+//            });
         }
 
-        if (auth.isAuthenticated) {
-          auth.signout();
-          $rootScope.refreshViewVars();
-          $location.path('/');
-        }
+
+
+//        if (auth.isAuthenticated) {
+//          auth.signout();
+//          $rootScope.refreshViewVars();
+//          $location.path('/');
+//        }
 
       };
 
