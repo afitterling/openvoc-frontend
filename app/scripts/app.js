@@ -32,8 +32,7 @@ angular.module('famousAngular',
       authProvider.init({
         domain: AUTH0_DOMAIN,
         clientID: AUTH0_CLIENT_ID,
-//        loginUrl: '/login',
-        callbackURL: location.href
+        callbackURL: AUTH0_CALLBACK_URL
       });
 
       var conf;
@@ -60,7 +59,6 @@ angular.module('famousAngular',
 
           });
 
-//      $rootScope.refreshViewVars();
           $location.path('/profile');
 
 //      var apiCall = function(){
@@ -92,10 +90,10 @@ angular.module('famousAngular',
         $rootScope.refreshViewVars();
       }]);
 
-      authProvider.on('authenticated', ['$location', function ($location) {
-        // This is after a refresh of the page
-        // If the user is still authenticated, you get this event
-//      console.log('authenticated');
+      authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log',
+        function (auth, $location, $rootScope, $log) {
+        $rootScope.profile = auth.profile;
+        $log.debug('re-authenticated on reload', auth.profile);
       }]);
 
       authProvider.on('loginFailure', ['$location', function ($location) {
@@ -161,6 +159,10 @@ angular.module('famousAngular',
   .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Items', 'jwtHelper', 'store',
     function ($log, auth, $location, $rootScope, Settings, Items, jwtHelper, store) {
 
+
+      $rootScope.goTo = function (arg) {
+        $location.path(arg);
+      };
 
       // @TODO resolve in dataCtrl or other ctrls
       Settings.then(function (conf) {
@@ -241,7 +243,7 @@ angular.module('famousAngular',
 //          $location.path('/');
 //        }
 
-        if (!auth.isAuthenticated || toState.data.restricted) {
+        if (!auth.isAuthenticated && toState.data.restricted) {
           var token = store.get('token');
           $log.debug('got token:', token);
           if (token) {
