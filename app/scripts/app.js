@@ -10,48 +10,57 @@ angular.module('famousAngular',
       'ngSanitize',
       'ngResource',
       'ui.router',
+      'angular-storage',
       'directives.formHelpers',
       'famousAngular.formHelpers.editables',
       'famous.angular'
     ])
 
-  .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider',  '$logProvider', '$locationProvider', '$urlRouterProvider',
+  .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider',
     function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider) {
 
-    authProvider.init({
-      domain: 'journal-sp33c.auth0.com',
-      clientID: 'BcSTdHaYpZHynNIUMXdleiYkaQDp2mMF',
-      callbackURL: location.href
-    });
+      jwtInterceptorProvider.tokenGetter = function (store) {
+        return store.get('token');
+      };
 
-    var conf;
-    //@TODO return $q in appLaunchProvider
-    // wait in dataCtrl until resolved
-    // read the app base config, api url, etc.........
-    SettingsProvider.readConf().then(function (data) {
-      conf = data;
-//      SettingsProvider.setConf(conf);
-    });
+//      jwtInterceptorProvider.tokenGetter = function () {
+//        return localStorage.getItem('id_token');
+//      };
 
-    $resourceProvider.defaults.stripTrailingSlashes = false;
+      $httpProvider.interceptors.push('jwtInterceptor');
 
-    $httpProvider.interceptors.push('jwtInterceptor');
-
-    authProvider.on('loginSuccess', ['Settings', 'auth', 'Items', '$location', '$rootScope', '$log', '$resource', '$http',
-      function (Settings, auth, Items, $location, $rootScope, $log, $resource, $http) {
-
-      // resolves on auth0 profile success
-      auth.profilePromise.then(function(profile) {
-        $rootScope.profile = profile;
-        $log.debug('profile resolved:', profile);
-
-        //Items.fetch();
-//        apiCall();
-
+      authProvider.init({
+        domain: 'journal-sp33c.auth0.com',
+        clientID: 'BcSTdHaYpZHynNIUMXdleiYkaQDp2mMF',
+        callbackURL: location.href
       });
 
+      var conf;
+      //@TODO return $q in appLaunchProvider
+      // wait in dataCtrl until resolved
+      // read the app base config, api url, etc.........
+      SettingsProvider.readConf().then(function (data) {
+        conf = data;
+        //      SettingsProvider.setConf(conf);
+      });
+
+      $resourceProvider.defaults.stripTrailingSlashes = false;
+
+      authProvider.on('loginSuccess', ['Settings', 'auth', 'Items', '$location', '$rootScope', '$log', '$resource', '$http',
+        function (Settings, auth, Items, $location, $rootScope, $log, $resource, $http) {
+
+          // resolves on auth0 profile success
+          auth.profilePromise.then(function (profile) {
+            $rootScope.profile = profile;
+            $log.debug('profile resolved:', profile);
+
+            //Items.fetch();
+//        apiCall();
+
+          });
+
 //      $rootScope.refreshViewVars();
-      $location.path('/profile');
+          $location.path('/profile');
 
 //      var apiCall = function(){
 //        var api = $resource(conf.API_BASEURL + '/secured/ping');
@@ -73,83 +82,83 @@ angular.module('famousAngular',
 
 //      };
 
-      //load settings
+          //load settings
 
-    }]);
+        }]);
 
-    authProvider.on('logout', [ '$rootScope', '$log', function($rootScope, $log) {
-      //$location.path('/');
-      $rootScope.refreshViewVars();
-    }]);
+      authProvider.on('logout', [ '$rootScope', '$log', function ($rootScope, $log) {
+        //$location.path('/');
+        $rootScope.refreshViewVars();
+      }]);
 
-    authProvider.on('authenticated', ['$location', function($location) {
-      // This is after a refresh of the page
-      // If the user is still authenticated, you get this event
+      authProvider.on('authenticated', ['$location', function ($location) {
+        // This is after a refresh of the page
+        // If the user is still authenticated, you get this event
 //      console.log('authenticated');
-    }]);
+      }]);
 
-    authProvider.on('loginFailure', ['$location', function($location) {
-      $location.path('/error');
-    }]);
+      authProvider.on('loginFailure', ['$location', function ($location) {
+        $location.path('/error');
+      }]);
 
-    $stateProvider
-      .state('home', {
-        url: '/',
-        templateUrl: 'partials/main.html',
-        controller: 'MainCtrl',
-        data: {}
-      });
+      $stateProvider
+        .state('home', {
+          url: '/',
+          templateUrl: 'partials/main.html',
+          controller: 'MainCtrl',
+          data: {}
+        });
 
-    $stateProvider
-      .state('data', {
-        url: '/data',
-        templateUrl: 'partials/data.html',
-        //controller: 'DataCtrl', // see the partial ng-ctrl
-        resolve: {
-          conf: ['Settings',  function (Settings) {
+      $stateProvider
+        .state('data', {
+          url: '/data',
+          templateUrl: 'partials/data.html',
+          //controller: 'DataCtrl', // see the partial ng-ctrl
+          resolve: {
+            conf: ['Settings', function (Settings) {
               return Settings;
             }]
-        },
-        controller: ['$scope', 'conf', function ($scope, conf) {
-          $scope.conf = conf;
-        }],
-        data: {
-          restricted: true
-        }
-      });
+          },
+          controller: ['$scope', 'conf', function ($scope, conf) {
+            $scope.conf = conf;
+          }],
+          data: {
+            restricted: true
+          }
+        });
 
-    $stateProvider
-      .state('error', {
-        url: '/error',
-        templateUrl: 'partials/error.html',
-        data: {}
-      });
+      $stateProvider
+        .state('error', {
+          url: '/error',
+          templateUrl: 'partials/error.html',
+          data: {}
+        });
 
-    $stateProvider
-      .state('profile', {
-        url: '/profile',
-        templateUrl: 'partials/profile.html',
-        //controller: 'MainCtrl'//,
-        data: {
-          restricted: true
-        }
-      });
+      $stateProvider
+        .state('profile', {
+          url: '/profile',
+          templateUrl: 'partials/profile.html',
+          //controller: 'MainCtrl'//,
+          data: {
+            restricted: true
+          }
+        });
 
-    $stateProvider
-      .state('404', {
-        url: '/404',
-        templateUrl: 'partials/404.html',
-        data: {
-          restricted: null
-        }
-      });
+      $stateProvider
+        .state('404', {
+          url: '/404',
+          templateUrl: 'partials/404.html',
+          data: {
+            restricted: null
+          }
+        });
 
-    $urlRouterProvider.otherwise('/');
-    $locationProvider.html5Mode(true).hashPrefix('!');
+      $urlRouterProvider.otherwise('/');
+      $locationProvider.html5Mode(true).hashPrefix('!');
 
-  }])
-  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Items',
-    function ($log, auth, $location, $rootScope, Settings, Items) {
+    }])
+  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Items', 'jwtHelper', 'store',
+    function ($log, auth, $location, $rootScope, Settings, Items, jwtHelper, store) {
 
 
       // @TODO resolve in dataCtrl or other ctrls
@@ -172,10 +181,10 @@ angular.module('famousAngular',
             authParams: {
               scope: 'openid profile' // This is if you want the full JWT
             }
-          }, function() {
+          }, function () {
             $location.path('/profile');
             $log.debug('login success:', true);
-          }, function(err) {
+          }, function (err) {
             console.log('Error:', err);
           });
 //        }
@@ -193,7 +202,6 @@ angular.module('famousAngular',
         }
 
 
-
 //        if (auth.isAuthenticated) {
 //          auth.signout();
 //          $rootScope.refreshViewVars();
@@ -208,11 +216,11 @@ angular.module('famousAngular',
         });
       };
 
-      $rootScope.goTo = function(arg){
+      $rootScope.goTo = function (arg) {
         $location.path(arg);
       };
 
-      $rootScope.refreshViewVars = function(){
+      $rootScope.refreshViewVars = function () {
         if (!auth.isAuthenticated) {
           $rootScope.sessionAction = 'Login';
         }
@@ -225,11 +233,22 @@ angular.module('famousAngular',
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         $log.debug('toState:', toState);
         // block restricted
-        if (!auth.isAuthenticated && toState.data.restricted) {
-          //event.preventDefault();
-          //block transition
-          $log.debug('page restricted!');
-          $location.path('/');
+//        if (!auth.isAuthenticated && toState.data.restricted) {
+//          //event.preventDefault();
+//          //block transition
+//          $log.debug('page restricted!');
+//          $location.path('/');
+//        }
+
+        if (!auth.isAuthenticated) {
+          var token = store.get('token');
+          if (token) {
+            if (!jwtHelper.isTokenExpired(token)) {
+              auth.authenticate(store.get('profile'), token);
+            } else {
+              $location.path('/');
+            }
+          }
         }
       });
 
