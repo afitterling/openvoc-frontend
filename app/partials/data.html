@@ -1,6 +1,6 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
     <!-- editable list to display editable tables -->
-    <div class="row" ng-show="!offline">
+    <div class="row">
         <div class="col-lg-6">
             <editable-list model="ctrl.items" columns="['desc']" actions="[{name: 'delete', callback: 'deleteFunc' }]"
                            update-func="updateItem(item)"
@@ -9,7 +9,7 @@
             <!-- item arg wird durchgereicht von editable! -->
         </div>
     </div>
-    <div class="row" ng-show="!offline">
+    <div class="row">
         <div class="col-lg-6">
             <form name="formAdd" ng-submit="addItem(item)">
                 <div class="input-group">
@@ -22,11 +22,6 @@
             </form>
         </div>
         <!-- /.col-lg-6 -->
-    </div>
-    <div class="row" ng-show="offline">
-        <div class="col-lg-6" class="">
-            WARNING: Data API is unreachable!
-        </div>
     </div>
     <!-- /.row -->
 
