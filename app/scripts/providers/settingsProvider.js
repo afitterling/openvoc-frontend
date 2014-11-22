@@ -21,8 +21,8 @@ angular.module('famousAngular')
       $http.get('settings.json').success(function (settings) {
         // set log provider
         $logProvider.debugEnabled(settings.debug);
-        $log.debug('debug mode:', settings.debug);
-        $log.debug('settings:', settings);
+//        $log.debug('debug mode:', settings.debug);
+//        $log.debug('settings:', settings);
         // strip of trailing slash of BASE_URL
         if (settings.API_BASEURL.substr(-1) === '/') {
           settings.API_BASEURL = settings.API_BASEURL.substr(0, settings.API_BASEURL.length - 1);

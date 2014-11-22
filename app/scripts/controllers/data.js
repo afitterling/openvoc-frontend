@@ -17,7 +17,7 @@ angular.module('famousAngular')
       { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
 
     self.items = Items.query({user_id: $scope.profile.user_id}, function (data) {
-      console.log(data);
+      $log.debug(data);
     });
 
     $scope.addItem = function (item) {

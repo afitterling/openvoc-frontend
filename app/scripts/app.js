@@ -62,7 +62,7 @@ angular.module('famousAngular',
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log',
         function (auth, $location, $rootScope, $log) {
           $rootScope.profile = auth.profile;
-          $log.debug('authenticated (on reload)', auth.profile);
+//          $log.debug('authenticated (on reload)', auth.profile);
           $location.path('/profile');
           $rootScope.$broadcast('sig:::profileLoaded');
         }]);
@@ -169,11 +169,11 @@ angular.module('famousAngular',
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
-        $log.debug('toState:', toState);
+//        $log.debug('toState:', toState);
 
         if (!auth.isAuthenticated) {
           var token = store.get('token');
-          $log.debug('got token:', token);
+//          $log.debug('got token:', token);
           if (token) {
             if (!jwtHelper.isTokenExpired(token)) {
               auth.authenticate(store.get('profile'), token);
