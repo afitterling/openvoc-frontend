@@ -132,11 +132,6 @@ angular.module('famousAngular',
 
       auth.hookEvents();
 
-      // @TODO resolve in dataCtrl or other ctrls
-      Settings.then(function (conf) {
-//        Items.fetch();
-      });
-
       $rootScope.goTo = function (arg) {
         $location.path(arg);
       };
@@ -170,7 +165,6 @@ angular.module('famousAngular',
 
         if (!auth.isAuthenticated) {
           var token = store.get('token');
-//          $log.debug('got token:', token);
           if (token) {
             if (!jwtHelper.isTokenExpired(token)) {
               auth.authenticate(store.get('profile'), token);
