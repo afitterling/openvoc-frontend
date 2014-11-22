@@ -8,6 +8,7 @@
     "angular-touch": "latest",
     "angular-sanitize": "latest",
     "angular-resource": "latest",
+    "angular-translate": "latest",
     "a0-angular-storage": "latest",
     "auth0-angular": "latest",
     "auth0-lock": "latest",

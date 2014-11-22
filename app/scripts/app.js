@@ -1,20 +1,21 @@
 'use strict';
 
 angular.module('famousAngular',
-    [
-      'auth0',
-      'angular-jwt',
-      'ngAnimate',
-      'ngCookies',
-      'ngTouch',
-      'ngSanitize',
-      'ngResource',
-      'ui.router',
-      'angular-storage',
-      'directives.formHelpers',
-      'famousAngular.formHelpers.editables',
-      'famous.angular'
-    ])
+  [
+    'auth0',
+    'angular-jwt',
+    'ngAnimate',
+    'ngCookies',
+    'ngTouch',
+    'ngSanitize',
+    'ngResource',
+    'ui.router',
+    'angular-storage',
+    'directives.formHelpers',
+    'famousAngular.formHelpers.editables',
+    'famous.angular',
+    'pascalprecht.translate'
+  ])
 
   .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider',
     function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider) {
