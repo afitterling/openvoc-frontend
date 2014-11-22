@@ -1,29 +1,21 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('DataCtrl', ['$rootScope', '$timeout', '$log', '$scope', '$resource', '$http',
-    function ($rootScope, $timeout, $log, $scope, $resource, $http) {
-
-    $log.debug('DataCtrl runs:', true);
+  .controller('DataCtrl', ['$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Items',
+    function ($rootScope, $timeout, $log, $scope, $resource, $http, Items) {
 
     var conf = $scope.conf;
 
-    $log.debug('Conf in DataCtrl:', conf);
-
     var self = this;
 
-    var Items = $resource(conf.API_BASEURL + '/items/:id', {id: '@id'},
-      // the patch request will update on those fields the model changed server side
-      { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
+    var items = Items(conf);
 
-    self.items = Items.query({user_id: $scope.profile.user_id}, function (data) {
-      $log.debug(data);
-    });
+    self.items = $scope.items;
 
     $scope.addItem = function (item) {
       $scope.success = null;
       item.user_id = $scope.profile.user_id;
-      Items.save({item: item}, function (success) {
+      items.save({item: item}, function (success) {
         self.items.push(success);
         $scope.success = true;
         $scope.item = {};
@@ -49,7 +41,7 @@ angular.module('famousAngular')
       cancelUpdate[item.id] = $timeout(function(){
         $log.debug('update triggered', item);
         $scope.success = null;
-        Items.update(item, function (success) {
+        items.update(item, function (success) {
           $scope.success = true;
           delete cancelUpdate[item.id]; // delete the promise from list as we know it ran through
           $log.debug('cancelUpdate', cancelUpdate);
@@ -63,7 +55,7 @@ angular.module('famousAngular')
 
     $scope.deleteItem = function (item) {
       console.log(item);
-      Items.delete({id: item.id}, function(success){
+      items.delete({id: item.id}, function(success){
         self.items.splice(self.items.indexOf(item), 1);
       });
     };

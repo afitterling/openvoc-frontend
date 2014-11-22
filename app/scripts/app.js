@@ -202,6 +202,10 @@ angular.module('famousAngular',
       $rootScope.$on('sig:::profileLoaded', function () {
         Settings.then(function (conf) {
           apiCall(conf);
+          var items = Items(conf);
+          items.query({user_id: auth.profile.user_id}, function (data) {
+            $rootScope.items = data;
+          });
         });
       });
 
