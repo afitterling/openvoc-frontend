@@ -64,7 +64,7 @@ angular.module('famousAngular.formHelpers.editables', [])
 ;
 
 angular.module('directives.formHelpers', [])
-  .directive('submitState', ['$log','$parse', function ($log, $parse) {
+  .directive('submitState', ['$log', '$parse', function ($log, $parse) {
     return {
       scope: false,
       link: function(scope, elm, attrs) {
