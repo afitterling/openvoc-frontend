@@ -9,6 +9,10 @@ angular.module('famousAngular')
     var self = this;
     self.items = AppStore.get('items');
 
+    if (AppStore.get('offline')) {
+      $scope.offline = true;
+    }
+
     var items = Items(conf);
 
     $scope.addItem = function (item) {

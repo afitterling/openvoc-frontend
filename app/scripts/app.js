@@ -138,7 +138,6 @@ angular.module('famousAngular',
       });
 
       $rootScope.goTo = function (arg) {
-        $log.debug('go to:', arg);
         $location.path(arg);
       };
 
@@ -194,7 +193,9 @@ angular.module('famousAngular',
       var apiCall = function(conf){
         var api = $resource(conf.API_BASEURL + '/secured/ping');
         api.get({}, function (data) {
-          $log.debug('api data: ', data);
+          $log.debug('secured api test call: ', data);
+        }, function (error) {
+          AppStore.set('offline', true);
         });
       };
 
