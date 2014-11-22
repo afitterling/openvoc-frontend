@@ -1,16 +1,15 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('DataCtrl', ['$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Items',
-    function ($rootScope, $timeout, $log, $scope, $resource, $http, Items) {
+  .controller('DataCtrl', ['$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Items', 'AppStore',
+    function ($rootScope, $timeout, $log, $scope, $resource, $http, Items, AppStore) {
 
     var conf = $scope.conf;
 
     var self = this;
+    self.items = AppStore.get('items');
 
     var items = Items(conf);
-
-    self.items = $scope.items;
 
     $scope.addItem = function (item) {
       $scope.success = null;

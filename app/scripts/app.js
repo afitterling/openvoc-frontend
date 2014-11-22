@@ -127,8 +127,8 @@ angular.module('famousAngular',
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
-  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Items', 'jwtHelper', 'store', '$resource',
-    function ($log, auth, $location, $rootScope, Settings, Items, jwtHelper, store, $resource) {
+  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Items', 'jwtHelper', 'store', '$resource', 'AppStore',
+    function ($log, auth, $location, $rootScope, Settings, Items, jwtHelper, store, $resource, AppStore) {
 
       auth.hookEvents();
 
@@ -203,8 +203,8 @@ angular.module('famousAngular',
         Settings.then(function (conf) {
           apiCall(conf);
           var items = Items(conf);
-          items.query({user_id: auth.profile.user_id}, function (data) {
-            $rootScope.items = data;
+          items.query({user_id: auth.profile.user_id}, function (items) {
+            AppStore.set('items', items);
           });
         });
       });
