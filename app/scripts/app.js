@@ -26,6 +26,10 @@ angular.module('famousAngular',
 
       $httpProvider.interceptors.push('jwtInterceptor');
 
+      var AUTH0_DOMAIN = 'journal-sp33c.auth0.com';
+      var AUTH0_CLIENT_ID = 'BcSTdHaYpZHynNIUMXdleiYkaQDp2mMF';
+      var AUTH0_CALLBACK_URL = location.href;
+
       authProvider.init({
         domain: AUTH0_DOMAIN,
         clientID: AUTH0_CLIENT_ID,
@@ -164,7 +168,7 @@ angular.module('famousAngular',
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
-        $log.debug('toState:', toState);
+//        $log.debug('toState:', toState);
 
         if (!auth.isAuthenticated) {
           var token = store.get('token');
