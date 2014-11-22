@@ -23,10 +23,6 @@ angular.module('famousAngular',
         return store.get('token');
       };
 
-//      jwtInterceptorProvider.tokenGetter = function () {
-//        return localStorage.getItem('id_token');
-//      };
-
       $httpProvider.interceptors.push('jwtInterceptor');
 
       authProvider.init({
@@ -36,12 +32,8 @@ angular.module('famousAngular',
       });
 
       var conf;
-      //@TODO return $q in appLaunchProvider
-      // wait in dataCtrl until resolved
-      // read the app base config, api url, etc.........
       SettingsProvider.readConf().then(function (data) {
         conf = data;
-        //      SettingsProvider.setConf(conf);
       });
 
       $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -53,48 +45,27 @@ angular.module('famousAngular',
           auth.profilePromise.then(function (profile) {
             $rootScope.profile = profile;
             $log.debug('profile resolved:', profile);
-
-            //Items.fetch();
-//        apiCall();
-
           });
 
           $location.path('/profile');
-
-//      var apiCall = function(){
-//        var api = $resource(conf.API_BASEURL + '/secured/ping');
-//        api.get({}, function (data) {
-//          $log.debug('api data: ', data);
-//        });
-//      };
-
-//      var doAfterSettingsLoaded = function(settings){
-
-//        $log.debug($rootScope.auth.profile.user_id); @TODO error
-//        var Items = $resource(settings.API_BASEURL + '/items/:id', {id: '@id'},
-//        // the patch request will update on those fields the model changed server side
-//        { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
-//
-//        $rootScope.items = Items.query({user_id: auth.profile.user_id}, function (data) {
-//          console.log(data);
-//        });
-
-//      };
-
-          //load settings
+          $rootScope.$broadcast('sig:::profileLoaded');
 
         }]);
 
-      authProvider.on('logout', [ '$rootScope', '$log', function ($rootScope, $log) {
-        //$location.path('/');
-        $rootScope.refreshViewVars();
+      authProvider.on('logout', [ '$location', '$log', 'store', '$rootScope', function ($location, $log, store, $rootScope) {
+        store.remove('token');
+        store.remove('profile');
+        $rootScope.profile = null;
+        $location.path('/');
       }]);
 
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log',
         function (auth, $location, $rootScope, $log) {
-        $rootScope.profile = auth.profile;
-        $log.debug('re-authenticated on reload', auth.profile);
-      }]);
+          $rootScope.profile = auth.profile;
+          $log.debug('authenticated (on reload)', auth.profile);
+          $location.path('/profile');
+          $rootScope.$broadcast('sig:::profileLoaded');
+        }]);
 
       authProvider.on('loginFailure', ['$location', function ($location) {
         $location.path('/error');
@@ -156,26 +127,20 @@ angular.module('famousAngular',
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
-  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Items', 'jwtHelper', 'store',
-    function ($log, auth, $location, $rootScope, Settings, Items, jwtHelper, store) {
+  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Items', 'jwtHelper', 'store', '$resource',
+    function ($log, auth, $location, $rootScope, Settings, Items, jwtHelper, store, $resource) {
 
-
-      $rootScope.goTo = function (arg) {
-        $location.path(arg);
-      };
+      auth.hookEvents();
 
       // @TODO resolve in dataCtrl or other ctrls
       Settings.then(function (conf) {
 //        Items.fetch();
       });
 
-      auth.hookEvents();
-
-//      console.log(auth);
-//      auth.profilePromise.then(function(profile) {
-//        $rootScope.profile = profile;
-//        console.log('resolved');
-//      });
+      $rootScope.goTo = function (arg) {
+        $log.debug('go to:', arg);
+        $location.path(arg);
+      };
 
       $rootScope.handleSession = function () {
         if (!auth.isAuthenticated) {
@@ -184,79 +149,61 @@ angular.module('famousAngular',
             authParams: {
               scope: 'openid profile' // This is if you want the full JWT
             }
-          }, function () {
+          }, function (profile, token) {
+            store.set('profile', profile);
+            store.set('token', token);
             $location.path('/profile');
             $log.debug('login success:', true);
           }, function (err) {
             console.log('Error:', err);
           });
-//        }
-
-//          auth.signin({
-//            connection: 'Username-Password-Authentication',
-//            popup: true,
-//            scope: 'openid name email'
-//          }).then(function () {
-//              // Success callback
-//              $rootScope.refreshViewVars();
-//            }, function () {
-//              // Error callback
-//            });
         }
 
-
-//        if (auth.isAuthenticated) {
-//          auth.signout();
-//          $rootScope.refreshViewVars();
-//          $location.path('/');
-//        }
-
-      };
-
-      $rootScope.logout = function () {
-        auth.signout(function () {
-
-        });
-      };
-
-      $rootScope.goTo = function (arg) {
-        $location.path(arg);
-      };
-
-      $rootScope.refreshViewVars = function () {
-        if (!auth.isAuthenticated) {
-          $rootScope.sessionAction = 'Login';
-        }
         if (auth.isAuthenticated) {
-          $rootScope.sessionAction = 'Logout';
+          auth.signout();
+          //@TODO remove localstorage data if offline
+          $location.path('/');
         }
+
       };
-      $rootScope.refreshViewVars();
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-        $log.debug('toState:', toState);
-        // block restricted
-//        if (!auth.isAuthenticated && toState.data.restricted) {
-//          //event.preventDefault();
-//          //block transition
-//          $log.debug('page restricted!');
-//          $location.path('/');
-//        }
 
-        if (!auth.isAuthenticated && toState.data.restricted) {
+        $log.debug('toState:', toState);
+
+        if (!auth.isAuthenticated) {
           var token = store.get('token');
           $log.debug('got token:', token);
           if (token) {
             if (!jwtHelper.isTokenExpired(token)) {
               auth.authenticate(store.get('profile'), token);
             } else {
-              $location.path('/');
-              $log.debug('page restricted!');
+              //
             }
           }
         }
+
+        // block restricted
+        if (toState.data.restricted && !auth.isAuthenticated) {
+          $log.debug('page restricted!');
+          $location.path('/');
+        }
+
       });
 
+      var apiCall = function(conf){
+        var api = $resource(conf.API_BASEURL + '/secured/ping');
+        api.get({}, function (data) {
+          $log.debug('api data: ', data);
+        });
+      };
+
+      // on profile load (authenticate/login)
+      $rootScope.$on('sig:::profileLoaded', function () {
+        Settings.then(function (conf) {
+          apiCall(conf);
+        });
+      });
 
     }]
   );
