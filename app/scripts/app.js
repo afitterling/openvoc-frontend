@@ -76,7 +76,9 @@ angular.module('famousAngular',
           url: '/',
           templateUrl: 'partials/main.html',
           controller: 'MainCtrl',
-          data: {}
+          data: {
+            api: true
+          }
         });
 
       $stateProvider
@@ -161,7 +163,7 @@ angular.module('famousAngular',
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
-//        $log.debug('toState:', toState);
+        $log.debug('toState:', toState);
 
         if (!auth.isAuthenticated) {
           var token = store.get('token');
@@ -178,6 +180,12 @@ angular.module('famousAngular',
         if (toState.data.restricted && !auth.isAuthenticated) {
           $log.debug('page restricted!');
           $location.path('/');
+        }
+
+        // warning this won't fire on reload!
+        if (toState.data.api && AppStore.get('offline')) {
+          $log.debug('needs api but offline!');
+          $location.path('/error');
         }
 
       });
