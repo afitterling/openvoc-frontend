@@ -160,8 +160,6 @@ angular.module('famousAngular',
 
         if (auth.isAuthenticated) {
           auth.signout();
-          //@TODO remove localstorage data if offline
-          $location.path('/');
         }
 
       };
