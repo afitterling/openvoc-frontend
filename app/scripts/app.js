@@ -77,7 +77,6 @@ angular.module('famousAngular',
           templateUrl: 'partials/main.html',
           controller: 'MainCtrl',
           data: {
-            api: true
           }
         });
 
@@ -95,7 +94,8 @@ angular.module('famousAngular',
             $scope.conf = conf;
           }],
           data: {
-            restricted: true
+            restricted: true,
+            api: true
           }
         });
 
