@@ -11,6 +11,7 @@
     "angular-translate": "latest",
     "a0-angular-storage": "latest",
     "auth0-angular": "latest",
+    "d3": "latest",
     "auth0-lock": "latest",
     "angular-jwt": "latest",
     "angular-ui-router": "latest",
