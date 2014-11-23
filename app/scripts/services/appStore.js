@@ -1,6 +1,6 @@
 'use strict';
 
-// build a AppStore with Promises
+// build a global AppStore with Promises
 angular.module('famousAngular')
 
   .factory('AppStore', ['$rootScope', '$q', function ($rootScope, $q) {
