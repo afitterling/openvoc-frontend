@@ -63,6 +63,8 @@
 <div class="container" ui-view></div>
 
 <footer>sp33c.de - <a href="http://sp33c.de">imprint</a></footer>
+
+<script src="auth0-variables.js"></script>
 <!-- build:js({app,.tmp}) scripts/main.js -->
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -78,15 +80,10 @@
 <script src="bower_components/famous/dist/famous-global.js"></script>
 <script src="bower_components/famous-angular/dist/famous-angular.js"></script>
 
-<script src="bower_components/auth0.js/build/auth0.js"></script>
-<script src="bower_components/auth0-angular/build/auth0-angular.js"></script>
-<script src="bower_components/auth0-lock/build/auth0-lock.js"></script>
-<script src="bower_components/angular-jwt/dist/angular-jwt.js"></script>
-
-<script src="bower_components/a0-angular-storage/dist/angular-storage.js" type="text/javascript"> </script>
 
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
 
 <!-- my app -->
 <script src="scripts/app.js"></script>
@@ -97,6 +94,14 @@
 <script src="scripts/controllers/data.js"></script>
 
 <script src="components/forms/editable.js"></script>
+
+<!-- jwt + auth0 -->
+<script src="bower_components/a0-angular-storage/dist/angular-storage.js" type="text/javascript"> </script>
+<script src="bower_components/angular-jwt/dist/angular-jwt.js"></script>
+<script src="bower_components/auth0.js/build/auth0.js"></script>
+<script src="bower_components/auth0-angular/build/auth0-angular.js"></script>
+<script src="bower_components/auth0-lock/build/auth0-lock.js"></script>
+
 <!-- inject:partials -->
 <!-- endinject -->
 <!-- endbuild -->

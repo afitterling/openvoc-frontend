@@ -26,10 +26,6 @@ angular.module('famousAngular',
 
       $httpProvider.interceptors.push('jwtInterceptor');
 
-      var AUTH0_DOMAIN = 'journal-sp33c.auth0.com';
-      var AUTH0_CLIENT_ID = 'BcSTdHaYpZHynNIUMXdleiYkaQDp2mMF';
-      var AUTH0_CALLBACK_URL = location.href;
-
       authProvider.init({
         domain: AUTH0_DOMAIN,
         clientID: AUTH0_CLIENT_ID,
@@ -67,7 +63,6 @@ angular.module('famousAngular',
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log',
         function (auth, $location, $rootScope, $log) {
           $rootScope.profile = auth.profile;
-//          $log.debug('authenticated (on reload)', auth.profile);
           $location.path('/profile');
           $rootScope.$broadcast('sig:::profileLoaded');
         }]);
