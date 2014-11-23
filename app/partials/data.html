@@ -16,9 +16,12 @@
                     <label for="item.desc">Add an Item</label>
                     <span class="text-info" ng-show="!formAdd.itemDesc.$valid">(Need at least one letter)</span>
                     <div class="input-group">
-                        <input submit-state ng-disabled="pending" type="text" name="itemDesc" ng-model="item.desc" ng-required="true" class="form-control">
+                        <input submit-state ng-disabled="addPending" type="text" name="itemDesc" ng-model="item.desc" ng-required="true" class="form-control">
                         <span class="input-group-btn">
-                            <button class="btn btn-default btn-success" ng-disabled="!formAdd.$valid" type="submit">Add!</button>
+                            <button class="btn btn-default btn-success" ng-disabled="!formAdd.$valid || addPending" type="submit">
+                                <span ng-hide="addPending">Add!</span>
+                                <span ng-show="addPending">Wait</span>
+                            </button>
                         </span>
                     </div>
                 </div>
