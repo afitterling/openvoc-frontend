@@ -14,7 +14,10 @@ angular.module('famousAngular')
       set: function (key, data) {
         var deferred = $q.defer();
         appStore.q[key] = deferred.promise;
-        deferred.resolve(data);
+        // simple trick: q.resolve only on !null so we can create promises beforehand to able to resolve on them at state switching
+        if (data) {
+          deferred.resolve(data);
+        }
       },
       get: function (key) {
         if (appStore.q[key]){

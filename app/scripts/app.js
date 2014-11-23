@@ -138,6 +138,10 @@ angular.module('famousAngular',
 
       auth.hookEvents();
 
+      // init AppStore with promises we need to resolve so at least the promises are set
+      // AppStore property will resolve only on !null
+      AppStore.set('items', null);
+
       $rootScope.goTo = function (arg) {
         $location.path(arg);
       };
