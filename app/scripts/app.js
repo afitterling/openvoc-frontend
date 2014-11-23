@@ -29,7 +29,7 @@ angular.module('famousAngular',
       authProvider.init({
         domain: AUTH0_DOMAIN,
         clientID: AUTH0_CLIENT_ID,
-        callbackURL: AUTH0_CALLBACK_URL
+        //callbackURL: AUTH0_CALLBACK_URL
       });
 
       var conf;
@@ -214,6 +214,7 @@ angular.module('famousAngular',
           apiCall(conf);
           var items = Items(conf);
           items.query({user_id: auth.profile.user_id}, function (items) {
+            console.log(items);
             AppStore.set('items', items);
           });
         });

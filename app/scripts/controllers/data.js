@@ -57,9 +57,9 @@ angular.module('famousAngular')
     };
 
     $scope.deleteItem = function (item) {
-      console.log(item);
       items.delete({id: item.id}, function(success){
         self.items.splice(self.items.indexOf(item), 1);
+        $log.debug('deleted item', item);
       });
     };
 
