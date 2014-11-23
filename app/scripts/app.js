@@ -88,10 +88,14 @@ angular.module('famousAngular',
           resolve: {
             conf: ['Settings', function (Settings) {
               return Settings;
+            }],
+            items: ['AppStore', function (AppStore) {
+              return AppStore.get('items'); // will return q['items'] not the items directly so it is resolvable
             }]
           },
-          controller: ['$scope', 'conf', function ($scope, conf) {
+          controller: ['$scope', 'conf', 'items', function ($scope, conf, items) {
             $scope.conf = conf;
+            $scope.items = items;
           }],
           data: {
             restricted: true,
@@ -163,6 +167,7 @@ angular.module('famousAngular',
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
+//        event.preventDefault();
 //        $log.debug('toState:', toState);
 
         if (!auth.isAuthenticated) {

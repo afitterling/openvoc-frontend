@@ -7,22 +7,22 @@ angular.module('famousAngular')
     var conf = $scope.conf;
 
     var self = this;
-    self.items = AppStore.get('items');
 
-    if (AppStore.get('offline')) {
-      $scope.offline = true;
-    }
+    self.items = $scope.items;
 
     var items = Items(conf);
 
     $scope.addItem = function (item) {
+      $scope.addPending = true;
       $scope.success = null;
       item.user_id = $scope.profile.user_id;
       items.save({item: item}, function (success) {
+        $scope.addPending = false;
         self.items.push(success);
         $scope.success = true;
         $scope.item = {};
       }, function (error) {
+        $scope.addPending = false;
         $scope.success = false;
         $scope.item = item;
       });
