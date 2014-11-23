@@ -52,6 +52,8 @@ gulp.task('settings', function () {
   gulp.src('./settings/production.json')
     .pipe(rename('settings.json'))
     .pipe(gulp.dest('dist/'));
+  gulp.src('app/auth0-variables.js')
+    .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('watch', ['connect'], function () {
@@ -68,7 +70,7 @@ gulp.task('watch', ['connect'], function () {
   gulp.watch('app/images/**/*', ['images']);
 });
 
-gulp.task('build', ['sass', 'html','styles','images','fonts','partials','components', 'settings']);
+gulp.task('build', ['sass', 'html', 'styles', 'images', 'fonts', 'partials', 'components', 'settings']);
 
 gulp.task('default', ['connect', 'watch'], function () {
   gulp.start('build');
