@@ -1,30 +1,42 @@
 'use strict';
 
 angular.module('famousAngular',
-  [
-    'auth0',
-    'angular-jwt',
-    'ngAnimate',
-    'ngCookies',
-    'ngTouch',
-    'ngSanitize',
-    'ngResource',
-    'ui.router',
-    'angular-storage',
-    'directives.formHelpers',
-    'famousAngular.formHelpers.editables',
-    'famous.angular',
-    'pascalprecht.translate'
-  ])
+    [
+      'auth0',
+      'angular-jwt',
+      'ngAnimate',
+      'ngCookies',
+      'ngTouch',
+      'ngSanitize',
+      'ngResource',
+      'ui.router',
+      'angular-storage',
+      'directives.formHelpers',
+      'famousAngular.formHelpers.editables',
+      'famous.angular',
+      'pascalprecht.translate'
+    ])
 
-  .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider',
-    function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider) {
+  .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', '$provide',
+    function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide) {
+
+      $provide.factory('errorInterceptor', [ '$q', '$rootScope',  function ($q, $rootScope) {
+        return {
+          'responseError': function(response) {
+            $rootScope.$broadcast('onError');
+            return response;
+          }
+        };
+      }]);
+
+      $httpProvider.interceptors.push('errorInterceptor');
 
       jwtInterceptorProvider.tokenGetter = function (store) {
         return store.get('token');
       };
 
       $httpProvider.interceptors.push('jwtInterceptor');
+//      $httpProvider.interceptors.push('myInterceptor');
 
       authProvider.init({
         domain: AUTH0_DOMAIN,
@@ -147,6 +159,10 @@ angular.module('famousAngular',
       $rootScope.goTo = function (arg) {
         $location.path(arg);
       };
+
+      $rootScope.$on('onError', function(){
+        $location.path('/error');
+      });
 
       $rootScope.handleSession = function () {
         if (!auth.isAuthenticated) {
