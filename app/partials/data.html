@@ -13,7 +13,7 @@
         <div class="col-lg-6">
             <form role="form" name="formAdd" ng-submit="addItem(item)" novalidate>
                 <div class="form-group">
-                    <label for="item.desc">Add an Item</label>
+                    <label for="itemDesc">Add an Item</label>
                     <span class="text-info" ng-show="!formAdd.itemDesc.$valid">(Need at least one letter)</span>
                     <div class="input-group">
                         <input submit-state state-flag="success" ng-disabled="pending" type="text" name="itemDesc" ng-model="item.desc" ng-required="true" class="form-control">
