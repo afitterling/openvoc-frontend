@@ -189,11 +189,6 @@ angular.module('famousAngular',
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
-        var a = $location.search();
-        console.log(a);
-//        event.preventDefault();
-//        $log.debug('toState:', toState);
-
         if (!auth.isAuthenticated) {
           var token = store.get('token');
           if (token) {
