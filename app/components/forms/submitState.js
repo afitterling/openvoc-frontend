@@ -14,7 +14,7 @@ angular.module('directives.formHelpers', [])
             return;
           }
 
-          $log.debug(newVal, oldVal);
+          $log.debug('directives.formHelpers.submitState', newVal, oldVal);
 
           if (newVal === null) {
             scope.pending = true;
