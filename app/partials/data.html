@@ -1,36 +1,8 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
     <!-- editable list to display editable tables -->
+    {{sourcelang}}:{{targetlang}}
     <div class="row">
-        <div class="col-lg-6">
-            <editable-list model="ctrl.items" columns="['desc']" actions="[{name: 'delete', callback: 'deleteFunc' }]"
-                           update-func="updateItem(item)"
-                           delete-func="deleteItem(item)"
-                    ></editable-list>
-            <!-- item arg wird durchgereicht von editable! -->
-        </div>
+        <li ng-repeat="word in words">{{words}}</li>
     </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <form role="form" name="formAdd" ng-submit="addItem(item)" novalidate>
-                <div class="form-group">
-                    <label for="itemDesc">Add an Item</label>
-                    <span class="text-info" ng-show="!formAdd.itemDesc.$valid">(Need at least one letter)</span>
-                    <div class="input-group" submit-state state-flag="success">
-                        <input ng-disabled="pending" type="text" name="itemDesc" ng-model="item.desc" ng-required="true" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default btn-success" ng-disabled="!formAdd.$valid || pending" type="submit">
-                                <span ng-hide="pending">Add!</span>
-                                <span ng-show="pending">Wait</span>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-                <!-- /input-group -->
-            </form>
-        </div>
-        <!-- /.col-lg-6 -->
-    </div>
-    <!-- /.row -->
-
     <br><br>
 </div>
