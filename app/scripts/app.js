@@ -51,11 +51,11 @@ angular.module('famousAngular',
 
       $resourceProvider.defaults.stripTrailingSlashes = false;
 
-      authProvider.on('loginSuccess', ['Settings', 'auth', 'Items', '$location', '$rootScope', '$log', '$resource', '$http', 'AppStore',
-        function (Settings, auth, Items, $location, $rootScope, $log, $resource, $http, AppStore) {
+      authProvider.on('loginSuccess', ['Settings', 'auth', 'Words', '$location', '$rootScope', '$log', '$resource', '$http', 'AppStore',
+        function (Settings, auth, Words, $location, $rootScope, $log, $resource, $http, AppStore) {
 
           // preinit AppStore
-          AppStore.set('items', null);
+          AppStore.set('words', null);
 
           // resolves on auth0 profile success
           auth.profilePromise.then(function (profile) {
@@ -79,7 +79,7 @@ angular.module('famousAngular',
 
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore',
         function (auth, $location, $rootScope, $log, AppStore) {
-          AppStore.set('items', null);
+          AppStore.set('words', null);
 
           $rootScope.profile = auth.profile;
           $location.path('/profile');
@@ -108,13 +108,13 @@ angular.module('famousAngular',
             conf: ['Settings', function (Settings) {
               return Settings;
             }],
-            items: ['AppStore', function (AppStore) {
-              return AppStore.get('items'); // will return q not the items directly so it is resolvable
+            words: ['AppStore', function (AppStore) {
+              return AppStore.get('words'); // will return q not the items directly so it is resolvable
             }]
           },
-          controller: ['$scope', 'conf', 'items', function ($scope, conf, items) {
+          controller: ['$scope', 'conf', 'words', function ($scope, conf, words) {
             $scope.conf = conf;
-            $scope.items = items;
+            $scope.words = words;
           }],
           data: {
             restricted: true,
@@ -230,9 +230,9 @@ angular.module('famousAngular',
           var words = Words(conf);
           /* jshint camelcase: false */
 //          words.query({user_id: auth.profile.user_id}, function (items) {
+          //@TODO uid // language_id, targetlang_id form Settings
           words.query({language_id: 1, targetlang_id: 3}, function (words) {
-            console.log('words:', words);
-            //AppStore.set('items', items);
+            AppStore.set('words', words);
           });
         });
       });

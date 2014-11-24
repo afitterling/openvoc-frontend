@@ -8,7 +8,9 @@ angular.module('famousAngular')
 
     var self = this;
 
-    self.items = $scope.items;
+    self.words = $scope.words;
+
+    return;
 
     var items = Items(conf);
 
