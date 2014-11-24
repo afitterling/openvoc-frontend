@@ -20,14 +20,15 @@ angular.module('famousAngular',
   .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', '$provide',
     function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide) {
 
-      $provide.factory('errorInterceptor', [ '$q', '$rootScope',  function ($q, $rootScope) {
+
+      $provide.factory('errorInterceptor', function ($q, $rootScope) {
         return {
           'responseError': function(response) {
             $rootScope.$broadcast('onError');
             return response;
           }
         };
-      }]);
+      });
 
       $httpProvider.interceptors.push('errorInterceptor');
 
