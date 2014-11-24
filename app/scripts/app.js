@@ -65,8 +65,10 @@ angular.module('famousAngular',
         $location.path('/');
       }]);
 
-      authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log',
-        function (auth, $location, $rootScope, $log) {
+      authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore',
+        function (auth, $location, $rootScope, $log, AppStore) {
+          AppStore.set('items', null);
+
           $rootScope.profile = auth.profile;
           $location.path('/profile');
           $rootScope.$broadcast('sig:::profileLoaded');
