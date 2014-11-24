@@ -15,6 +15,7 @@ angular.module('famousAngular')
     $scope.addItem = function (item) {
       $scope.addPending = true;
       $scope.success = null;
+      /* jshint camelcase: false */
       item.user_id = $scope.profile.user_id;
       items.save({item: item}, function (success) {
         $scope.addPending = false;
