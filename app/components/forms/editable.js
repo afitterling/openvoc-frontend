@@ -68,7 +68,8 @@ angular.module('directives.formHelpers', [])
     return {
       scope: false,
       link: function(scope, elm, attrs) {
-        var stateModel = $parse(attrs.state);
+        var stateModel = $parse(attrs.stateFlag);
+        // create model pending to be usable in template
         scope.pending = false;
 
         $log.debug('directives.formHelpers.submitState.bind', true);
