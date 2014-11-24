@@ -5,12 +5,13 @@ angular.module('famousAngular')
 
   .factory('AppStore', ['$rootScope', '$q', function ($rootScope, $q) {
 
-    var appStore = $rootScope.$new();
+    var self = this;
+    self.appStore = $rootScope.$new();
 
     // promises go here
-    appStore.q = {};
+    self.appStore.q = {};
     // the deferred if called with null obj goes here (pe-initialization, to keep identical promises if we not yet know the data)
-    appStore.deferred = {};
+    self.appStore.deferred = {};
 
     return {
       // we can create promises beforehand to be able to resolve on them at state switching
@@ -18,16 +19,16 @@ angular.module('famousAngular')
       set: function (key, data) {
         var deferred;
         // if data set null but called with key (initialization)
-        if (!appStore.q.hasOwnProperty(key)) {
+        if (!self.appStore.q.hasOwnProperty(key)) {
           // create the defer call
           deferred = $q.defer();
           // save it to pick it up when called with real data
-          appStore.deferred[key] = deferred;
+          self.appStore.deferred[key] = deferred;
           // save the deferred promise
-          appStore.q[key] = deferred.promise;
+          self.appStore.q[key] = deferred.promise;
         } else {
           // the deferred object has been stored before
-          deferred = appStore.deferred[key];
+          deferred = self.appStore.deferred[key];
         }
         // if data resolve deferred
         if (data) {
@@ -35,10 +36,15 @@ angular.module('famousAngular')
         }
       },
       get: function (key) {
-        if (appStore.q[key]){
-          return appStore.q[key];
+        if (self.appStore.q[key]) {
+          return self.appStore.q[key];
         }
         return null;
+      },
+      reset: function () {
+        self.appStore = $rootScope.$new();
+        self.appStore.q = {};
+        self.appStore.deferred = {};
       }
     };
 

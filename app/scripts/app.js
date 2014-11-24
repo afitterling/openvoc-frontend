@@ -29,7 +29,7 @@ angular.module('famousAngular',
       authProvider.init({
         domain: AUTH0_DOMAIN,
         clientID: AUTH0_CLIENT_ID,
-        //callbackURL: AUTH0_CALLBACK_URL
+        callbackUrl: location.href
       });
 
       var conf;
@@ -39,8 +39,11 @@ angular.module('famousAngular',
 
       $resourceProvider.defaults.stripTrailingSlashes = false;
 
-      authProvider.on('loginSuccess', ['Settings', 'auth', 'Items', '$location', '$rootScope', '$log', '$resource', '$http',
-        function (Settings, auth, Items, $location, $rootScope, $log, $resource, $http) {
+      authProvider.on('loginSuccess', ['Settings', 'auth', 'Items', '$location', '$rootScope', '$log', '$resource', '$http', 'AppStore',
+        function (Settings, auth, Items, $location, $rootScope, $log, $resource, $http, AppStore) {
+
+          // preinit AppStore
+          AppStore.set('items', null);
 
           // resolves on auth0 profile success
           auth.profilePromise.then(function (profile) {
@@ -53,7 +56,9 @@ angular.module('famousAngular',
 
         }]);
 
-      authProvider.on('logout', [ '$location', '$log', 'store', '$rootScope', function ($location, $log, store, $rootScope) {
+      authProvider.on('logout', [ '$location', '$log', 'store', '$rootScope', 'AppStore', function ($location, $log, store, $rootScope, AppStore) {
+        //@TODO AppStore reset
+        AppStore.reset();
         store.remove('token');
         store.remove('profile');
         $rootScope.profile = null;
@@ -114,7 +119,6 @@ angular.module('famousAngular',
         .state('profile', {
           url: '/profile',
           templateUrl: 'partials/profile.html',
-          //controller: 'MainCtrl'//,
           data: {
             restricted: true
           }
@@ -137,10 +141,6 @@ angular.module('famousAngular',
     function ($log, auth, $location, $rootScope, Settings, Items, jwtHelper, store, $resource, AppStore) {
 
       auth.hookEvents();
-
-      // init AppStore with promises we need to resolve so at least the promises are set
-      // AppStore property will resolve only on !null
-      AppStore.set('items', null);
 
       $rootScope.goTo = function (arg) {
         $location.path(arg);
@@ -171,6 +171,8 @@ angular.module('famousAngular',
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
+        var a = $location.search();
+        console.log(a);
 //        event.preventDefault();
 //        $log.debug('toState:', toState);
 
@@ -199,12 +201,12 @@ angular.module('famousAngular',
 
       });
 
-      var apiCall = function(conf){
+      var apiCall = function (conf) {
         var api = $resource(conf.API_BASEURL + '/secured/ping');
         api.get({}, function (data) {
           $log.debug('secured api test call: ', data);
         }, function (error) {
-          AppStore.set('offline', true);
+          AppStore.set('offline', error);
         });
       };
 
@@ -213,6 +215,7 @@ angular.module('famousAngular',
         Settings.then(function (conf) {
           apiCall(conf);
           var items = Items(conf);
+          /* jshint camelcase: false */
           items.query({user_id: auth.profile.user_id}, function (items) {
             console.log(items);
             AppStore.set('items', items);
