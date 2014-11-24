@@ -151,8 +151,8 @@ angular.module('famousAngular',
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
-  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'jwtHelper', 'store', '$resource', 'AppStore',
-    function ($log, auth, $location, $rootScope, Settings, Words, jwtHelper, store, $resource, AppStore) {
+  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings',
+    function ($log, auth, $location, $rootScope, Settings, Words, jwtHelper, store, $resource, AppStore, Languages, UISettings) {
 
       auth.hookEvents();
 
@@ -228,11 +228,17 @@ angular.module('famousAngular',
         Settings.then(function (conf) {
           apiCall(conf);
           var words = Words(conf);
-          /* jshint camelcase: false */
-//          words.query({user_id: auth.profile.user_id}, function (items) {
+          var languages = Languages(conf);
+          //@TODO include settings
+          var uisettings = UISettings(conf);
           //@TODO uid // language_id, targetlang_id form Settings
-          words.query({language_id: 1, targetlang_id: 3}, function (words) {
-            AppStore.set('words', words);
+          languages.query({}, function(languages){
+            /* jshint camelcase: false */
+//          words.query({user_id: auth.profile.user_id}, function (items) {
+            console.log('langs:', languages);
+            words.query({language_id: 1, targetlang_id: 3}, function (words) {
+              AppStore.set('words', words);
+            });
           });
         });
       });
