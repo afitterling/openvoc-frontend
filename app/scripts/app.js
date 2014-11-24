@@ -219,7 +219,6 @@ angular.module('famousAngular',
           var items = Items(conf);
           /* jshint camelcase: false */
           items.query({user_id: auth.profile.user_id}, function (items) {
-            console.log(items);
             AppStore.set('items', items);
           });
         });
