@@ -20,7 +20,6 @@ angular.module('famousAngular',
   .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', '$provide',
     function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide) {
 
-
       $provide.factory('errorInterceptor', function ($q, $rootScope) {
         return {
           'responseError': function(response) {
