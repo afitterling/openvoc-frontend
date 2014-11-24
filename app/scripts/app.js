@@ -151,8 +151,8 @@ angular.module('famousAngular',
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
-  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Items', 'jwtHelper', 'store', '$resource', 'AppStore',
-    function ($log, auth, $location, $rootScope, Settings, Items, jwtHelper, store, $resource, AppStore) {
+  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'jwtHelper', 'store', '$resource', 'AppStore',
+    function ($log, auth, $location, $rootScope, Settings, Words, jwtHelper, store, $resource, AppStore) {
 
       auth.hookEvents();
 
@@ -227,10 +227,12 @@ angular.module('famousAngular',
       $rootScope.$on('sig:::profileLoaded', function () {
         Settings.then(function (conf) {
           apiCall(conf);
-          var items = Items(conf);
+          var words = Words(conf);
           /* jshint camelcase: false */
-          items.query({user_id: auth.profile.user_id}, function (items) {
-            AppStore.set('items', items);
+//          words.query({user_id: auth.profile.user_id}, function (items) {
+          words.query({language_id: 1, targetlang_id: 3}, function (words) {
+            console.log('words:', words);
+            //AppStore.set('items', items);
           });
         });
       });
