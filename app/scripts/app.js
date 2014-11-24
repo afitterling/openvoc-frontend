@@ -109,7 +109,7 @@ angular.module('famousAngular',
               return Settings;
             }],
             items: ['AppStore', function (AppStore) {
-              return AppStore.get('items'); // will return q['items'] not the items directly so it is resolvable
+              return AppStore.get('items'); // will return q not the items directly so it is resolvable
             }]
           },
           controller: ['$scope', 'conf', 'items', function ($scope, conf, items) {
