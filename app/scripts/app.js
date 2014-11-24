@@ -101,7 +101,7 @@ angular.module('famousAngular',
 
       $stateProvider
         .state('data', {
-          url: '/data',
+          url: '/translations',
           templateUrl: 'partials/data.html',
           //controller: 'DataCtrl', // see the partial ng-ctrl
           resolve: {
