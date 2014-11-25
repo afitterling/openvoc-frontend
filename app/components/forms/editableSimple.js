@@ -8,6 +8,7 @@ angular.module('famousAngular.formHelpers.editables', [])
       templateUrl: 'components/forms/editableSimple.html',
       replace : true,
       scope: {
+        submitCallbackFunc: '&'
       },
       link: function (scope, elm, attrs) {
       }

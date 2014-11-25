@@ -1,10 +1,10 @@
 <div>
-    <form ng-show="edit" name="formItem" ng-submit="" novalidate>
+    <form ng-show="edit" name="formItem" ng-submit="submitCallbackFunc()" novalidate>
         <div class="input-group">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-warning" ng-click="edit=false">cancel</button>
             </span>
-            <input type="text" class="form-control" ng-required="true" ng-model="model[column]"></input>
+            <input type="text" class="form-control" ng-required="true" ng-model="model"></input>
             <span class="input-group-btn">
                 <button class="btn btn-default btn-success" ng-disabled="!formItem.$valid"
                         type="submit">

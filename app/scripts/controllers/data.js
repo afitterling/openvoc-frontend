@@ -10,7 +10,12 @@ angular.module('famousAngular')
 
     self.words = $scope.words;
 
+    $scope.submitTest = function () {
+      console.log('abc');
+    };
+
     return;
+
 
     var items = Items(conf);
 
