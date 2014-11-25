@@ -12,6 +12,7 @@ angular.module('famousAngular')
 
     $scope.submitTest = function (data) {
       console.log(data);
+      return true;
     };
 
     return;

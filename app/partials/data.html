@@ -9,10 +9,10 @@
             </tr>
             <tr>
                 <td>
-                    <editable-simple submit-callback-func="submitTest(model)" model="newWord.name"></editable-simple>
+                    <editable-simple submit-callback="submitTest(newWord) && (newWord=null)" model="newWord.name"></editable-simple>
                 </td>
                 <td>
-                    <editable-simple submit-callback-func="submitTest(model)" model="newWord.translation.name"></editable-simple>
+                    <editable-simple submit-callback="submitTest(newWord) && (newWord=null)" model="newWord.translation.name"></editable-simple>
                 </td>
             </tr>
             <tr ng-repeat="trans in word.translations">
