@@ -12,7 +12,7 @@
                     <editable-simple submit-callback="submitTest(newWord) && (newWord=null)" model="newWord.name"></editable-simple>
                 </td>
                 <td>
-                    <editable-simple submit-callback="submitTest(newWord) && (newWord=null)" model="newWord.translation.name"></editable-simple>
+                    <!--<editable-simple submit-callback="submitTest(newWord) && (newWord=null)" model="newWord.translation.name"></editable-simple>-->
                 </td>
             </tr>
             <tr ng-repeat="trans in word.translations">
@@ -21,11 +21,16 @@
             </tr>
             <tr ng-show="word && !word.translations.length">
                 <td><editable-simple model="word.name"></editable-simple></td>
-                <td><editable-simple></editable-simple></td>
+                <td>
+                    <editable-simple model="word.newTranslation.name"
+                                     submit-callback="submitTest(word.newTranslation.name) && (word.newTranslation.name=null)">
+                    </editable-simple>
+                </td>
             </tr>
             <tr ng-show="word.translations.length">
                 <td></td>
-                <td><editable-simple></editable-simple></td>
+                <td><editable-simple model="word.newTranslation.name"
+                                     submit-callback="submitTest(word.newTranslation.name) && (word.newTranslation.name=null)"></editable-simple></td>
             </tr>
         </table>
     </div>
