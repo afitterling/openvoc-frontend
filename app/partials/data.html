@@ -19,8 +19,14 @@
             <tr ng-repeat="trans in word.translations">
                 <!--<td rowspan="{{word.translations.length}}"><span ng-show="$first">{{word.name}}</span></td>-->
                 <td><span ng-show="$first">{{word.name}}</span></td>
-                <td>{{trans.name}}</td>
+                <td ng-show="trans">{{trans.name}}</td>
+                <td ng-show="!trans">+</td>
                 <!--<td>Units Mod</td>-->
+                <!-- @TODO add new trans -->
+            </tr>
+            <tr ng-show="word.translations.length">
+                <td></td>
+                <td>+</td>
             </tr>
             <!--<tr><td>{{word.name}}</td><td>{{word.translations[0].name}}</td></tr>-->
         </table>
