@@ -2,7 +2,7 @@
     <form ng-show="edit" name="formItem" ng-submit="submitCallback({model: model})" novalidate>
         <div class="input-group">
             <span class="input-group-btn">
-                <button class="btn btn-default btn-warning" ng-click="edit=false">cancel</button>
+                <button class="btn btn-default btn-warning" type="button" ng-click="edit=false">cancel</button>
             </span>
             <input type="text" class="form-control" ng-required="true" ng-model="model"></input>
             <span class="input-group-btn">
