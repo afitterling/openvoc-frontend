@@ -9,28 +9,25 @@
             </tr>
             <tr>
                 <td>
-                    <editable-simple submit-callback-func="submitTest(model)" model="word.name"></editable-simple>
+                    <editable-simple submit-callback-func="submitTest(model)" model="newWord.name"></editable-simple>
                 </td>
                 <td>
-                    <editable-simple submit-callback-func="submitTest(model)" model="word.translation.name"></editable-simple>
+                    <editable-simple submit-callback-func="submitTest(model)" model="newWord.translation.name"></editable-simple>
                 </td>
-                <!--<td></td>-->
             </tr>
             <tr ng-repeat="trans in word.translations">
-                <!--<td rowspan="{{word.translations.length}}"><span ng-show="$first">{{word.name}}</span></td>-->
-                <td><span ng-show="$first">{{word.name}}</span></td>
-                <td ng-show="trans">{{trans.name}}</td>
-                <td ng-show="!trans">+</td>
-                <!--<td>Units Mod</td>-->
-                <!-- @TODO add new trans -->
+                <td><span ng-show="$first"><editable-simple model="word.name"></editable-simple></span></td>
+                <td><editable-simple model="trans.name"></editable-simple></td>
+            </tr>
+            <tr ng-show="word && !word.translations.length">
+                <td><editable-simple model="word.name"></editable-simple></td>
+                <td><editable-simple></editable-simple></td>
             </tr>
             <tr ng-show="word.translations.length">
                 <td></td>
-                <td>+</td>
+                <td><editable-simple></editable-simple></td>
             </tr>
-            <!--<tr><td>{{word.name}}</td><td>{{word.translations[0].name}}</td></tr>-->
         </table>
-        <!--<li ng-repeat="word in ctrl.words">{{word}}</li>-->
     </div>
     <br><br>
 </div>
