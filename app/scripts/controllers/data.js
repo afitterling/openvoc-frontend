@@ -10,8 +10,8 @@ angular.module('famousAngular')
 
     self.words = $scope.words;
 
-    $scope.submitTest = function () {
-      console.log('abc');
+    $scope.submitTest = function (data) {
+      console.log(data);
     };
 
     return;
