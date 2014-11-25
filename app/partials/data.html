@@ -3,8 +3,25 @@
     {{sourcelang}}:{{targetlang}}
     <div class="row">
         <table ng-repeat="word in ctrl.words" class="table table-bordered">
-            <tr><th>lang.from</th><th>lang.to</th></tr>
-            <tr ng-repeat="trans in word.translations"><td><span ng-show="$first">{{word.name}}</span></td><td>{{trans.name}}</td></tr>
+            <tr>
+                <th>lang.from</th>
+                <th>lang.to</th>
+            </tr>
+            <tr>
+                <td>
+                    <editable-simple model=""></editable-simple>
+                </td>
+                <td>
+                    <editable-simple model=""></editable-simple>
+                </td>
+                <!--<td></td>-->
+            </tr>
+            <tr ng-repeat="trans in word.translations">
+                <!--<td rowspan="{{word.translations.length}}"><span ng-show="$first">{{word.name}}</span></td>-->
+                <td><span ng-show="$first">{{word.name}}</span></td>
+                <td>{{trans.name}}</td>
+                <!--<td>Units Mod</td>-->
+            </tr>
             <!--<tr><td>{{word.name}}</td><td>{{word.translations[0].name}}</td></tr>-->
         </table>
         <!--<li ng-repeat="word in ctrl.words">{{word}}</li>-->
