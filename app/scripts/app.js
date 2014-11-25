@@ -20,6 +20,9 @@ angular.module('famousAngular',
   .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', '$provide',
     function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide) {
 
+      // the models to be able to resolve on them, must set even we don't know the data yet to return the identical promises
+      var AppStoreDefaultModels = ['words', 'languages'];
+
       $provide.factory('errorInterceptor', function ($q, $rootScope) {
         return {
           'responseError': function(response) {
@@ -55,7 +58,7 @@ angular.module('famousAngular',
         function (Settings, auth, Words, $location, $rootScope, $log, $resource, $http, AppStore) {
 
           // preinit AppStore
-          AppStore.set('words', null);
+          AppStore.init(AppStoreDefaultModels);
 
           // resolves on auth0 profile success
           auth.profilePromise.then(function (profile) {
@@ -79,7 +82,7 @@ angular.module('famousAngular',
 
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore',
         function (auth, $location, $rootScope, $log, AppStore) {
-          AppStore.set('words', null);
+          AppStore.init(AppStoreDefaultModels);
 
           $rootScope.profile = auth.profile;
           $location.path('/profile');
@@ -236,6 +239,8 @@ angular.module('famousAngular',
             /* jshint camelcase: false */
 //          words.query({user_id: auth.profile.user_id}, function (items) {
             console.log('langs:', languages);
+            AppStore.set('languages', languages);
+            // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
             words.query({language_id: 1, targetlang_id: 3}, function (words) {
               AppStore.set('words', words);
             });
