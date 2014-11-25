@@ -9,7 +9,8 @@ angular.module('famousAngular.formHelpers.editables', [])
       replace : true,
       scope: {
         submitCallback: '&',
-        model: '='
+        model: '=',
+        resetCancel: '='
       },
       link: function (scope, elm, attrs) {
       }
