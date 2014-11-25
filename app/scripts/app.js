@@ -242,6 +242,7 @@ angular.module('famousAngular',
             AppStore.set('languages', languages);
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
             words.query({language_id: 1, targetlang_id: 3}, function (words) {
+              console.log('words', words);
               AppStore.set('words', words);
             });
           });
