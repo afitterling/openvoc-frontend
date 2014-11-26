@@ -22,7 +22,8 @@ angular.module('famousAngular')
     $scope.addNewWord = function (word) {
       $scope.success = null;
       /* jshint camelcase: false */
-      word.user_id = $scope.profile.user_id;
+//      word.user_id = $scope.profile.user_id;
+      word.user_id = null;
       word.language_id = $scope.lang.from.id;
       words.save({word: word}, function (success) {
         self.words.push(success);

@@ -3,20 +3,28 @@
     <dropdown model="lang.from" on-change="dummy()" selected="lang_selected.from_id" list-model="languages"></dropdown>
     <dropdown model="lang.to"  on-change="dummy()" selected="lang_selected.to_id" list-model="languages"></dropdown>
 
+    <editable-simple reset-cancel="true" submit-callback="addNewWord(newWord) && (newWord=null)" model="newWord.name"></editable-simple>
+
     <div class="row">
+        <!--<td>-->
+        <!--</td>-->
+        <!--<td>-->
+        <!--&lt;!&ndash;<editable-simple submit-callback="submitTest(newWord) && (newWord=null)" model="newWord.translation.name"></editable-simple>&ndash;&gt;-->
+        <!--</td>-->
+
         <table ng-repeat="word in ctrl.words" class="table table-bordered">
             <tr>
                 <th>{{lang.from.name}}</th>
                 <th>{{lang.to.name}}</th>
             </tr>
             <tr>
-                <td>
-                    <editable-simple reset-cancel="true" submit-callback="addNewWord(newWord) && (newWord=null)" model="newWord.name">
-                    </editable-simple>
-                </td>
-                <td>
-                    <!--<editable-simple submit-callback="submitTest(newWord) && (newWord=null)" model="newWord.translation.name"></editable-simple>-->
-                </td>
+                <!--<td>-->
+                    <!--<editable-simple reset-cancel="true" submit-callback="addNewWord(newWord) && (newWord=null)" model="newWord.name">-->
+                    <!--</editable-simple>-->
+                <!--</td>-->
+                <!--<td>-->
+                    <!--&lt;!&ndash;<editable-simple submit-callback="submitTest(newWord) && (newWord=null)" model="newWord.translation.name"></editable-simple>&ndash;&gt;-->
+                <!--</td>-->
             </tr>
             <tr ng-repeat="trans in word.translations">
                 <td><span ng-show="$first"><editable-simple model="word.name"></editable-simple></span></td>
