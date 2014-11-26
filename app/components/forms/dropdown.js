@@ -11,29 +11,26 @@ angular.module('directives.formHelpers', [])
         selected : '='
       },
       link: function (scope, elm, attrs) {
-        angular.forEach(scope.listModel, function (item) {
-          console.log(item);
-          if (angular.equals(scope.selected /* id */, item.id)) {
-            scope.current = item;
-            return;
-          }
-        });
 
-        scope.menuItems = scope.listModel;
-//        scope.menuItems.splice(scope.menuItems.indexOf(scope.current), 1);
+        var spliceMenuItems = function () {
+          scope.menuItems = [];
+          angular.copy(scope.listModel, scope.menuItems);
+          scope.menuItems.splice(scope.listModel.indexOf(scope.current), 1);
+        };
 
         scope.select = function (item_id) {
-          //
           angular.forEach(scope.listModel, function (item) {
             if (angular.equals(item_id, item.id)) {
               scope.current = item;
               return;
             }
           });
-          scope.menuItems = scope.listModel;
-//          scope.menuItems.splice(scope.menuItems.indexOf(scope.current), 1);
+          spliceMenuItems();
         };
 
+        // run default on link up
+        scope.select(scope.selected);
+        spliceMenuItems();
       }
     };
   }])
