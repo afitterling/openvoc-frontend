@@ -23,6 +23,7 @@ angular.module('famousAngular')
       $scope.success = null;
       /* jshint camelcase: false */
       word.user_id = $scope.profile.user_id;
+      word.language_id = $scope.lang.from.id;
       words.save({word: word}, function (success) {
         self.words.push(success);
         $scope.success = true;
@@ -32,6 +33,9 @@ angular.module('famousAngular')
       });
     };
 
+    $scope.dummy = function () {
+      //
+    };
     return;
 
 

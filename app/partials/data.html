@@ -1,14 +1,13 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
 
-    <dropdown selected="lang_selected.from_id" list-model="languages"></dropdown>
-    <dropdown selected="lang_selected.to_id" list-model="languages"></dropdown>
-    <div dropdown></div>
+    <dropdown model="lang.from" on-change="dummy()" selected="lang_selected.from_id" list-model="languages"></dropdown>
+    <dropdown model="lang.to"  on-change="dummy()" selected="lang_selected.to_id" list-model="languages"></dropdown>
 
     <div class="row">
         <table ng-repeat="word in ctrl.words" class="table table-bordered">
             <tr>
-                <th>lang.from</th>
-                <th>lang.to</th>
+                <th>{{lang.from.name}}</th>
+                <th>{{lang.to.name}}</th>
             </tr>
             <tr>
                 <td>

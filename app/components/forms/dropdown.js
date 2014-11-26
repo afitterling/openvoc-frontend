@@ -8,7 +8,9 @@ angular.module('directives.formHelpers', [])
       templateUrl: 'components/forms/dropdown.html',
       scope: {
         listModel: '=',
-        selected : '='
+        selected : '=',
+        model: '=',
+        onChange: '&'
       },
       link: function (scope, elm, attrs) {
 
@@ -26,11 +28,14 @@ angular.module('directives.formHelpers', [])
             }
           });
           spliceMenuItems();
+          scope.model = scope.current;
+          scope.onChange();
         };
 
         // run default on link up
         scope.select(scope.selected);
         spliceMenuItems();
+        scope.model = scope.current;
       }
     };
   }])
