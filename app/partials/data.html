@@ -1,6 +1,9 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
-    <!-- editable list to display editable tables -->
-    {{sourcelang}}:{{targetlang}}
+
+    <dropdown selected="lang_selected.from_id" list-model="languages"></dropdown>
+    <dropdown selected="lang_selected.to_id" list-model="languages"></dropdown>
+    <div dropdown></div>
+
     <div class="row">
         <table ng-repeat="word in ctrl.words" class="table table-bordered">
             <tr>
@@ -9,7 +12,8 @@
             </tr>
             <tr>
                 <td>
-                    <editable-simple reset-cancel="true" submit-callback="submitTest(newWord) && (newWord=null)" model="newWord.name"></editable-simple>
+                    <editable-simple reset-cancel="true" submit-callback="addNewWord(newWord) && (newWord=null)" model="newWord.name">
+                    </editable-simple>
                 </td>
                 <td>
                     <!--<editable-simple submit-callback="submitTest(newWord) && (newWord=null)" model="newWord.translation.name"></editable-simple>-->

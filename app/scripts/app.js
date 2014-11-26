@@ -1,21 +1,21 @@
 'use strict';
 
 angular.module('famousAngular',
-    [
-      'auth0',
-      'angular-jwt',
-      'ngAnimate',
-      'ngCookies',
-      'ngTouch',
-      'ngSanitize',
-      'ngResource',
-      'ui.router',
-      'angular-storage',
-      'directives.formHelpers',
-      'famousAngular.formHelpers.editables',
-      'famous.angular',
-      'pascalprecht.translate'
-    ])
+  [
+    'auth0',
+    'angular-jwt',
+    'ngAnimate',
+    'ngCookies',
+    'ngTouch',
+    'ngSanitize',
+    'ngResource',
+    'ui.router',
+    'angular-storage',
+    'directives.formHelpers',
+    'famousAngular.formHelpers.editables',
+    'famous.angular',
+    'pascalprecht.translate'
+  ])
 
   .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', '$provide',
     function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide) {
@@ -25,7 +25,7 @@ angular.module('famousAngular',
 
       $provide.factory('errorInterceptor', function ($q, $rootScope) {
         return {
-          'responseError': function(response) {
+          'responseError': function (response) {
             $rootScope.$broadcast('onError');
             return response;
           }
@@ -163,7 +163,7 @@ angular.module('famousAngular',
         $location.path(arg);
       };
 
-      $rootScope.$on('onError', function(){
+      $rootScope.$on('onError', function () {
         $location.path('/error');
       });
 
@@ -235,12 +235,14 @@ angular.module('famousAngular',
           //@TODO include settings
           var uisettings = UISettings(conf);
           //@TODO uid // language_id, targetlang_id form Settings
-          languages.query({}, function(languages){
+          languages.query({}, function (languages) {
             /* jshint camelcase: false */
 //          words.query({user_id: auth.profile.user_id}, function (items) {
             console.log('langs:', languages);
             AppStore.set('languages', languages);
+            $rootScope.languages = languages;
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
+            $rootScope.lang_selected = {from_id: 1, to_id: 3};
             words.query({language_id: 1, targetlang_id: 3}, function (words) {
               console.log('words', words);
               AppStore.set('words', words);

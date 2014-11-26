@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('DataCtrl', ['$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Items', 'AppStore',
-    function ($rootScope, $timeout, $log, $scope, $resource, $http, Items, AppStore) {
+  .controller('DataCtrl', ['$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Words', 'AppStore',
+    function ($rootScope, $timeout, $log, $scope, $resource, $http, Words, AppStore) {
 
     var conf = $scope.conf;
 
@@ -13,6 +13,23 @@ angular.module('famousAngular')
     $scope.submitTest = function (data) {
       console.log(data);
       return true;
+    };
+
+
+    /* jshint constructor: false */
+    var words = Words(conf);
+
+    $scope.addNewWord = function (word) {
+      $scope.success = null;
+      /* jshint camelcase: false */
+      word.user_id = $scope.profile.user_id;
+      words.save({word: word}, function (success) {
+        self.words.push(success);
+        $scope.success = true;
+      }, function (error) {
+        $scope.success = false;
+        $scope.word = word;
+      });
     };
 
     return;
