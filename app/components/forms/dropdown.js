@@ -34,6 +34,8 @@ angular.module('directives.formHelpers', [])
           scope.model = scope.current;
           scope.onChange();
           ValidationActionsStore.updateState(scope.name, scope.current);
+          console.log('ValidationStoreStatus', ValidationActionsStore.status(scope.name));
+          scope.status = ValidationActionsStore.status(scope.name);
         };
 
         // run default on link up

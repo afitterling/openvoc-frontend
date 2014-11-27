@@ -8,11 +8,12 @@ angular.module('famousAngular')
 
     ValidationActionsStore.registerValidator('dropdown.lang.to', 'dropdown.lang.from', function (own, foreign) {
       if (own === foreign) {
+        $scope.error = "must not be equal";
         return false;
       }
+      $scope.error = null;
       return true;
     });
-
 
     var self = this;
 

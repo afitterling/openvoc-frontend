@@ -1,6 +1,7 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
 
     <dropdown name="dropdown.lang.from" model="lang.from" on-change="dummy()" selected="lang_selected.from_id" list-model="languages"></dropdown>
+    <span class="message error-message">{{error}}</span>
     <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
               on-change="dummy()" selected="lang_selected.to_id" list-model="languages"></dropdown>
 
