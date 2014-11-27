@@ -2,7 +2,7 @@
 
 angular.module('directives.formHelpers', [])
 
-  .directive('dropdown', [function () {
+  .directive('dropdown', ['ValidationActionsStore', function (ValidationActionsStore) {
     return {
       restrict: 'E',
       templateUrl: 'components/forms/dropdown.html',
@@ -10,9 +10,12 @@ angular.module('directives.formHelpers', [])
         listModel: '=',
         selected : '=',
         model: '=',
+        name: '@',
         onChange: '&'
       },
       link: function (scope, elm, attrs) {
+
+        console.log(scope.name);
 
         var spliceMenuItems = function () {
           scope.menuItems = [];
@@ -30,6 +33,7 @@ angular.module('directives.formHelpers', [])
           spliceMenuItems();
           scope.model = scope.current;
           scope.onChange();
+          ValidationActionsStore.updateState(scope.name, scope.current);
         };
 
         // run default on link up

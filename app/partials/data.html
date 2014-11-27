@@ -1,7 +1,8 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
 
-    <dropdown model="lang.from" on-change="dummy()" selected="lang_selected.from_id" list-model="languages"></dropdown>
-    <dropdown model="lang.to"  on-change="dummy()" selected="lang_selected.to_id" list-model="languages"></dropdown>
+    <dropdown name="dropdown.lang.from" model="lang.from" on-change="dummy()" selected="lang_selected.from_id" list-model="languages"></dropdown>
+    <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
+              on-change="dummy()" selected="lang_selected.to_id" list-model="languages"></dropdown>
 
     <editable-simple reset-cancel="true" submit-callback="addNewWord(newWord) && (newWord=null)" model="newWord.name"></editable-simple>
 

@@ -1,10 +1,18 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('DataCtrl', ['$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Words', 'AppStore',
-    function ($rootScope, $timeout, $log, $scope, $resource, $http, Words, AppStore) {
+  .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Words', 'AppStore',
+    function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Words, AppStore) {
 
     var conf = $scope.conf;
+
+    ValidationActionsStore.registerValidator('dropdown.lang.to', 'dropdown.lang.from', function (own, foreign) {
+      if (own === foreign) {
+        return false;
+      }
+      return true;
+    });
+
 
     var self = this;
 

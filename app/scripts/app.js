@@ -154,8 +154,11 @@ angular.module('famousAngular',
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
-  .run(['$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings',
-    function ($log, auth, $location, $rootScope, Settings, Words, jwtHelper, store, $resource, AppStore, Languages, UISettings) {
+  .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings',
+    function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, jwtHelper, store, $resource, AppStore, Languages, UISettings) {
+
+      ValidationActionsStore.register('dropdown.lang.to'); //, function(scope.current, ){})
+      ValidationActionsStore.register('dropdown.lang.from');
 
       auth.hookEvents();
 
