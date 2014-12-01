@@ -1,6 +1,6 @@
 'use strict';
 
-// this validation store handles validation for ui business logic
+// this validation store handles validation for ui (business) logic
 
 angular.module('famousAngular')
 
