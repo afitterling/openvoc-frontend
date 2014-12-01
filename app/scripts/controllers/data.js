@@ -4,100 +4,127 @@ angular.module('famousAngular')
   .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Words', 'AppStore',
     function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Words, AppStore) {
 
-    var conf = $scope.conf;
+      var conf = $scope.conf;
 
-    ValidationActionsStore.registerValidator('dropdown.lang.to', 'dropdown.lang.from', function (own, foreign) {
-      if (own === foreign) {
-        $scope.error = "must not be equal";
-        return false;
-      }
-      $scope.error = null;
-      return true;
-    });
-
-    var self = this;
-
-    self.words = $scope.words;
-
-    $scope.submitTest = function (data) {
-      console.log(data);
-      return true;
-    };
-
-
-    /* jshint constructor: false */
-    var words = Words(conf);
-
-    $scope.addNewWord = function (word) {
-      $scope.success = null;
-      /* jshint camelcase: false */
-//      word.user_id = $scope.profile.user_id;
-      word.user_id = null;
-      word.language_id = $scope.lang.from.id;
-      words.save({word: word}, function (success) {
-        self.words.push(success);
-        $scope.success = true;
-      }, function (error) {
-        $scope.success = false;
-        $scope.word = word;
-      });
-    };
-
-    $scope.dummy = function () {
-      //
-    };
-    return;
-
-
-    var items = Items(conf);
-
-    $scope.addItem = function (item) {
-      $scope.success = null;
-      /* jshint camelcase: false */
-      item.user_id = $scope.profile.user_id;
-      items.save({item: item}, function (success) {
-        self.items.push(success);
-        $scope.success = true;
-        $scope.item = {};
-      }, function (error) {
-        $scope.success = false;
-        $scope.item = item;
-      });
-    };
-
-    // update model
-    // we use a trick here:
-    // as the editable allows editable per attr of one obj/item we end up in having multiple change/update requests per obj or id
-    // as of this fact we update with timeouts/promises and cancel the pre chosen promises if other fields got edited as well
-    // as the parameter is always the whole model this won't matter
-    var cancelUpdate = {};
-    $scope.updateItem = function (item) {
-      $log.debug('cancelUpdate', cancelUpdate);
-      if (angular.isDefined(cancelUpdate[item.id])) {
-        if (cancelUpdate[item.id].status !== 1) { // 1 => resolved
-          cancelUpdate[item.id]();
+      // validator
+      var equalsForeign = function (own, foreign) {
+        if (own === foreign) {
+//        $scope.status = false;
+          return true;
         }
-      }
-      cancelUpdate[item.id] = $timeout(function(){
-        $log.debug('update triggered', item);
+//      $scope.status = true;
+        return false;
+      };
+
+      ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', equalsForeign, 'Equals Foreign');
+      ValidationActionsStore.validation.push('dropdown.lang.from', 'dropdown.lang.to', equalsForeign, 'Equals Foreign');
+
+      ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', function (own, foreign) {
+        if (own.name === 'Thai') {
+//        $scope.status = false;
+          return true;
+        }
+//      $scope.status = true;
+        return false;
+      }, 'isThai');
+
+//    ValidationActionsStore.validation.pushAsArray('dropdown.lang.to', ['dropdown.lang.from'], function (own, foreign) {
+//      angular.forEach(foreign, function (item) {
+//        console.log(item);
+//      });
+//    });
+
+//    ValidationActionsStore.registerValidator('dropdown.lang.from', 'dropdown.lang.to', function (own, foreign) {
+//      if (own === foreign) {
+//        $scope.status = false;
+//        return false;
+//      }
+//      $scope.status = true;
+//      return true;
+//    }, true);
+
+      var self = this;
+
+      self.words = $scope.words;
+
+      $scope.submitTest = function (data) {
+        console.log(data);
+        return true;
+      };
+
+      /* jshint constructor: false */
+      var words = Words(conf);
+
+      $scope.addNewWord = function (word) {
         $scope.success = null;
-        items.update(item, function (success) {
+        /* jshint camelcase: false */
+//      word.user_id = $scope.profile.user_id;
+        word.user_id = null;
+        word.language_id = $scope.lang.from.id;
+        words.save({word: word}, function (success) {
+          self.words.push(success);
           $scope.success = true;
-          delete cancelUpdate[item.id]; // delete the promise from list as we know it ran through
-          $log.debug('cancelUpdate', cancelUpdate);
         }, function (error) {
           $scope.success = false;
-          $log.debug('cancelUpdate', cancelUpdate);
+          $scope.word = word;
         });
-      }, 5000);
-      $log.debug('cancelUpdate', cancelUpdate);
-    };
+      };
 
-    $scope.deleteItem = function (item) {
-      items.delete({id: item.id}, function(success){
-        self.items.splice(self.items.indexOf(item), 1);
-        $log.debug('deleted item', item);
-      });
-    };
+      $scope.dummy = function () {
+        //
+      };
+      return;
 
-  }]);
+
+      var items = Items(conf);
+
+      $scope.addItem = function (item) {
+        $scope.success = null;
+        /* jshint camelcase: false */
+        item.user_id = $scope.profile.user_id;
+        items.save({item: item}, function (success) {
+          self.items.push(success);
+          $scope.success = true;
+          $scope.item = {};
+        }, function (error) {
+          $scope.success = false;
+          $scope.item = item;
+        });
+      };
+
+      // update model
+      // we use a trick here:
+      // as the editable allows editable per attr of one obj/item we end up in having multiple change/update requests per obj or id
+      // as of this fact we update with timeouts/promises and cancel the pre chosen promises if other fields got edited as well
+      // as the parameter is always the whole model this won't matter
+      var cancelUpdate = {};
+      $scope.updateItem = function (item) {
+        $log.debug('cancelUpdate', cancelUpdate);
+        if (angular.isDefined(cancelUpdate[item.id])) {
+          if (cancelUpdate[item.id].status !== 1) { // 1 => resolved
+            cancelUpdate[item.id]();
+          }
+        }
+        cancelUpdate[item.id] = $timeout(function () {
+          $log.debug('update triggered', item);
+          $scope.success = null;
+          items.update(item, function (success) {
+            $scope.success = true;
+            delete cancelUpdate[item.id]; // delete the promise from list as we know it ran through
+            $log.debug('cancelUpdate', cancelUpdate);
+          }, function (error) {
+            $scope.success = false;
+            $log.debug('cancelUpdate', cancelUpdate);
+          });
+        }, 5000);
+        $log.debug('cancelUpdate', cancelUpdate);
+      };
+
+      $scope.deleteItem = function (item) {
+        items.delete({id: item.id}, function (success) {
+          self.items.splice(self.items.indexOf(item), 1);
+          $log.debug('deleted item', item);
+        });
+      };
+
+    }]);
