@@ -9,10 +9,10 @@ angular.module('famousAngular')
       // validator
       var equalsForeign = function (own, foreign) {
         if (own === foreign) {
-//        $scope.status = false;
+        $scope.status = false;
           return true;
         }
-//      $scope.status = true;
+      $scope.status = true;
         return false;
       };
 
