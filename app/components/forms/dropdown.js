@@ -2,7 +2,7 @@
 
 angular.module('directives.formHelpers', [])
 
-  .directive('dropdown', ['ValidationActionsStore', function (ValidationActionsStore) {
+  .directive('dropdown', ['ValidationActionsStore','$log', function (ValidationActionsStore, $log) {
     return {
       restrict: 'E',
       templateUrl: 'components/forms/dropdown.html',
@@ -14,8 +14,6 @@ angular.module('directives.formHelpers', [])
         onChange: '&'
       },
       link: function (scope, elm, attrs) {
-
-        console.log(scope.name);
 
         var spliceMenuItems = function () {
           scope.menuItems = [];
@@ -34,8 +32,8 @@ angular.module('directives.formHelpers', [])
           scope.model = scope.current;
           scope.onChange();
           ValidationActionsStore.updateState(scope.name, scope.current);
-          console.log('ValidationStoreStatus', ValidationActionsStore.status(scope.name));
-          scope.status = ValidationActionsStore.status(scope.name);
+          $log.debug(scope.name, ' anyValidation =', ValidationActionsStore.anyValidation(scope.name));
+          $log.debug(scope.name, ' anyValidationArray =', ValidationActionsStore.anyValidationArray(scope.name));
         };
 
         // run default on link up
