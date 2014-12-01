@@ -16,32 +16,19 @@ angular.module('famousAngular')
         return false;
       };
 
-      ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', equalsForeign, 'Equals Foreign');
-      ValidationActionsStore.validation.push('dropdown.lang.from', 'dropdown.lang.to', equalsForeign, 'Equals Foreign');
+      ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', equalsForeign, 'Equals Foreign', {both: true});
+//      ValidationActionsStore.validation.push('dropdown.lang.from', 'dropdown.lang.to', equalsForeign, 'Equals Foreign');
 
       ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', function (own, foreign) {
         if (own.name === 'Thai') {
-//        $scope.status = false;
           return true;
         }
-//      $scope.status = true;
-        return false;
-      }, 'isThai');
+      }, 'isThai', {both: true});
 
-//    ValidationActionsStore.validation.pushAsArray('dropdown.lang.to', ['dropdown.lang.from'], function (own, foreign) {
-//      angular.forEach(foreign, function (item) {
-//        console.log(item);
-//      });
-//    });
-
-//    ValidationActionsStore.registerValidator('dropdown.lang.from', 'dropdown.lang.to', function (own, foreign) {
-//      if (own === foreign) {
-//        $scope.status = false;
-//        return false;
-//      }
-//      $scope.status = true;
-//      return true;
-//    }, true);
+      ValidationActionsStore.validation.push('dropdown.lang.to', ['dropdown.lang.from', 'dropdown.lang.to'], function (own, foreignObj) {
+        $log.debug('triggered', own, foreignObj);
+        return angular.equals(foreignObj['dropdown.lang.from'], foreignObj['dropdown.lang.to']);
+      }, 'ArrayTest');
 
       var self = this;
 

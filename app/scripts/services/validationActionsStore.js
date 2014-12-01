@@ -17,8 +17,34 @@ angular.module('famousAngular')
     };
 
     // push a validator for the target UI considered to change, that calles the listener with own model and UIForeignElement Model
-    self.push = function (UIElementTriggersValidation, UIForeignElements, listener /* fn: (own model, foreign model) */, name) {
-      self.validationStore[UIElementTriggersValidation].push({UIForeignElements: UIForeignElements, listener: {fn: listener, name: name}});
+    self.push = function (UIElementTriggersValidation, UIForeignElements, listener /* fn: (own model, foreign model) */, name, options) {
+      var single = null;
+
+      // on single ForeignObj. do
+      if (typeof(UIForeignElements) === 'string') {
+        single = true;
+        self.validationStore[UIElementTriggersValidation].push({UIForeignElements: UIForeignElements, listener: {fn: listener, name: name},
+            conf: {UIForeignElement: {single: single}}}
+        );
+        // see if options is set
+        if (angular.isDefined(options)) {
+          if (angular.isDefined(options.both)) {
+            // if both: true -> register on foreign element as well
+            self.validationStore[UIForeignElements].push({UIForeignElements: UIElementTriggersValidation, listener: {fn: listener, name: name},
+              conf: {UIForeignElement: {single: single}}
+            });
+          }
+        }
+      }
+
+      // if UIForeignElement is Array do
+      if (Array.isArray(UIForeignElements)) {
+        console.log(UIForeignElements);
+        self.validationStore[UIElementTriggersValidation].push({UIForeignElements: UIForeignElements, listener: {fn: listener, name: name},
+            conf: {UIForeignElement: {single: false}}}
+        );
+      }
+
     };
 
     // update should be called with current model value of UI component in controller or
@@ -35,14 +61,34 @@ angular.module('famousAngular')
       // go trough all listeners and if one is set to false
       angular.forEach(self.validationStore[component], function (ForeignUIElement) {
         var fn = ForeignUIElement.listener.fn;
-        fn.params = [currentValue, self.validationStore[ForeignUIElement.UIForeignElements].currentValue];
-        var res = fn.apply(null, fn.params);
-        if (res) {
-          self.validationStore[component].anyValidation = res;
-          self.validationStore[component].anyValidationArray.push(ForeignUIElement.listener.name);
+        var res;
+
+        // in case it has been registered with foreignElement as string
+        if (ForeignUIElement.conf.UIForeignElement.single) {
+          fn.params = [currentValue, self.validationStore[ForeignUIElement.UIForeignElements].currentValue];
+          res = fn.apply(null, fn.params);
+          if (res) {
+            self.validationStore[component].anyValidation = res;
+            self.validationStore[component].anyValidationArray.push(ForeignUIElement.listener.name);
+          }
+        }
+
+        // if registered multiple foreign elements as array/obj
+        if (ForeignUIElement.conf.UIForeignElement.single === false) {
+          var foreignValues = {};
+          angular.forEach(ForeignUIElement.UIForeignElements, function (foreign) {
+            console.log(foreign, self.validationStore[foreign].currentValue);
+            foreignValues[foreign] = self.validationStore[foreign].currentValue;
+          });
+          fn = ForeignUIElement.listener.fn;
+          fn.params = [currentValue, foreignValues];
+          res = fn.apply(null, fn.params);
+          if (res) {
+            self.validationStore[component].anyValidation = res;
+            self.validationStore[component].anyValidationArray.push(ForeignUIElement.listener.name);
+          }
         }
       });
-
     };
 
     return {
