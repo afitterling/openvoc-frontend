@@ -17,7 +17,8 @@
     "angular-ui-router": "latest",
     "underscore": "latest",
     "bootstrap": "latest",
-    "famous-angular": "latest"
+    "famous-angular": "latest",
+    "jquery-ui": "latest"
   },
   "devDependencies": {
     "angular-mocks": "latest"
