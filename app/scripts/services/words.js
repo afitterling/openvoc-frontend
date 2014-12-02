@@ -9,4 +9,6 @@ angular.module('famousAngular')
         { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
     };
 
-  }]);
+  }])
+
+;

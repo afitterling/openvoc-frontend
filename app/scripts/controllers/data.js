@@ -64,8 +64,8 @@ angular.module('famousAngular')
       };
 
       $scope.saveTranslation = function (word, translation) {
-        var exists;
-        angular.forEach(word.translations, function(trans){
+        var exists = null;
+        angular.forEach(word.translations, function (trans) {
           exists = angular.equals(trans.id, translation.id);
         });
         console.log('exists', exists);
@@ -73,9 +73,17 @@ angular.module('famousAngular')
         if (!exists) {
           $scope.saveWord({name: translation.name, language_id: $scope.lang.to.id}, $scope.lang.to.id, function (translation) {
             // success
-            console.log('success trans');
-//            console.log(item);
-            return word.translations.push(translation);
+
+            console.log('translation', translation);
+
+            var Translations = $resource($scope.conf.API_BASEURL + '/words/' + word.id + '/conversion', {id: '@id'},
+              { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
+
+            Translations.save({word_id: translation.id}, function () {
+              // success
+              word.translations.push(translation);
+            });
+
           });
         }
 //        word.translations.push(translation);
