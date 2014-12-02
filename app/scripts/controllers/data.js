@@ -12,7 +12,7 @@ angular.module('famousAngular')
         $scope.status = false;
           return true;
         }
-      $scope.status = true;
+        $scope.status = true;
         return false;
       };
 
@@ -45,8 +45,9 @@ angular.module('famousAngular')
       $scope.saveWord = function (word, language_id, successCB) {
         $scope.success = null;
         /* jshint camelcase: false */
-//      word.user_id = $scope.profile.user_id;
-        word.user_id = null;
+        word.user_id = $scope.profile.user_id;
+        console.log(word.user_id);
+//        word.user_id = null;
         word.language_id = language_id || $scope.lang.from.id;
         words.save({word: word}, function (success) {
           // if parameter not given we know it is added as a word not as a translation
@@ -76,10 +77,11 @@ angular.module('famousAngular')
 
             console.log('translation', translation);
 
-            var Translations = $resource(conf.API_BASEURL + '/words/' + word.id + '/conversion', {id: '@id'},
+            console.log('translation_id', translation.id);
+            var Translations = $resource(conf.API_BASEURL + '/words/' + translation.id + '/conversion', {id: '@id'},
               { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
 
-            Translations.save({word_id: translation.id}, function () {
+            Translations.save({word_id: word.id}, function () {
               // success
               word.translations.push(translation);
             });
@@ -89,18 +91,25 @@ angular.module('famousAngular')
       };
 
       var first = 0;
-      $scope.updateTableItems = function () {
+      $scope.updateTableItems = function (lang) {
         if (first < 2) {
           first += 1;
           return;
         }
 
-        words.query({language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (words) {
-          console.log('words', words);
+        words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
           AppStore.set('words', words);
           self.words = words;
         });
 
+      };
+
+      // swap languages
+      $scope.swapLanguages = function () {
+        var temp = $scope.lang.from;
+        $scope.lang.from = $scope.lang.to;
+        $scope.lang.to = temp;
+        $scope.updateTableItems($scope.lang);
       };
 
       // dummy
