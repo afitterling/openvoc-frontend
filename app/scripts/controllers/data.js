@@ -83,6 +83,9 @@ angular.module('famousAngular')
 
             Translations.save({word_id: word.id}, function () {
               // success
+              if (angular.isUndefined(word.translations)) {
+                word.translations = [];
+              }
               word.translations.push(translation);
             });
 
