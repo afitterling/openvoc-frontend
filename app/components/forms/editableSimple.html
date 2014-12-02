@@ -8,7 +8,7 @@
             </span>
             <input type="text" class="form-control" ng-required="true" ng-model="model"></input>
             <span class="input-group-btn">
-                <button ng-click="submitCallbackFunc({model: model}); edit=false" class="btn btn-default btn-success"
+                <button ng-click="submitCallbackFunc(model); edit=false" class="btn btn-default btn-success"
                         ng-disabled="!formItem.$valid"
                         type="submit">
                     Submit!
@@ -20,5 +20,5 @@
     <!--<span ng-hide="edit" ng-click="edit=true">{{(!resetCancel && model) || '+'}}</span>-->
     <span ng-hide="edit || model" ng-click="edit=true"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></button></span>
     <span ng-hide="edit || !model" ng-click="edit=true">{{model}}</span>
-    <span ng-hide="edit || !model"><button ng-click="deleteCallback({model: model})" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></span>
+    <span ng-hide="edit || !model"><button ng-click="deleteCallback(model)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></span>
 </div>
