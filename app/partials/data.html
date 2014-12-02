@@ -51,9 +51,11 @@
                 <td>
                     <span>
                         <editable-simple model="trans.name"
-                                         submit-callback="saveTranslation(word, trans)"
-                                ></editable-simple>
+                                         submit-callback="updateTranslation(word, trans)"
+                                >
+                        </editable-simple>
                     </span>
+
                 </td>
             </tr>
             <tr ng-repeat-end></tr>
