@@ -6,29 +6,29 @@ angular.module('famousAngular')
 
       var conf = $scope.conf;
 
-      // validator
-      var equalsForeign = function (own, foreign) {
-        if (own === foreign) {
-        $scope.status = false;
-          return true;
-        }
-        $scope.status = true;
-        return false;
-      };
-
-      ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', equalsForeign, 'Equals Foreign', {both: true});
-//      ValidationActionsStore.validation.push('dropdown.lang.from', 'dropdown.lang.to', equalsForeign, 'Equals Foreign');
-
-      ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', function (own, foreign) {
-        if (own.name === 'Thai') {
-          return true;
-        }
-      }, 'isThai', {both: true});
-
-      ValidationActionsStore.validation.push('dropdown.lang.to', ['dropdown.lang.from', 'dropdown.lang.to'], function (own, foreignObj) {
-        $log.debug('triggered', own, foreignObj);
-        return angular.equals(foreignObj['dropdown.lang.from'], foreignObj['dropdown.lang.to']);
-      }, 'ArrayTest');
+//      // validator
+//      var equalsForeign = function (own, foreign) {
+//        if (own === foreign) {
+//        $scope.status = false;
+//          return true;
+//        }
+//        $scope.status = true;
+//        return false;
+//      };
+//
+//      ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', equalsForeign, 'Equals Foreign', {both: true});
+////      ValidationActionsStore.validation.push('dropdown.lang.from', 'dropdown.lang.to', equalsForeign, 'Equals Foreign');
+//
+//      ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', function (own, foreign) {
+//        if (own.name === 'Thai') {
+//          return true;
+//        }
+//      }, 'isThai', {both: true});
+//
+//      ValidationActionsStore.validation.push('dropdown.lang.to', ['dropdown.lang.from', 'dropdown.lang.to'], function (own, foreignObj) {
+//        $log.debug('triggered', own, foreignObj);
+//        return angular.equals(foreignObj['dropdown.lang.from'], foreignObj['dropdown.lang.to']);
+//      }, 'ArrayTest');
 
       var self = this;
 
