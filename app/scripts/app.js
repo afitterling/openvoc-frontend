@@ -245,8 +245,8 @@ angular.module('famousAngular',
             AppStore.set('languages', languages);
             $rootScope.languages = languages;
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
-            $rootScope.lang_selected = {from_id: 1, to_id: 3};
-            words.query({language_id: 1, targetlang_id: 3, user_id: auth.profile.user_id}, function (words) {
+            $rootScope.lang_selected = {from_id: 1, to_id: 2};
+            words.query({language_id: 1, targetlang_id: 2, user_id: auth.profile.user_id}, function (words) {
               console.log('words', words);
               AppStore.set('words', words);
             });
