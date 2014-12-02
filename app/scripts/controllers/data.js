@@ -42,19 +42,44 @@ angular.module('famousAngular')
       /* jshint constructor: false */
       var words = Words(conf);
 
-      $scope.addNewWord = function (word) {
+      $scope.saveWord = function (word, language_id, successCB) {
         $scope.success = null;
         /* jshint camelcase: false */
 //      word.user_id = $scope.profile.user_id;
         word.user_id = null;
-        word.language_id = $scope.lang.from.id;
+        word.language_id = language_id || $scope.lang.from.id;
         words.save({word: word}, function (success) {
-          self.words.push(success);
+          // if parameter not given we know it is added as a word not as a translation
+          if (!language_id) {
+            self.words.push(success);
+          }
           $scope.success = true;
+          if (angular.isDefined(successCB)){
+            successCB(success);
+          }
         }, function (error) {
           $scope.success = false;
           $scope.word = word;
         });
+      };
+
+      $scope.saveTranslation = function (word, translation) {
+        var exists;
+        angular.forEach(word.translations, function(trans){
+          exists = angular.equals(trans.id, translation.id);
+        });
+        console.log('exists', exists);
+        console.log(word, translation);
+        if (!exists) {
+          $scope.saveWord({name: translation.name, language_id: $scope.lang.to.id}, $scope.lang.to.id, function (translation) {
+            // success
+            console.log('success trans');
+//            console.log(item);
+            return word.translations.push(translation);
+          });
+        }
+//        word.translations.push(translation);
+//        return true;
       };
 
       $scope.dummy = function () {
