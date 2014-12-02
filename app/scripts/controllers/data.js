@@ -76,7 +76,7 @@ angular.module('famousAngular')
 
             console.log('translation', translation);
 
-            var Translations = $resource($scope.conf.API_BASEURL + '/words/' + word.id + '/conversion', {id: '@id'},
+            var Translations = $resource(conf.API_BASEURL + '/words/' + word.id + '/conversion', {id: '@id'},
               { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
 
             Translations.save({word_id: translation.id}, function () {
@@ -86,31 +86,20 @@ angular.module('famousAngular')
 
           });
         }
-//        word.translations.push(translation);
-//        return true;
       };
 
-      $scope.dummy = function () {
-        //
-      };
-      return;
+      var first = 0;
+      $scope.updateTableItems = function () {
+        if (first < 2) {
+          first += 1;
+          return;
+        }
 
-
-      var items = Items(conf);
-
-      $scope.addItem = function (item) {
-        $scope.success = null;
-        /* jshint camelcase: false */
-        item.user_id = $scope.profile.user_id;
-        items.save({item: item}, function (success) {
-          self.items.push(success);
-          $scope.success = true;
-          $scope.item = {};
-        }, function (error) {
-          $scope.success = false;
-          $scope.item = item;
+        words.query({language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (words) {
+          console.log('words', words);
+          AppStore.set('words', words);
+          self.words = words;
         });
-      };
 
       };
 
