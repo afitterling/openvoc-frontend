@@ -19,5 +19,5 @@
     <!-- @TODO -->
     <!--<span ng-hide="edit" ng-click="edit=true">{{(!resetCancel && model) || '+'}}</span>-->
     <span ng-hide="edit || model" ng-click="edit=true"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></button></span>
-    <span ng-hide="edit || !model" ng-click="edit=true">{{model}}</span>
+    <span ng-hide="edit || !model" ng-click="edit=true">{{model}} <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></span>
 </div>
