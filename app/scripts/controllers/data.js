@@ -64,6 +64,13 @@ angular.module('famousAngular')
         });
       };
 
+      $scope.updateWord  = function (word) {
+        console.log(word);
+        words.update(word, function (success) {
+          self.words[self.words.indexOf(word)] = success;
+        });
+      };
+
       $scope.saveTranslation = function (word, translation) {
         var exists = null;
         angular.forEach(word.translations, function (trans) {

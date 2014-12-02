@@ -28,7 +28,7 @@
             <tr ng-repeat-start="word in ctrl.words" ng-hide="word.translations.length">
                 <td>
                     <span>
-                        <editable-simple model="word.name" submit-callback="saveWord(word)">
+                        <editable-simple model="word.name" submit-callback="updateWord(word)">
                         </editable-simple>
                     </span>
                 </td>
