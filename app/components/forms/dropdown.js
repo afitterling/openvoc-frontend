@@ -15,6 +15,11 @@ angular.module('directives.formHelpers', [])
       },
       link: function (scope, elm, attrs) {
 
+        // do a simple watch for setting the current value to other triggered changes
+        scope.$watch('model', function(newVal) {
+          scope.current = newVal;
+        });
+
         var spliceMenuItems = function () {
           scope.menuItems = [];
           angular.copy(scope.listModel, scope.menuItems);
@@ -28,9 +33,15 @@ angular.module('directives.formHelpers', [])
               return;
             }
           });
+
           spliceMenuItems();
           scope.model = scope.current;
-          scope.onChange();
+          console.log(scope.model);
+          // why you need this: the model binding is two way to some upper scope model wait until it is really updated
+          scope.$watch('model', function() {
+            scope.onChange();
+          });
+
           ValidationActionsStore.updateState(scope.name, scope.current);
           $log.debug(scope.name, ' anyValidation =', ValidationActionsStore.anyValidation(scope.name));
           $log.debug(scope.name, ' anyValidationArray =', ValidationActionsStore.anyValidationArray(scope.name));
