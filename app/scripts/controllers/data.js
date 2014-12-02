@@ -76,6 +76,20 @@ angular.module('famousAngular')
         });
       };
 
+      $scope.deleteWord = function (word) {
+        console.log(word);
+        words.delete({id: word.id}, function(){
+          // word delete
+          self.words.splice(self.words.indexOf(word),1 );
+        });
+      };
+
+      $scope.deleteTranslation = function (word, trans) {
+        words.delete({id: trans.id}, function () {
+          word.translations.splice(word.translations.indexOf(trans), 1);
+        });
+      };
+
       $scope.saveTranslation = function (word, translation) {
         var exists = null;
         angular.forEach(word.translations, function (trans) {

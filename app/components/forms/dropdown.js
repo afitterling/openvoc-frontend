@@ -18,6 +18,9 @@ angular.module('directives.formHelpers', [])
         // do a simple watch for setting the current value to other triggered changes
         scope.$watch('model', function(newVal) {
           scope.current = newVal;
+          ValidationActionsStore.updateState(scope.name, scope.current);
+          $log.debug(scope.name, ' anyValidation =', ValidationActionsStore.anyValidation(scope.name));
+          $log.debug(scope.name, ' anyValidationArray =', ValidationActionsStore.anyValidationArray(scope.name));
         });
 
         var spliceMenuItems = function () {
