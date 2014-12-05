@@ -147,4 +147,13 @@ angular.module('famousAngular')
         //
       };
 
+      $scope.bingTranslate = function (word) {
+        console.log($scope.lang);
+        $http.get(conf.API_BASEURL + '/bing_translation/?source=' + word.name + '&from=' +
+            $scope.lang.from.locale_string + '&to=' + $scope.lang.to.locale_string).success(function (success) {
+          var translation = { name: success.result };
+          $scope.saveTranslation(word, translation);
+        });
+      };
+
     }]);
