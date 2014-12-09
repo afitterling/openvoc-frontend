@@ -12,6 +12,10 @@
               on-change="updateTableItems(lang)" selected="lang_selected.to_id" list-model="languages"></dropdown>
 
     <div class="row">
+
+    </div>
+
+    <div class="row">
         <table class="table table-bordered">
             <tr>
                 <th>{{lang.from.name}}</th>
@@ -51,6 +55,7 @@
                     <span ng-show="$first">
                         <editable-simple model="word.name"
                                          bing="true"
+                                         submit-callback="updateWord(word)"
                                          delete-callback="deleteWord(word)"
                                 >
                         </editable-simple>

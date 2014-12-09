@@ -1,0 +1,32 @@
+<div class="partial" ng-controller="DataCtrl as ctrl">
+
+    <dropdown name="dropdown.lang.from" model="lang.from" on-change="updateTableItems(lang)" selected="lang_selected.from_id"
+              list-model="languages"></dropdown>
+    <span class="message error-message">{{error}}</span>
+
+    <button class="btn btn-default btn-small" ng-click="swapLanguages()">
+        <span class="glyphicon glyphicon-transfer"></span>
+    </button>
+
+    <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
+              on-change="updateTableItems(lang)" selected="lang_selected.to_id" list-model="languages"></dropdown>
+
+    <div ng-controller="LearnCtrl">
+        <button ng-hide="learn" class="btn btn-default btn-small btn-info" ng-click="start()">
+            <span class="glyphicon glyphicon-start">Learning</span>
+        </button>
+
+        <div ng-show="learn">
+            <div>{{words[index].name}}</div>
+
+            <div>
+                <input type="text"/>
+            </div>
+
+        </div>
+
+    </div>
+
+    <br><br>
+
+</div>

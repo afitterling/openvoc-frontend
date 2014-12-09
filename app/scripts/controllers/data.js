@@ -64,6 +64,7 @@ angular.module('famousAngular')
 
       $scope.updateWord  = function (word) {
         console.log(word);
+        word.targetlang_id = $scope.lang.to.id;
         words.update(word, function (success) {
           self.words[self.words.indexOf(word)] = success;
         });

@@ -126,6 +126,21 @@ angular.module('famousAngular',
         });
 
       $stateProvider
+        .state('learn', {
+          url: '/learn',
+          templateUrl: 'partials/learn.html',
+          resolve: {
+            conf: ['Settings', function (Settings) {
+              return Settings;
+            }]
+          },
+          controller: ['$scope', 'conf', function ($scope, conf) {
+            $scope.conf = conf;
+          }],
+          data: {}
+        });
+
+      $stateProvider
         .state('error', {
           url: '/error',
           templateUrl: 'partials/error.html',
