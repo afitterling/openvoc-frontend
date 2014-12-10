@@ -11,16 +11,21 @@ angular.module('famousAngular')
 
       var AutoUnit = $resource($scope.conf.API_BASEURL + '/unit_items/auto_generate');
 
-      $scope.start = function () {
+      $scope.startUnit = function () {
 
         // fetch the custom unit
 
-        AutoUnit.query({user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (data) {
+        AutoUnit.query({shuffle: true, user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (data) {
           console.log(data);
         });
 
-//        $scope.learn = true;
-//        $scope.index = 0;
+        $scope.unit = { inProgress: true, idx: 0 };
+
+      };
+
+      $scope.stopUnit = function () {
+
+        $scope.unit = { inProgress: false, idx: 0 };
 
       };
 

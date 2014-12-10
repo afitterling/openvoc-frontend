@@ -12,8 +12,11 @@
               on-change="updateTableItems(lang)" selected="lang_selected.to_id" list-model="languages"></dropdown>
 
     <div ng-controller="LearnCtrl">
-        <button ng-hide="learn" class="btn btn-default btn-small btn-info" ng-click="start()">
-            <span class="glyphicon glyphicon-start">Learning</span>
+        <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-info" ng-click="startUnit()">
+            <span class="glyphicon glyphicon-start">Start Unit</span>
+        </button>
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
+            <span class="glyphicon glyphicon-start">Stop Unit</span>
         </button>
         <!--<div ng-show="learn">-->
             <!--<div>{{words[index].name}}</div>-->
@@ -23,6 +26,12 @@
             <!--</div>-->
 
         <!--</div>-->
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-click="">
+            <span class="glyphicon glyphicon-start">prev.</span>
+        </button>
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-click="">
+            <span class="glyphicon glyphicon-start">next</span>
+        </button>
 
     </div>
 
