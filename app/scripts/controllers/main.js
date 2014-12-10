@@ -8,14 +8,13 @@ angular.module('famousAngular')
 
   .controller('LearnCtrl', ['$log', '$scope', '$resource', '$http', '$rootScope', 'auth',
     function ($log, $scope, $resource, $http, $rootScope, auth) {
-      //
-
 
       var AutoUnit = $resource($scope.conf.API_BASEURL + '/unit_items/auto_generate');
 
       $scope.start = function () {
-        // fetch the custom unit with age param
-        console.log($scope.lang);
+
+        // fetch the custom unit
+
         AutoUnit.query({user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (data) {
           console.log(data);
         });
