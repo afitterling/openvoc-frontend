@@ -1,8 +1,5 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
 
-    <div ng-controller="LearnCtrl">
-
-        <div ng-hide="unit.inProgress">
     <dropdown name="dropdown.lang.from" model="lang.from" on-change="updateTableItems(lang)" selected="lang_selected.from_id"
               list-model="languages"></dropdown>
     <span class="message error-message">{{error}}</span>
@@ -11,11 +8,10 @@
         <span class="glyphicon glyphicon-transfer"></span>
     </button>
 
-
     <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
               on-change="updateTableItems(lang)" selected="lang_selected.to_id" list-model="languages"></dropdown>
 
-        </div>
+    <div ng-controller="LearnCtrl">
         <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-info" ng-click="startUnit()">
             <span class="glyphicon glyphicon-start">Start Unit</span>
         </button>
