@@ -18,6 +18,7 @@ angular.module('famousAngular')
           $scope.unit = { inProgress: true, idx: 0 };
           $scope.show = false;
           $scope.interactive = false;
+          $scope.end = 2;
         });
       };
 
@@ -28,6 +29,7 @@ angular.module('famousAngular')
 
       $scope.next = function () {
         $scope.unit.idx += 1;
+        $scope.end = 2;
         $scope.show = false;
       };
 
@@ -40,6 +42,10 @@ angular.module('famousAngular')
         $scope.show = !$scope.show;
       };
 
+      $scope.keyTrigger = function (event) {
+        console.log(event);
+      };
+
       $scope.validator = function (input, model) {
         if (angular.equals(input, model.to.name)){
           $scope.input = null;
@@ -50,6 +56,7 @@ angular.module('famousAngular')
           return;
         }
         // upgrade "learn need" score
+        $scope.end += 1;
       };
 
     }])
