@@ -18,6 +18,9 @@
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
             <span class="glyphicon glyphicon-start">Stop Unit</span>
         </button>
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="variant=!variant" ng-class="{'active': variant}">
+            <span class="glyphicon glyphicon-start">Tip</span>
+        </button>
         <!--<div ng-show="learn">-->
             <!--<div>{{words[index].name}}</div>-->
 
@@ -26,12 +29,26 @@
             <!--</div>-->
 
         <!--</div>-->
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-click="">
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-disabled="unit.idx==0" ng-click="prev()">
             <span class="glyphicon glyphicon-start">prev.</span>
         </button>
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-click="">
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small" ng-click="showItem()" ng-class="{'active': show}">
+            <span class="glyphicon glyphicon-start">show</span>
+        </button>
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-disabled="unit.idx==unit_items.length-1" ng-click="next()">
             <span class="glyphicon glyphicon-start">next</span>
         </button>
+
+        <div ng-show="unit.inProgress">
+            <!--{{unit_items[unit.idx]}}-->
+            <h3>
+                {{unit_items[unit.idx].from.name}} <span ng-show="variant">({{unit_items[unit.idx].to.name[0]}}{{unit_items[unit.idx].to.name[1]}}...)</span>
+            </h3>
+
+            <h3 ng-show="show">
+                {{unit_items[unit.idx].to.name}}
+            </h3>
+        </div>
 
     </div>
 
