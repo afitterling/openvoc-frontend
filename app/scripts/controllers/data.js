@@ -32,7 +32,16 @@ angular.module('famousAngular')
 
       var self = this;
 
+      $scope.predicate = 'updated_at';
+      $scope.reverse = true;
+
+      //@TODO
+      $scope.sortMode = {
+        updated_at: { false: '' }
+      };
+
       self.words = $scope.words;
+      $log.debug('words:', self.words);
 
       $scope.submitTest = function (data) {
         console.log(data);
