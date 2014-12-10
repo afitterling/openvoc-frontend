@@ -6,8 +6,8 @@ angular.module('famousAngular')
       //
     }])
 
-  .controller('LearnCtrl', ['$log', '$scope', '$resource', '$http', '$rootScope',
-    function ($log, $scope, $resource, $http, $rootScope) {
+  .controller('LearnCtrl', ['$log', '$scope', '$resource', '$http', '$rootScope', 'auth',
+    function ($log, $scope, $resource, $http, $rootScope, auth) {
       //
 
 
@@ -16,7 +16,7 @@ angular.module('famousAngular')
       $scope.start = function () {
         // fetch the custom unit with age param
         console.log($scope.lang);
-        AutoUnit.query({language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (data) {
+        AutoUnit.query({user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (data) {
           console.log(data);
         });
 
