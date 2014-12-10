@@ -11,6 +11,7 @@
     <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
               on-change="updateTableItems(lang)" selected="lang_selected.to_id" list-model="languages"></dropdown>
 
+    <br>
     <div ng-controller="LearnCtrl">
         <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-info" ng-click="startUnit()">
             <span class="glyphicon glyphicon-start">Start Unit</span>
@@ -19,8 +20,13 @@
             <span class="glyphicon glyphicon-start">Stop Unit</span>
         </button>
         <br>
+        <br>
+
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="variant=!variant" ng-class="{'active': variant}">
             <span class="glyphicon glyphicon-start">Tip</span>
+        </button>
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="interactive=!interactive" ng-class="{'active': interactive}">
+            <span class="glyphicon glyphicon-start">i</span>
         </button>
         <!--<div ng-show="learn">-->
             <!--<div>{{words[index].name}}</div>-->
@@ -45,6 +51,18 @@
             <h3>
                 {{unit_items[unit.idx].from.name}} <span ng-show="variant">({{unit_items[unit.idx].to.name[0]}}{{unit_items[unit.idx].to.name[1]}}...)</span>
             </h3>
+               <form name="inputForm" ng-submit="validator(input, unit_items[unit.idx])" novalidate="">
+                <div class="input-group" ng-show="interactive">
+                    <input type="text" class="form-control" ng-required="true" ng-model="input"></input>
+                    <span class="input-group-btn">
+                        <!--<button ng-click="validator(input)" class="btn btn-default btn-success"-->
+                                <!--ng-disabled="false"-->
+                                <!--type="submit">-->
+                            <!--ok-->
+                        <!--</button>-->
+                    </span>
+                </div>
+               </form>
 
             <h3 ng-show="show">
                 {{unit_items[unit.idx].to.name}}
@@ -56,3 +74,4 @@
     <br><br>
 
 </div>
+

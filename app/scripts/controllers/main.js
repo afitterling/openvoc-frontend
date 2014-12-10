@@ -17,6 +17,7 @@ angular.module('famousAngular')
           $scope.unit_items = success;
           $scope.unit = { inProgress: true, idx: 0 };
           $scope.show = false;
+          $scope.interactive = false;
         });
       };
 
@@ -37,6 +38,18 @@ angular.module('famousAngular')
 
       $scope.showItem = function () {
         $scope.show = !$scope.show;
+      };
+
+      $scope.validator = function (input, model) {
+        if (angular.equals(input, model.to.name)){
+          $scope.input = null;
+          // downgrade "learn need" score
+          if ($scope.unit.idx !== $scope.unit_items.length - 1) {
+            $scope.next();
+          }
+          return;
+        }
+        // upgrade "learn need" score
       };
 
     }])
