@@ -15,13 +15,14 @@ angular.module('famousAngular')
         // fetch the custom unit
         AutoUnit.query({shuffle: true, user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (success) {
           $scope.unit_items = success;
+          $scope.unit = { inProgress: true, idx: 0 };
+          $scope.show = false;
         });
-        $scope.unit = { inProgress: true, idx: 0 };
-        $scope.show = false;
       };
 
       $scope.stopUnit = function () {
         $scope.unit = { inProgress: false, idx: 0 };
+        $scope.show = false;
       };
 
       $scope.next = function () {
