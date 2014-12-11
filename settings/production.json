@@ -1,4 +1,4 @@
 {
   "API_BASEURL": "https://sp33c.de/openvocapi-staging/api/",
-  "debug": true
+  "debug": false
 }
