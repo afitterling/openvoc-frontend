@@ -44,7 +44,6 @@ angular.module('famousAngular')
       $log.debug('words:', self.words);
 
       $scope.submitTest = function (data) {
-        console.log(data);
         return true;
       };
 
@@ -72,7 +71,6 @@ angular.module('famousAngular')
       };
 
       $scope.updateWord  = function (word) {
-        console.log(word);
         word.targetlang_id = $scope.lang.to.id;
         words.update(word, function (success) {
           self.words[self.words.indexOf(word)] = success;
@@ -80,14 +78,12 @@ angular.module('famousAngular')
       };
 
       $scope.updateTranslation  = function (word, translation) {
-        console.log(word);
         words.update(translation, function (success) {
           word.translations[word.translations.indexOf(translation)] = success;
         });
       };
 
       $scope.deleteWord = function (word) {
-        console.log(word);
         words.delete({id: word.id}, function(){
           // word delete
           self.words.splice(self.words.indexOf(word),1 );
@@ -105,15 +101,9 @@ angular.module('famousAngular')
         angular.forEach(word.translations, function (trans) {
           exists = angular.equals(trans.id, translation.id);
         });
-        console.log('exists', exists);
-        console.log(word, translation);
         if (!exists) {
           $scope.saveWord({name: translation.name, language_id: $scope.lang.to.id}, $scope.lang.to.id, function (translation) {
             // success
-
-            console.log('translation', translation);
-
-            console.log('translation_id', translation.id);
             var Translations = $resource(conf.API_BASEURL + '/words/' + translation.id + '/conversion', {id: '@id'},
               { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
 
@@ -158,7 +148,6 @@ angular.module('famousAngular')
       };
 
       $scope.bingTranslate = function (word) {
-        console.log($scope.lang);
         $http.get(conf.API_BASEURL + '/bing_translation/?source=' + word.name + '&from=' +
             $scope.lang.from.locale_string + '&to=' + $scope.lang.to.locale_string).success(function (success) {
           var translation = { name: success.result };
