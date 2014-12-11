@@ -11,7 +11,7 @@ angular.module('famousAngular')
 
       var AutoUnit = $resource($scope.conf.API_BASEURL + '/unit_items/auto_generate');
 
-      var tipDefaultLength = 2;
+      var tipDefaultLength = 1;
 
       $scope.startUnit = function () {
         // fetch the custom unit
@@ -19,7 +19,8 @@ angular.module('famousAngular')
           $scope.unit_items = success;
           $scope.unit = { inProgress: true, idx: 0 };
           $scope.show = false;
-          $scope.interactive = false;
+          $scope.interactive = true;
+          $scope.variant = true;
           $scope.tipLength = tipDefaultLength;
         });
       };
