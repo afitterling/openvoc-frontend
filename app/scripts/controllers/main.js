@@ -11,6 +11,8 @@ angular.module('famousAngular')
 
       var AutoUnit = $resource($scope.conf.API_BASEURL + '/unit_items/auto_generate');
 
+      var tipDefaultLength = 2;
+
       $scope.startUnit = function () {
         // fetch the custom unit
         AutoUnit.query({shuffle: true, user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (success) {
@@ -18,23 +20,25 @@ angular.module('famousAngular')
           $scope.unit = { inProgress: true, idx: 0 };
           $scope.show = false;
           $scope.interactive = false;
-          $scope.end = 2;
+          $scope.tipLength = tipDefaultLength;
         });
       };
 
       $scope.stopUnit = function () {
         $scope.unit = { inProgress: false, idx: 0 };
+        $scope.tipLength = tipDefaultLength;
         $scope.show = false;
       };
 
       $scope.next = function () {
         $scope.unit.idx += 1;
-        $scope.end = 2;
+        $scope.tipLength = tipDefaultLength;
         $scope.show = false;
       };
 
       $scope.prev = function () {
         $scope.unit.idx -= 1;
+        $scope.tipLength = tipDefaultLength;
         $scope.show = false;
       };
 
@@ -56,7 +60,7 @@ angular.module('famousAngular')
           return;
         }
         // upgrade "learn need" score
-        $scope.end += 1;
+        $scope.tipLength += 1;
       };
 
     }])

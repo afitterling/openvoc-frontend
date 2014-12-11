@@ -38,7 +38,6 @@ angular.module('directives.formHelpers', [])
           });
 
           scope.model = scope.current;
-          console.log(scope.model);
           // why you need this: the model binding is two way to some upper scope model wait until it is really updated
           var cancel = scope.$watch('model', function () {
             scope.onChange();

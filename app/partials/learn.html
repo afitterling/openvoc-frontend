@@ -52,7 +52,7 @@
         <div ng-show="unit.inProgress">
             <!--{{unit_items[unit.idx]}}-->
             <h3>
-                {{unit_items[unit.idx].from.name}} <span ng-show="variant">({{unit_items[unit.idx].to.name.slice(0,end)}}...)</span>
+                {{unit_items[unit.idx].from.name}} <span ng-show="variant">({{unit_items[unit.idx].to.name.slice(0,tipLength)}}...)</span>
             </h3>
                <form name="inputForm" ng-submit="validator(input, unit_items[unit.idx])" novalidate="">
                 <div class="input-group" ng-show="interactive">

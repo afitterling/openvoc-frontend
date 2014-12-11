@@ -202,7 +202,6 @@ angular.module('famousAngular',
             $location.path('/profile');
             $log.debug('login success:', true);
           }, function (err) {
-            console.log('Error:', err);
           });
         }
 
@@ -260,13 +259,11 @@ angular.module('famousAngular',
           languages.query({}, function (languages) {
             /* jshint camelcase: false */
 //          words.query({user_id: auth.profile.user_id}, function (items) {
-            console.log('langs:', languages);
             AppStore.set('languages', languages);
             $rootScope.languages = languages;
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
             $rootScope.lang_selected = {from_id: 1, to_id: 2};
             words.query({language_id: 1, targetlang_id: 2, user_id: auth.profile.user_id}, function (words) {
-              console.log('words', words);
               AppStore.set('words', words);
             });
           });
