@@ -19,7 +19,7 @@
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
             <span class="glyphicon glyphicon-start">Stop Unit</span>
         </button>
-        <button ng-show="unit.inProgress && unit.idx == unit_items.length-1" class="btn btn-default btn-small btn-success" ng-click="unit.idx=0">
+        <button ng-show="unit.inProgress && unit.finished" class="btn btn-default btn-small btn-success" ng-click="unit.idx=0; unit.finished=false">
             <span class="glyphicon glyphicon-start"><span class="glyphicon glyphicon-repeat"></span></span>
         </button>
         <br>

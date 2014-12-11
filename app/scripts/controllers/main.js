@@ -17,7 +17,7 @@ angular.module('famousAngular')
         // fetch the custom unit
         AutoUnit.query({shuffle: true, user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (success) {
           $scope.unit_items = success;
-          $scope.unit = { inProgress: true, idx: 0 };
+          $scope.unit = { inProgress: true, idx: 0, finished: false };
           $scope.show = false;
           $scope.interactive = true;
           $scope.variant = true;
@@ -57,6 +57,8 @@ angular.module('famousAngular')
           // downgrade "learn need" score
           if ($scope.unit.idx !== $scope.unit_items.length - 1) {
             $scope.next();
+          } else {
+            $scope.unit.finished = true;
           }
           return;
         }
