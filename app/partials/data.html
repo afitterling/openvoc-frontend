@@ -1,6 +1,6 @@
 <div class="partial" ng-controller="DataCtrl">
 
-    <dropdown name="dropdown.lang.from" model="lang.from" on-change="updateTableItems(lang)" selected="lang_selected.from_id"
+    <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
               list-model="languages"></dropdown>
     <span class="message error-message">{{error}}</span>
 
@@ -9,7 +9,7 @@
     </button>
 
     <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
-              on-change="updateTableItems(lang)" selected="lang_selected.to_id" list-model="languages"></dropdown>
+              selected="lang_selected.to_id" list-model="languages"></dropdown>
 
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

@@ -119,6 +119,10 @@ angular.module('famousAngular')
         }
       };
 
+      $scope.$watch('lang', function (newVal) {
+        $scope.updateTableItems(newVal);
+      }, true);
+
       var first = 0;
       $scope.updateTableItems = function (lang) {
         if (first < 2) {
@@ -140,8 +144,8 @@ angular.module('famousAngular')
         var temp = $scope.lang.from;
         $scope.lang.from = $scope.lang.to;
         $scope.lang.to = temp;
-        // and refetch!
-        $scope.updateTableItems($scope.lang);
+        // and refetch! // see the on change
+//        $scope.updateTableItems($scope.lang);
       };
 
       // dummy
