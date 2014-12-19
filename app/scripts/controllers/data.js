@@ -4,8 +4,6 @@ angular.module('famousAngular')
   .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Words', 'AppStore',
     function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Words, AppStore) {
 
-      var conf = $scope.conf;
-
 //      // validator
 //      var equalsForeign = function (own, foreign) {
 //        if (own === foreign) {
@@ -40,7 +38,9 @@ angular.module('famousAngular')
         updated_at: { false: '' }
       };
 
-      self.words = $scope.words;
+      self.words = $scope.words; // comes from resolve
+      $scope.words = null;
+
       $log.debug('words:', self.words);
 
       $scope.submitTest = function (data) {
@@ -48,7 +48,7 @@ angular.module('famousAngular')
       };
 
       /* jshint constructor: false */
-      var words = Words(conf);
+      var words = Words($scope.conf);
 
       $scope.saveWord = function (word, language_id, successCB) {
         $scope.success = null;
@@ -104,7 +104,7 @@ angular.module('famousAngular')
         if (!exists) {
           $scope.saveWord({name: translation.name, language_id: $scope.lang.to.id}, $scope.lang.to.id, function (translation) {
             // success
-            var Translations = $resource(conf.API_BASEURL + '/words/' + translation.id + '/conversion', {id: '@id'},
+            var Translations = $resource($scope.conf.API_BASEURL + '/words/' + translation.id + '/conversion', {id: '@id'},
               { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
 
             Translations.save({word_id: word.id}, function () {
@@ -125,9 +125,11 @@ angular.module('famousAngular')
           first += 1;
           return;
         }
+        self.words = null; // reset
+        $scope.$digest();
 
         words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
-          AppStore.set('words', words);
+          AppStore.set('words', {}); // empty as we don't need to resolve
           self.words = words;
         });
 
@@ -148,7 +150,7 @@ angular.module('famousAngular')
       };
 
       $scope.bingTranslate = function (word) {
-        $http.get(conf.API_BASEURL + '/bing_translation/?source=' + word.name + '&from=' +
+        $http.get($scope.conf.API_BASEURL + '/bing_translation/?source=' + word.name + '&from=' +
             $scope.lang.from.locale_string + '&to=' + $scope.lang.to.locale_string).success(function (success) {
           var translation = { name: success.result };
           $scope.saveTranslation(word, translation);
