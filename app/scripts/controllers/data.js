@@ -38,8 +38,8 @@ angular.module('famousAngular')
         updated_at: { false: '' }
       };
 
-      self.words = $scope.words; // comes from resolve
-      $scope.words = null;
+//      self.words = $scope.words; // comes from resolve
+//      $scope.words = null;
 
       $log.debug('words:', self.words);
 
@@ -58,7 +58,7 @@ angular.module('famousAngular')
         words.save({word: word}, function (success) {
           // if parameter not given we know it is added as a word not as a translation
           if (!language_id) {
-            self.words.push(success);
+            $scope.words.push(success);
           }
           $scope.success = true;
           if (angular.isDefined(successCB)){
@@ -73,7 +73,7 @@ angular.module('famousAngular')
       $scope.updateWord  = function (word) {
         word.targetlang_id = $scope.lang.to.id;
         words.update(word, function (success) {
-          self.words[self.words.indexOf(word)] = success;
+          $scope.words[$scope.words.indexOf(word)] = success;
         });
       };
 
@@ -86,7 +86,7 @@ angular.module('famousAngular')
       $scope.deleteWord = function (word) {
         words.delete({id: word.id}, function(){
           // word delete
-          self.words.splice(self.words.indexOf(word),1 );
+          $scope.words.splice($scope.words.indexOf(word),1 );
         });
       };
 
@@ -125,12 +125,12 @@ angular.module('famousAngular')
           first += 1;
           return;
         }
-        self.words = null; // reset
-        $scope.$digest();
+
+        $scope.words = null;
 
         words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
           AppStore.set('words', {}); // empty as we don't need to resolve
-          self.words = words;
+          $scope.words = words;
         });
 
       };
