@@ -70,7 +70,7 @@ gulp.task('watch', ['connect'], function () {
   gulp.watch('app/images/**/*', ['images']);
 });
 
-gulp.task('build', ['sass', 'html', 'styles', 'images', 'fonts', 'partials', 'components', 'settings']);
+gulp.task('build', ['sass', 'html', 'styles', 'images', 'fonts', 'partials', 'components']);
 
 gulp.task('default', ['connect', 'watch'], function () {
   gulp.start('build');
