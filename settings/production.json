@@ -1,4 +1,4 @@
 {
-  "API_BASEURL": "https://sp33c.de/openvocapi-staging/api/",
+  "API_BASEURL": "https://sp33c.de/openvocapi-production/api/",
   "debug": false
 }

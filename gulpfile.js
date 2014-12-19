@@ -48,8 +48,8 @@ gulp.task('components', function () {
 });
 
 
-gulp.task('settings', function () {
-  gulp.src('./settings/production.json')
+gulp.task('settings-staging', function () {
+  gulp.src('./settings/staging.json')
     .pipe(rename('settings.json'))
     .pipe(gulp.dest('dist/'));
   gulp.src('app/auth0-variables.js')
