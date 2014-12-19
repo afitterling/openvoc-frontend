@@ -2,5 +2,4 @@ gulp clean && \
 gulp build && \
 gulp settings-staging && \
 rsync -avr app/bower_components dist/ && \
-./scripts/patch_baseUrl.sh && \
-./scripts/push.sh
+./scripts/patch_baseUrl.sh #&& \
