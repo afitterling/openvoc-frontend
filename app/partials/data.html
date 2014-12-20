@@ -43,7 +43,11 @@
         <p></p>
     </div>
 
-    <div class="row">
+    <div class="row" ng-show="!words">
+        <span>Loading ....</span>
+    </div>
+
+    <div class="row" ng-show="words">
         <table class="table table-bordered">
             <tr>
                 <th>{{lang.from.name}}</th>
