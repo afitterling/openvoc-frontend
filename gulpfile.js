@@ -56,6 +56,15 @@ gulp.task('settings-staging', function () {
     .pipe(gulp.dest('dist/'));
 });
 
+gulp.task('settings-production', function () {
+  gulp.src('./settings/production.json')
+    .pipe(rename('settings.json'))
+    .pipe(gulp.dest('dist/'));
+  gulp.src('app/auth0-variables.js')
+    .pipe(gulp.dest('dist/'));
+});
+
+
 gulp.task('watch', ['connect'], function () {
 
   gulp.watch('./app/scss/**/*.scss', ['sass']);
