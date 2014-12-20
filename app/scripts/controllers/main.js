@@ -11,7 +11,7 @@ angular.module('famousAngular')
 
       var AutoUnit = $resource($scope.conf.API_BASEURL + '/unit_items/auto_generate');
 
-      var tipDefaultLength = 1;
+      var tipDefaultLength = 3;
 
       $scope.startUnit = function () {
         // fetch the custom unit
@@ -52,8 +52,10 @@ angular.module('famousAngular')
       };
 
       $scope.validator = function (input, model) {
-        if (angular.equals(input, model.to.name)){
+        if (angular.equals(input, model.to.name)) {
           $scope.input = null;
+          // tag translation as learned
+
           // downgrade "learn need" score
           if ($scope.unit.idx !== $scope.unit_items.length - 1) {
             $scope.next();
