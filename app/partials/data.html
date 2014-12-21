@@ -36,6 +36,9 @@
         <!--<label>Filter-Value:</label>-->
         <!--<input type="text" ng-model="filter.value">-->
         <!--<p></p>-->
+        <label>items with translations only</label>
+        <input type="checkbox" ng-model="translationsOnly">
+        <br>
         <label>From-Filter:</label>
         <input type="text" ng-model="filterValue"> |
         <label>To-Filter:</label>
@@ -53,7 +56,7 @@
                 <th>{{lang.from.name}}</th>
                 <th>{{lang.to.name}}</th>
             </tr>
-            <tr>
+            <tr ng-show="!translationsOnly">
                 <td>
                     <editable-simple reset-cancel="true" submit-callback="saveWord(newWord) && (newWord=null)"
                                      model="newWord.name"></editable-simple>
@@ -61,7 +64,7 @@
                 <td>
                 </td>
             </tr>
-            <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse" ng-hide="word.translations.length">
+            <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse" ng-hide="word.translations.length || translationsOnly || translationFilterValue">
                 <td>
                     <span>
                         <editable-simple model="word.name"
@@ -106,7 +109,7 @@
             </tr>
             <tr ng-repeat-end></tr>
 
-            <tr ng-repeat-end ng-show="word.translations.length">
+            <tr ng-repeat-end ng-show="word.translations.length && !translationFilterValue">
                 <td></td>
                 <td>
                     <editable-simple model="newTranslation.name"
