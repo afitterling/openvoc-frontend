@@ -31,10 +31,24 @@ angular.module('famousAngular')
         $scope.show = false;
       };
 
+      var reverseModeCounter = 0;
       $scope.next = function () {
-        $scope.unit.idx += 1;
-        $scope.tipLength = tipDefaultLength;
-        $scope.show = false;
+        if ($scope.reverseMode && reverseModeCounter === 0) {
+          reverseModeCounter += 1;
+          $scope.tipLength = tipDefaultLength;
+          var tmp = $scope.unit_items[$scope.unit.idx].from;
+          $scope.unit_items[$scope.unit.idx].from = $scope.unit_items[$scope.unit.idx].to;
+          $scope.unit_items[$scope.unit.idx].to = tmp;
+          $scope.show = false;
+          return;
+        }
+        //
+        if (!$scope.reverseMode || reverseModeCounter > 0) {
+          reverseModeCounter = 0;
+          $scope.unit.idx += 1;
+          $scope.tipLength = tipDefaultLength;
+          $scope.show = false;
+        }
       };
 
       $scope.prev = function () {

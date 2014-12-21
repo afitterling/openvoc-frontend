@@ -28,8 +28,13 @@
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="variant=!variant" ng-class="{'active': variant}">
             <span class="glyphicon glyphicon-start">Tip</span>
         </button>
+
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="interactive=!interactive" ng-class="{'active': interactive}">
             <span class="glyphicon glyphicon-start">i</span>
+        </button>
+
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="reverseMode=!reverseMode" ng-class="{'active': reverseMode}">
+            <span class="">r</span>
         </button>
         <!--<div ng-show="learn">-->
             <!--<div>{{words[index].name}}</div>-->
