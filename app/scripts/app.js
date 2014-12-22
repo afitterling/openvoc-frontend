@@ -132,10 +132,14 @@ angular.module('famousAngular',
           resolve: {
             conf: ['Settings', function (Settings) {
               return Settings;
+            }],
+            languages: ['AppStore', function (AppStore) {
+              return AppStore.get('languages');
             }]
           },
-          controller: ['$scope', 'conf', function ($scope, conf) {
+          controller: ['$scope', 'conf', 'languages',  function ($scope, conf, languages) {
             $scope.conf = conf;
+            // resolve languages only, it will be in $rootScope and inherited
           }],
           data: {}
         });
