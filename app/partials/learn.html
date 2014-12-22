@@ -22,6 +22,10 @@
         <button ng-show="unit.inProgress && unit.finished" class="btn btn-default btn-small btn-success" ng-click="unit.idx=0; unit.finished=false">
             <span class="glyphicon glyphicon-start"><span class="glyphicon glyphicon-repeat"></span></span>
         </button>
+        <br><br>
+        <label>max items</label>
+        <input ng-disabled="unit.inProgress" type="number" ng-model="n_items">
+        <label>least learned</label><input ng-disabled="unit.inProgress" type="checkbox" ng-model="sort_least_learned">
         <br>
         <br>
 
