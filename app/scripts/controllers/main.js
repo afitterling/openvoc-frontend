@@ -84,5 +84,12 @@ angular.module('famousAngular')
         $scope.tipLength += 1;
       };
 
+      // monkey patch swapLanguages as we are in a sub scope
+      $scope.swapLanguages = function () {
+        var temp = $scope.lang.from;
+        $scope.lang.from = $scope.lang.to;
+        $scope.lang.to = temp;
+      };
+
     }])
 ;
