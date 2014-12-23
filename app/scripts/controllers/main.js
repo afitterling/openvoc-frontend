@@ -14,8 +14,10 @@ angular.module('famousAngular')
       var tipDefaultLength = 3;
 
       $scope.startUnit = function () {
+        $scope.request = {pending: true};
         // fetch the custom unit
         AutoUnit.query({shuffle: true, user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (success) {
+          $scope.request = {pending: false};
           $scope.unit_items = success;
           $scope.unit = { inProgress: true, idx: 0, finished: false };
           $scope.show = false;
