@@ -16,8 +16,10 @@ angular.module('famousAngular')
       $scope.n_items = 12;
 
       $scope.startUnit = function () {
+        $scope.request = {pending: true};
         // fetch the custom unit
         AutoUnit.query({shuffle: true, n_items: $scope.n_items, user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (success) {
+          $scope.request = {pending: false};
           $scope.unit_items = success;
           $scope.unit = { inProgress: true, idx: 0, finished: false };
           $scope.show = false;
