@@ -1,57 +1,67 @@
 <div class="partial" ng-controller="DataCtrl as ctrl">
 
-    <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
-              list-model="languages"></dropdown>
-    <span class="message error-message">{{error}}</span>
-
-    <button class="btn btn-default btn-small" ng-click="swapLanguages()">
-        <span class="glyphicon glyphicon-transfer"></span>
-    </button>
-
-    <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
-              selected="lang_selected.to_id" list-model="languages"></dropdown>
-
-    <br>
     <div ng-controller="LearnCtrl">
+
+        <section ng-hide="unit.inProgress">
+            <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
+                      list-model="languages"></dropdown>
+            <span class="message error-message">{{error}}</span>
+
+            <button class="btn btn-default btn-small" ng-click="swapLanguages()">
+                <span class="glyphicon glyphicon-transfer"></span>
+            </button>
+
+            <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
+                      selected="lang_selected.to_id" list-model="languages"></dropdown>
+
+        </section>
+        <br>
         <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-info" ng-click="startUnit()">
             <span class="glyphicon glyphicon-start">Start Unit</span>
         </button>
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
             <span class="glyphicon glyphicon-start">Stop Unit</span>
         </button>
-        <button ng-show="unit.inProgress && unit.finished" class="btn btn-default btn-small btn-success" ng-click="unit.idx=0; unit.finished=false">
+        <button ng-show="unit.inProgress && unit.finished" class="btn btn-default btn-small btn-success"
+                ng-click="unit.idx=0; unit.finished=false">
             <span class="glyphicon glyphicon-start"><span class="glyphicon glyphicon-repeat"></span></span>
         </button>
         <br>
         <br>
 
         <span ng-show="request.pending">Loading ...</span>
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="variant=!variant" ng-class="{'active': variant}">
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="variant=!variant"
+                ng-class="{'active': variant}">
             <span class="glyphicon glyphicon-start">Tip</span>
         </button>
 
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="interactive=!interactive" ng-class="{'active': interactive}">
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="interactive=!interactive"
+                ng-class="{'active': interactive}">
             <span class="glyphicon glyphicon-start">i</span>
         </button>
 
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="reverseMode=!reverseMode" ng-class="{'active': reverseMode}">
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="reverseMode=!reverseMode"
+                ng-class="{'active': reverseMode}">
             <span class="">r</span>
         </button>
         <!--<div ng-show="learn">-->
-            <!--<div>{{words[index].name}}</div>-->
+        <!--<div>{{words[index].name}}</div>-->
 
-            <!--<div>-->
-                <!--<input type="text"/>-->
-            <!--</div>-->
+        <!--<div>-->
+        <!--<input type="text"/>-->
+        <!--</div>-->
 
         <!--</div>-->
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-disabled="unit.idx==0" ng-click="prev()">
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-disabled="unit.idx==0"
+                ng-click="prev()">
             <span class="glyphicon glyphicon-start">prev.</span>
         </button>
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small" ng-click="showItem()" ng-class="{'active': show}">
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small" ng-click="showItem()"
+                ng-class="{'active': show}">
             <span class="glyphicon glyphicon-start">show</span>
         </button>
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-disabled="unit.idx==unit_items.length-1" ng-click="next()">
+        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning"
+                ng-disabled="unit.idx==unit_items.length-1" ng-click="next()">
             <span class="glyphicon glyphicon-start">next</span>
         </button>
 
@@ -60,7 +70,8 @@
             <h3>
                 {{unit_items[unit.idx].from.name}} <span ng-show="variant">({{unit_items[unit.idx].to.name.slice(0,tipLength)}}...)</span>
             </h3>
-               <form name="inputForm" ng-submit="validator(input, unit_items[unit.idx])" novalidate="">
+
+            <form name="inputForm" ng-submit="validator(input, unit_items[unit.idx])" novalidate="">
                 <div class="input-group" ng-show="interactive">
                     <input type="text" class="form-control" ng-required="true" ng-model="input"></input>
                     <span class="input-group-btn">
@@ -71,7 +82,7 @@
                         <!--</button>-->
                     </span>
                 </div>
-               </form>
+            </form>
 
             <h3 ng-show="show">
                 {{unit_items[unit.idx].to.name}}
