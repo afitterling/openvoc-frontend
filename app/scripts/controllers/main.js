@@ -14,19 +14,28 @@ angular.module('famousAngular')
       var tipDefaultLength = 3;
 
       $scope.n_items = 12;
+      $scope.sort_least_learned = false;
 
       $scope.startUnit = function () {
         $scope.request = {pending: true};
         // fetch the custom unit
-        AutoUnit.query({shuffle: true, n_items: $scope.n_items, user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (success) {
-          $scope.request = {pending: false};
-          $scope.unit_items = success;
-          $scope.unit = { inProgress: true, idx: 0, finished: false };
-          $scope.show = false;
-          $scope.interactive = true;
-          $scope.variant = true;
-          $scope.tipLength = tipDefaultLength;
-        });
+        AutoUnit.query({
+            shuffle: true,
+            least_learned: $scope.sort_least_learned,
+            n_items: $scope.n_items,
+            user_id: auth.profile.user_id,
+            language_id: $scope.lang.from.id,
+            targetlang_id: $scope.lang.to.id
+          },
+          function (success) {
+            $scope.request = {pending: false};
+            $scope.unit_items = success;
+            $scope.unit = { inProgress: true, idx: 0, finished: false };
+            $scope.show = false;
+            $scope.interactive = true;
+            $scope.variant = true;
+            $scope.tipLength = tipDefaultLength;
+          });
       };
 
       $scope.stopUnit = function () {
@@ -47,7 +56,7 @@ angular.module('famousAngular')
           return;
         }
         //
-        if (!$scope.reverseMode || reverseModeCounter > 0) {
+        if (!$scope.reverseMode || reverseModeCounter > 0) {
           reverseModeCounter = 0;
           $scope.unit.idx += 1;
           $scope.tipLength = tipDefaultLength;
