@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Words', 'AppStore',
-    function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Words, AppStore) {
+  .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Units', 'Words', 'AppStore',
+    function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Units, Words, AppStore) {
 
 //      // validator
 //      var equalsForeign = function (own, foreign) {
@@ -82,7 +82,7 @@ angular.module('famousAngular')
             $scope.words.push(success);
           }
           $scope.success = true;
-          if (angular.isDefined(successCB)){
+          if (angular.isDefined(successCB)) {
             successCB(success);
           }
         }, function (error) {
@@ -91,23 +91,23 @@ angular.module('famousAngular')
         });
       };
 
-      $scope.updateWord  = function (word) {
+      $scope.updateWord = function (word) {
         word.targetlang_id = $scope.lang.to.id;
         words.update(word, function (success) {
           $scope.words[$scope.words.indexOf(word)] = success;
         });
       };
 
-      $scope.updateTranslation  = function (word, translation) {
+      $scope.updateTranslation = function (word, translation) {
         words.update(translation, function (success) {
           word.translations[word.translations.indexOf(translation)] = success;
         });
       };
 
       $scope.deleteWord = function (word) {
-        words.delete({id: word.id}, function(){
+        words.delete({id: word.id}, function () {
           // word delete
-          $scope.words.splice($scope.words.indexOf(word),1 );
+          $scope.words.splice($scope.words.indexOf(word), 1);
         });
       };
 
@@ -177,9 +177,70 @@ angular.module('famousAngular')
       $scope.bingTranslate = function (word) {
         $http.get($scope.conf.API_BASEURL + '/bing_translation/?source=' + word.name + '&from=' +
             $scope.lang.from.locale_string + '&to=' + $scope.lang.to.locale_string).success(function (success) {
-          var translation = { name: success.result };
-          $scope.saveTranslation(word, translation);
+            var translation = { name: success.result };
+            $scope.saveTranslation(word, translation);
+          });
+      };
+
+      $scope.tag = function () {
+        console.log('tag called');
+//        $scope.added = true;
+//        $timeout(function () {
+//          $scope.added = null;
+//        }, 2000);
+      };
+
+      $scope.openUnitModal = function () {
+        $('#unitModal').modal({});
+      };
+
+      $scope.defaultUnit = {id: 0, name: 'All'};
+
+      $scope.selectedUnit = $scope.defaultUnit;
+
+      $scope.selectUnit = function (unit) {
+        $scope.selectedUnit = unit;
+      };
+
+      var units = Units($scope.conf);
+
+      $scope.saveUnit = function (unit) {
+        /* jshint camelcase: false */
+        unit.user_id = $scope.profile.user_id;
+        units.save({unit: unit}, function (success) {
+
+            console.log('called');
+            $scope.units.push(success);
+          },
+          // err callback
+          function () {
+            //
         });
+      };
+
+      $scope.updateUnit = function (unit) {
+        console.log('called', unit);
+        /* jshint camelcase: false */
+        units.update({id: unit.id, name:unit.name}, function (success) {
+            $scope.units[$scope.units.indexOf(unit)] = success;
+          },
+          // err callback
+          function (err) {
+            console.error(err);
+            //
+        });
+      };
+
+      $scope.deleteUnit = function (unit) {
+        console.log('called');
+        /* jshint camelcase: false */
+        units.delete(unit, function (success) {
+            $scope.units.splice($scope.units.indexOf(unit),1);
+          },
+          // err callback
+          function () {
+            //
+          });
       };
 
     }]);
