@@ -85,7 +85,7 @@
                     </span>
                 </td>
             </tr>
-            <tr ng-repeat-start="trans in word.translations | filter:{'name':translationFilterValue}">
+            <tr ng-repeat-start="trans in word.translations | orderBy:predicate:reverse | filter:{'name':translationFilterValue}">
                 <td>
                     <span ng-show="$first">
                         <editable-simple model="word.name"
