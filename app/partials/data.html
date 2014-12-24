@@ -29,6 +29,7 @@
         </div>
         <label>stable sort</label>
         <input type="checkbox" ng-model="stableSort" ng-click="predicateT=predicate; reverseT=reverse;">
+
         <div class="btn-group" ng-show="!stableSort">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 To Sort: {{sortMode[predicateT][reverseT+'']}}<span class="caret"></span>
@@ -51,13 +52,34 @@
         <!--<label>Filter-Value:</label>-->
         <!--<input type="text" ng-model="filter.value">-->
         <!--<p></p>-->
+
         <label>items with translations only</label>
         <input type="checkbox" ng-model="translationsOnly">
         <br>
-        <label>From-Filter:</label>
-        <input type="text" ng-model="filterValue"> |
-        <label>To-Filter:</label>
-        <input type="text" ng-model="translationFilterValue">
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..." ng-model="filterValue">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="filterValue=''" ng-disabled="!filterValue" type="button">reset!</button>
+                      </span>
+                </div>
+                <!-- /input-group -->
+            </div>
+            <!-- /.col-lg-6 -->
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..." ng-model="translationFilterValue">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="filterValue=''" ng-disabled="!translationFilterValue" type="button">reset!</button>
+                      </span>
+                </div>
+                <!-- /input-group -->
+            </div>
+            <!-- /.col-lg-6 -->
+        </div>
+        <!-- /.row -->
         <p></p>
     </div>
 
@@ -79,7 +101,8 @@
                 <td>
                 </td>
             </tr>
-            <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse" ng-hide="word.translations.length || translationsOnly || translationFilterValue">
+            <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse"
+                ng-hide="word.translations.length || translationsOnly || translationFilterValue">
                 <!-- safe filter fix: substitute supplement before update -->
                 <td ng-init="wordEdit.name=word.name">
                     <span>
