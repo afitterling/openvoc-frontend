@@ -16,15 +16,30 @@
 
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                Sort Mode: {{sortMode[predicate][reverse+'']}}<span class="caret"></span>
+                From Sort: {{sortMode[predicate][reverse+'']}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="predicate='updated_at'; reverse=true">Last Updated (latest top)</a></li>
-                <li><a ng-click="predicate='updated_at'; reverse=false">Last Updated (oldest top)</a></li>
-                <li><a ng-click="predicate='created_at'; reverse=true">Last Created (latest top)</a></li>
-                <li><a ng-click="predicate='created_at'; reverse=false">Last Created (oldest top)</a></li>
-                <li><a ng-click="predicate='name'; reverse=false">Alphabet (a-z)</a></li>
-                <li><a ng-click="predicate='name'; reverse=true">Alphabet (z-a)</a></li>
+                <li><a ng-click="setSortMode('updated_at', true)">Last Updated (latest top)</a></li>
+                <li><a ng-click="setSortMode('updated_at', false)">Last Updated (oldest top)</a></li>
+                <li><a ng-click="setSortMode('created_at', true)">Last Created (latest top)</a></li>
+                <li><a ng-click="setSortMode('created_at', false)">Last Created (oldest top)</a></li>
+                <li><a ng-click="setSortMode('name', false)">Alphabet (a-z)</a></li>
+                <li><a ng-click="setSortMode('name', true)">Alphabet (z-a)</a></li>
+            </ul>
+        </div>
+        <label>stable sort</label>
+        <input type="checkbox" ng-model="stableSort" ng-click="predicateT=predicate; reverseT=reverse;">
+        <div class="btn-group" ng-show="!stableSort">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                To Sort: {{sortMode[predicateT][reverseT+'']}}<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a ng-click="predicateT='updated_at'; reverseT=true">Last Updated (latest top)</a></li>
+                <li><a ng-click="predicateT='updated_at'; reverseT=false">Last Updated (oldest top)</a></li>
+                <li><a ng-click="predicateT='created_at'; reverseT=true">Last Created (latest top)</a></li>
+                <li><a ng-click="predicateT='created_at'; reverseT=false">Last Created (oldest top)</a></li>
+                <li><a ng-click="predicateT='name'; reverseT=false">Alphabet (a-z)</a></li>
+                <li><a ng-click="predicateT='name'; reverseT=true">Alphabet (z-a)</a></li>
             </ul>
         </div>
         <p></p>
@@ -86,7 +101,7 @@
                     </span>
                 </td>
             </tr>
-            <tr ng-repeat-start="trans in word.translations | orderBy:predicate:reverse | filter:{'name':translationFilterValue}">
+            <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':translationFilterValue}">
                 <!-- safe filter fix: substitute supplement before update -->
                 <td ng-init="wordEdit.name=word.name">
                     <span ng-show="$first">
