@@ -65,11 +65,12 @@
                 </td>
             </tr>
             <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse" ng-hide="word.translations.length || translationsOnly || translationFilterValue">
-                <td>
+                <!-- safe filter fix: substitute supplement before update -->
+                <td ng-init="wordEdit.name=word.name">
                     <span>
-                        <editable-simple model="word.name"
+                        <editable-simple model="wordEdit.name"
                                          bing="true"
-                                         submit-callback="updateWord(word)"
+                                         submit-callback="word.name=wordEdit.name; updateWord(word)"
                                          delete-callback="deleteWord(word)"
                                 >
                         </editable-simple>
@@ -86,20 +87,22 @@
                 </td>
             </tr>
             <tr ng-repeat-start="trans in word.translations | orderBy:predicate:reverse | filter:{'name':translationFilterValue}">
-                <td>
+                <!-- safe filter fix: substitute supplement before update -->
+                <td ng-init="wordEdit.name=word.name">
                     <span ng-show="$first">
-                        <editable-simple model="word.name"
+                        <editable-simple model="wordEdit.name"
                                          bing="true"
-                                         submit-callback="updateWord(word)"
+                                         submit-callback="word.name=wordEdit.name; updateWord(word)"
                                          delete-callback="deleteWord(word)"
                                 >
                         </editable-simple>
                     </span>
                 </td>
-                <td>
+                <!-- safe filter fix: substitute supplement before update -->
+                <td ng-init="transEdit.name=trans.name">
                     <span>
-                        <editable-simple model="trans.name"
-                                         submit-callback="updateTranslation(word, trans)"
+                        <editable-simple model="transEdit.name"
+                                         submit-callback="trans.name=transEdit.name; updateTranslation(word, trans)"
                                          delete-callback="deleteTranslation(word, trans)"
                                 >
                         </editable-simple>
