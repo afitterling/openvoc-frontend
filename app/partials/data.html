@@ -1,49 +1,76 @@
 <div class="partial" ng-controller="DataCtrl">
 
     <div class="row">
+        <div class="col-lg-6">
+            <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
+                      list-model="languages"></dropdown>
+            <span class="message error-message">{{error}}</span>
 
-        <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
-                  list-model="languages"></dropdown>
-        <span class="message error-message">{{error}}</span>
-
-        <button class="btn btn-default btn-small" ng-click="swapLanguages()" ng-disabled="!words">
-            <span ng-show="words" class="glyphicon glyphicon-transfer"></span>
-            <span ng-show="!words">...</span>
-        </button>
-
-        <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
-                  selected="lang_selected.to_id" list-model="languages"></dropdown>
-
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                From Sort: {{sortMode[predicate][reverse+'']}}<span class="caret"></span>
+            <button class="btn btn-default btn-small" ng-click="swapLanguages()" ng-disabled="!words">
+                <span ng-show="words" class="glyphicon glyphicon-transfer"></span>
+                <span ng-show="!words">...</span>
             </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="setSortMode('updated_at', true)">Last Updated (latest top)</a></li>
-                <li><a ng-click="setSortMode('updated_at', false)">Last Updated (oldest top)</a></li>
-                <li><a ng-click="setSortMode('created_at', true)">Last Created (latest top)</a></li>
-                <li><a ng-click="setSortMode('created_at', false)">Last Created (oldest top)</a></li>
-                <li><a ng-click="setSortMode('name', false)">Alphabet (a-z)</a></li>
-                <li><a ng-click="setSortMode('name', true)">Alphabet (z-a)</a></li>
-            </ul>
-        </div>
-        <label>stable sort</label>
-        <input type="checkbox" ng-model="stableSort" ng-click="predicateT=predicate; reverseT=reverse;">
 
-        <div class="btn-group" ng-show="!stableSort">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                To Sort: {{sortMode[predicateT][reverseT+'']}}<span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="predicateT='updated_at'; reverseT=true">Last Updated (latest top)</a></li>
-                <li><a ng-click="predicateT='updated_at'; reverseT=false">Last Updated (oldest top)</a></li>
-                <li><a ng-click="predicateT='created_at'; reverseT=true">Last Created (latest top)</a></li>
-                <li><a ng-click="predicateT='created_at'; reverseT=false">Last Created (oldest top)</a></li>
-                <li><a ng-click="predicateT='name'; reverseT=false">Alphabet (a-z)</a></li>
-                <li><a ng-click="predicateT='name'; reverseT=true">Alphabet (z-a)</a></li>
-            </ul>
+            <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
+                      selected="lang_selected.to_id" list-model="languages"></dropdown>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    From Sort: {{sortMode[predicate][reverse+'']}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="setSortMode('updated_at', true)">Last Updated (latest top)</a></li>
+                    <li><a ng-click="setSortMode('updated_at', false)">Last Updated (oldest top)</a></li>
+                    <li><a ng-click="setSortMode('created_at', true)">Last Created (latest top)</a></li>
+                    <li><a ng-click="setSortMode('created_at', false)">Last Created (oldest top)</a></li>
+                    <li><a ng-click="setSortMode('name', false)">Alphabet (a-z)</a></li>
+                    <li><a ng-click="setSortMode('name', true)">Alphabet (z-a)</a></li>
+                </ul>
+            </div>
+            <label>stable sort</label>
+            <input type="checkbox" ng-model="stableSort" ng-click="predicateT=predicate; reverseT=reverse;">
+
+            <div class="btn-group" ng-show="!stableSort">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    To Sort: {{sortMode[predicateT][reverseT+'']}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="predicateT='updated_at'; reverseT=true">Last Updated (latest top)</a></li>
+                    <li><a ng-click="predicateT='updated_at'; reverseT=false">Last Updated (oldest top)</a></li>
+                    <li><a ng-click="predicateT='created_at'; reverseT=true">Last Created (latest top)</a></li>
+                    <li><a ng-click="predicateT='created_at'; reverseT=false">Last Created (oldest top)</a></li>
+                    <li><a ng-click="predicateT='name'; reverseT=false">Alphabet (a-z)</a></li>
+                    <li><a ng-click="predicateT='name'; reverseT=true">Alphabet (z-a)</a></li>
+                </ul>
+            </div>
+            <p></p>
+
         </div>
-        <p></p>
+        <div class="col-lg-6">
+
+            <div class="btn-group" ng-init="unit.name='All'">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    {{unit.name}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="unit.name='All'">All</a></li>
+                    <li><a ng-click="unit.name='Unit1'">Unit 1</a></li>
+                    <li><a ng-click="">Apprevations</a></li>
+                </ul>
+            </div>
+            <button class="btn btn-default btn-info" ng-disabled="true" title="currently not implemented">Edit Units</button>
+            <p ng-show="unit.name!=='All'">
+                <span class="text-info">Tagging activated!</span>
+            </p>
+
+            <div ng-show="unit.name!=='All'">
+                <label>show only unit specific items</label>
+                <input type="checkbox" ng-model="filterUnitItems" ng-click="" ng-disabled="true" title="currently not implemented">
+            </div>
+
+
+        </div>
+
     </div>
 
     <div class="row" ng-init="filter.field='name'">
@@ -142,6 +169,7 @@
                         <editable-simple model="transEdit.name"
                                          submit-callback="trans.name=transEdit.name; updateTranslation(word, trans)"
                                          delete-callback="deleteTranslation(word, trans)"
+                                         tag="true"
                                 >
                         </editable-simple>
                     </span>
