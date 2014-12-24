@@ -22,10 +22,14 @@
     <span ng-hide="edit || !model" ng-click="edit=true">{{model}}</span>
     <span ng-hide="edit || !model"><button ng-click="deleteCallback(model)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></span>
     <!-- tagging -->
-    <span ng-hide="edit || !model || !tag || $parent.unit.name=='All'">
-        <button ng-click="$parent.tag()" class="btn btn-info btn-xs">
-            <span ng-hide="added" class="glyphicon glyphicon-plus">Unit</span>
-            <span ng-show="added" class="glyphicon">Added!</span>
+    <span ng-hide="edit || !model || !tag || $parent.selectedUnit.id===0 || $parent.trans.unit_id===$parent.selectedUnit.id">
+        <button ng-click="$parent.tag($parent.trans)" class="btn btn-info btn-xs">
+            <span class="glyphicon glyphicon-plus">{{$parent.selectedUnit.name}}</span>
+        </button>
+    </span>
+    <span ng-hide="edit || !model || !tag || $parent.selectedUnit.id===0 || $parent.trans.unit_id!==$parent.selectedUnit.id">
+        <button ng-click="$parent.untag($parent.trans)" class="btn btn-xs">
+            <span class="glyphicon glyphicon-minus">{{$parent.selectedUnit.name}}</span>
         </button>
     </span>
 

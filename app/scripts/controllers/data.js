@@ -182,12 +182,14 @@ angular.module('famousAngular')
           });
       };
 
-      $scope.tag = function () {
-        console.log('tag called');
-//        $scope.added = true;
-//        $timeout(function () {
-//          $scope.added = null;
-//        }, 2000);
+      $scope.tag = function (trans) {
+        // persist
+        trans.unit_id = $scope.selectedUnit.id;
+      };
+
+      $scope.untag = function (trans) {
+        // persist
+        trans.unit_id = null;
       };
 
       $scope.openUnitModal = function () {
@@ -241,6 +243,15 @@ angular.module('famousAngular')
           function () {
             //
           });
+      };
+
+      $scope.setUnitFilter = function () {
+        if ($scope.filterUnitItems) {
+          $scope.filterUnitId = $scope.selectedUnit.id;
+        } else {
+          $scope.filterUnitId = undefined;
+        }
+
       };
 
     }]);

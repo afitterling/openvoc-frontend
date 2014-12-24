@@ -86,7 +86,7 @@
                 {{selectedUnit.name}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="selectedUnit=defaultUnit">All</a></li>
+                <li><a ng-click="selectedUnit=defaultUnit; filterUnitItems=undefined; setUnitFilter();">All</a></li>
                 <li ng-repeat="unit in units"><a ng-click="selectUnit(unit)">{{unit.name}}</a></li>
                 <!--<li><a ng-click="">Apprevations</a></li>-->
             </ul>
@@ -100,7 +100,7 @@
 
         <div ng-show="selectedUnit.id!==0">
             <label>show only unit specific items</label>
-            <input type="checkbox" ng-model="filterUnitItems" ng-click="" title="currently not implemented">
+            <input type="checkbox" ng-model="filterUnitItems" ng-click="setUnitFilter()">
         </div>
 
 
@@ -191,7 +191,7 @@
                     </span>
             </td>
         </tr>
-        <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':translationFilterValue}">
+        <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':translationFilterValue} | filter:{'unit_id':filterUnitId}">
             <!-- safe filter fix: substitute supplement before update -->
             <td ng-init="wordEdit.name=word.name">
                     <span ng-show="$first">
@@ -205,6 +205,7 @@
             </td>
             <!-- safe filter fix: substitute supplement before update -->
             <td ng-init="transEdit.name=trans.name">
+                <!--{{trans}}-->
                     <span>
                         <editable-simple model="transEdit.name"
                                          submit-callback="trans.name=transEdit.name; updateTranslation(word, trans)"
