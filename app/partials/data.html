@@ -16,7 +16,7 @@
 
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                Sort Mode <span class="caret"></span>
+                Sort Mode: {{sortMode[predicate][reverse+'']}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
                 <li><a ng-click="predicate='updated_at'; reverse=true">Last Updated (latest top)</a></li>

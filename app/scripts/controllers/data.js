@@ -35,7 +35,18 @@ angular.module('famousAngular')
 
       //@TODO
       $scope.sortMode = {
-        updated_at: { false: '' }
+        updated_at: {
+          false: 'U+',
+          true: 'U-'
+        },
+        created_at: {
+          false: 'C+',
+          true: 'C-'
+        },
+        name: {
+          false: 'a-z',
+          true: 'z-a'
+        }
       };
 
 //      self.words = $scope.words; // comes from resolve
