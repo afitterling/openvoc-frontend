@@ -230,6 +230,9 @@ angular.module('famousAngular')
         /* jshint camelcase: false */
         units.update({id: unit.id, name:unit.name}, function (success) {
             $scope.units[$scope.units.indexOf(unit)] = success;
+            if (angular.equals(unit.id, $scope.selectedUnit.id)) {
+              $scope.selectedUnit = success;
+            };
           },
           // err callback
           function (err) {
