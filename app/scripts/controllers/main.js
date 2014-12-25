@@ -16,6 +16,7 @@ angular.module('famousAngular')
 
       $scope.unitMode = 'lang';
 
+      // @TODO resolve
       $scope.$watch('units', function (newVal) {
         if (angular.isDefined(newVal)) {
           $scope.queryUnit = $scope.units[0];
