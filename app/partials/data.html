@@ -1,7 +1,40 @@
 <div class="partial" ng-controller="DataCtrl">
+<!-- Modal -->
+<div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add/Remove/Edit Units</h4>
+            </div>
+            <div class="modal-body">
+                <ul style="list-style: none;">
+                    <li>
+                        <editable-simple model="newUnit.name"
+                                         submit-callback="saveUnit(newUnit)"
+                                >
+                        </editable-simple>
+                    </li>
+                    <li ng-repeat="unit in units">
+                        <editable-simple model="unit.name"
+                                         submit-callback="updateUnit(unit)"
+                                         delete-callback="deleteUnit(unit)"
+                                >
+                        </editable-simple>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+            </div>
+        </div>
+    </div>
+</div>
 
-    <div class="row">
-
+<div class="row">
+    <div class="col-lg-6">
         <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
                   list-model="languages"></dropdown>
         <span class="message error-message">{{error}}</span>
@@ -44,67 +77,101 @@
             </ul>
         </div>
         <p></p>
+
     </div>
+    <div class="col-lg-6">
 
-    <div class="row" ng-init="filter.field='name'">
-        <!--<label>Filter-Field:</label>-->
-        <!--<input type="text" ng-model="filter.field">-->
-        <!--<label>Filter-Value:</label>-->
-        <!--<input type="text" ng-model="filter.value">-->
-        <!--<p></p>-->
-
-        <label>items with translations only</label>
-        <input type="checkbox" ng-model="translationsOnly">
-        <br>
-
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search 'From' for..." ng-model="filterValue">
-                      <span class="input-group-btn">
-                        <button class="btn btn-default" ng-click="filterValue=''" ng-disabled="!filterValue" type="button">reset!</button>
-                      </span>
-                </div>
-                <!-- /input-group -->
-            </div>
-            <!-- /.col-lg-6 -->
-            <div class="col-lg-6">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search 'To' for..." ng-model="translationFilterValue">
-                      <span class="input-group-btn">
-                        <button class="btn btn-default" ng-click="translationFilterValue=''" ng-disabled="!translationFilterValue" type="button">reset!</button>
-                      </span>
-                </div>
-                <!-- /input-group -->
-            </div>
-            <!-- /.col-lg-6 -->
+        <div class="btn-group" ng-init="unit.name='All'">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                {{selectedUnit.name}}<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a ng-click="selectedUnit=defaultUnit; filterUnitItems=undefined; setUnitFilter();">All</a></li>
+                <li ng-repeat="unit in units"><a ng-click="selectUnit(unit)">{{unit.name}}</a></li>
+                <!--<li><a ng-click="">Apprevations</a></li>-->
+            </ul>
         </div>
-        <!-- /.row -->
-        <p></p>
+        <button class="btn btn-default btn-info"
+                ng-click="openUnitModal()">Edit Units
+        </button>
+        <p ng-show="selectedUnit.id!==0">
+            <span class="text-info">Tagging activated!</span>
+        </p>
+
+        <div ng-show="selectedUnit.id!==0">
+            <label>show only unit specific items</label>
+            <input type="checkbox" ng-model="filterUnitItems" ng-click="setUnitFilter()">
+        </div>
+
+
     </div>
 
-    <div class="row" ng-show="!words">
-        <span>Loading ....</span>
-    </div>
+</div>
 
-    <div class="row" ng-show="words">
-        <table class="table table-bordered">
-            <tr>
-                <th>{{lang.from.name}}</th>
-                <th>{{lang.to.name}}</th>
-            </tr>
-            <tr ng-show="!translationsOnly">
-                <td>
-                    <editable-simple reset-cancel="true" submit-callback="saveWord(newWord) && (newWord=null)"
-                                     model="newWord.name"></editable-simple>
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse"
-                ng-hide="word.translations.length || translationsOnly || translationFilterValue">
-                <!-- safe filter fix: substitute supplement before update -->
-                <td ng-init="wordEdit.name=word.name">
+<div class="row" ng-init="filter.field='name'">
+    <!--<label>Filter-Field:</label>-->
+    <!--<input type="text" ng-model="filter.field">-->
+    <!--<label>Filter-Value:</label>-->
+    <!--<input type="text" ng-model="filter.value">-->
+    <!--<p></p>-->
+
+    <label>items with translations only</label>
+    <input type="checkbox" ng-model="translationsOnly">
+    <br>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search 'From' for..." ng-model="filterValue">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="filterValue=''" ng-disabled="!filterValue"
+                                type="button">reset!
+                        </button>
+                      </span>
+            </div>
+            <!-- /input-group -->
+        </div>
+        <!-- /.col-lg-6 -->
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search 'To' for..."
+                       ng-model="translationFilterValue">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="translationFilterValue=''"
+                                ng-disabled="!translationFilterValue" type="button">reset!
+                        </button>
+                      </span>
+            </div>
+            <!-- /input-group -->
+        </div>
+        <!-- /.col-lg-6 -->
+    </div>
+    <!-- /.row -->
+    <p></p>
+</div>
+
+<div class="row" ng-show="!words">
+    <span>Loading ....</span>
+</div>
+
+<div class="row" ng-show="words">
+    <table class="table table-bordered">
+        <tr>
+            <th>{{lang.from.name}}</th>
+            <th>{{lang.to.name}}</th>
+        </tr>
+        <tr ng-show="!translationsOnly">
+            <td>
+                <editable-simple reset-cancel="true" submit-callback="saveWord(newWord) && (newWord=null)"
+                                 model="newWord.name"></editable-simple>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse"
+            ng-hide="word.translations.length || translationsOnly || translationFilterValue || filterUnitItems">
+            <!-- safe filter fix: substitute supplement before update -->
+            <td ng-init="wordEdit.name=word.name">
                     <span>
                         <editable-simple model="wordEdit.name"
                                          bing="true"
@@ -113,8 +180,8 @@
                                 >
                         </editable-simple>
                     </span>
-                </td>
-                <td>
+            </td>
+            <td>
                     <span>
                         <editable-simple model="newTranslation.name"
                                          submit-callback="saveTranslation(word, newTranslation) && (newTranslation=null)"
@@ -122,11 +189,11 @@
 
                         </editable-simple>
                     </span>
-                </td>
-            </tr>
-            <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':translationFilterValue}">
-                <!-- safe filter fix: substitute supplement before update -->
-                <td ng-init="wordEdit.name=word.name">
+            </td>
+        </tr>
+        <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':translationFilterValue} | filter:{'unit_id':filterUnitId}">
+            <!-- safe filter fix: substitute supplement before update -->
+            <td ng-init="wordEdit.name=word.name">
                     <span ng-show="$first">
                         <editable-simple model="wordEdit.name"
                                          bing="true"
@@ -135,32 +202,34 @@
                                 >
                         </editable-simple>
                     </span>
-                </td>
-                <!-- safe filter fix: substitute supplement before update -->
-                <td ng-init="transEdit.name=trans.name">
+            </td>
+            <!-- safe filter fix: substitute supplement before update -->
+            <td ng-init="transEdit.name=trans.name">
+                <!--{{trans}}-->
                     <span>
                         <editable-simple model="transEdit.name"
                                          submit-callback="trans.name=transEdit.name; updateTranslation(word, trans)"
                                          delete-callback="deleteTranslation(word, trans)"
+                                         tag="true"
                                 >
                         </editable-simple>
                     </span>
 
-                </td>
-            </tr>
-            <tr ng-repeat-end></tr>
+            </td>
+        </tr>
+        <tr ng-repeat-end></tr>
 
-            <tr ng-repeat-end ng-show="word.translations.length && !translationFilterValue">
-                <td></td>
-                <td>
-                    <editable-simple model="newTranslation.name"
-                                     submit-callback="saveTranslation(word, newTranslation) && (newTranslation=null)"
-                            >
+        <tr ng-repeat-end ng-show="word.translations.length && !translationFilterValue && !filterUnitId">
+            <td></td>
+            <td>
+                <editable-simple model="newTranslation.name"
+                                 submit-callback="saveTranslation(word, newTranslation) && (newTranslation=null)"
+                        >
 
-                    </editable-simple>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <br><br>
+                </editable-simple>
+            </td>
+        </tr>
+    </table>
+</div>
+<br><br>
 </div>

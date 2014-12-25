@@ -12,7 +12,8 @@ angular.module('famousAngular.formHelpers.editables', [])
         deleteCallback: '&',
         model: '=',
         resetCancel: '=',
-        bing: '='
+        bing: '=',
+        tag: '='
       },
       link: function (scope, elm, attrs) {
       }

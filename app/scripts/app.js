@@ -173,8 +173,8 @@ angular.module('famousAngular',
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
-  .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings',
-    function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, jwtHelper, store, $resource, AppStore, Languages, UISettings) {
+  .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'Units', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings',
+    function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, Units, jwtHelper, store, $resource, AppStore, Languages, UISettings) {
 
       $rootScope.goTo = function (arg) {
         $location.path(arg);
@@ -256,6 +256,7 @@ angular.module('famousAngular',
         Settings.then(function (conf) {
           apiCall(conf);
           var words = Words(conf);
+          var units = Units(conf);
           var languages = Languages(conf);
           //@TODO include settings
           var uisettings = UISettings(conf);
@@ -264,6 +265,10 @@ angular.module('famousAngular',
             /* jshint camelcase: false */
 //          words.query({user_id: auth.profile.user_id}, function (items) {
             AppStore.set('languages', languages);
+            units.query({user_id: auth.profile.user_id}, function (units) {
+              $rootScope.units = units;
+              console.log('units=', units);
+            });
             $rootScope.languages = languages;
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
             $rootScope.lang_selected = {from_id: 1, to_id: 2};

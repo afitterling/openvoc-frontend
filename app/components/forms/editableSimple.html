@@ -19,8 +19,19 @@
     <!-- @TODO -->
     <!--<span ng-hide="edit" ng-click="edit=true">{{(!resetCancel && model) || '+'}}</span>-->
     <span ng-hide="edit || model" ng-click="edit=true"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></button></span>
-    <span ng-hide="edit || !model" ng-click="edit=true">{{model}}</span>
+    <span class="model" ng-hide="edit || !model" ng-click="edit=true">{{model}}</span>
     <span ng-hide="edit || !model"><button ng-click="deleteCallback(model)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></span>
-    <!--<span ng-hide="edit || !model"><button ng-click="tag()" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-add">tag</span></button></span>-->
+    <!-- tagging -->
+    <span ng-hide="edit || !model || !tag || $parent.selectedUnit.id===0 || $parent.trans.unit_id===$parent.selectedUnit.id">
+        <button ng-click="$parent.tag($parent.word, $parent.trans)" class="btn btn-info btn-xs">
+            <span class="glyphicon glyphicon-plus">{{$parent.selectedUnit.name}}</span>
+        </button>
+    </span>
+    <span ng-hide="edit || !model || !tag || $parent.selectedUnit.id===0 || $parent.trans.unit_id!==$parent.selectedUnit.id">
+        <button ng-click="$parent.untag($parent.word, $parent.trans)" class="btn btn-xs">
+            <span class="glyphicon glyphicon-minus">{{$parent.selectedUnit.name}}</span>
+        </button>
+    </span>
+
     <span ng-hide="edit || !model || !bing"><button ng-click="$parent.bingTranslate($parent.word)" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-add">bing!</span></button></span>
 </div>

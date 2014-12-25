@@ -10,21 +10,64 @@ angular.module('famousAngular')
     function ($log, $scope, $resource, $http, $rootScope, auth) {
 
       var AutoUnit = $resource($scope.conf.API_BASEURL + '/unit_items/auto_generate');
+      var Unit = $resource($scope.conf.API_BASEURL + '/unit_items/get_unit');
 
       var tipDefaultLength = 3;
 
+      $scope.unitMode = 'lang';
+
+      // @TODO resolve
+      $scope.$watch('units', function (newVal) {
+        if (angular.isDefined(newVal)) {
+          $scope.queryUnit = $scope.units[0];
+        }
+      });
+
+      $scope.n_items = 12;
+      $scope.sort_least_learned = false;
+
       $scope.startUnit = function () {
-        $scope.request = {pending: true};
-        // fetch the custom unit
-        AutoUnit.query({shuffle: true, user_id: auth.profile.user_id, language_id: $scope.lang.from.id, targetlang_id: $scope.lang.to.id}, function (success) {
-          $scope.request = {pending: false};
-          $scope.unit_items = success;
-          $scope.unit = { inProgress: true, idx: 0, finished: false };
-          $scope.show = false;
-          $scope.interactive = true;
-          $scope.variant = true;
-          $scope.tipLength = tipDefaultLength;
-        });
+        switch ($scope.unitMode) {
+          case 'lang':
+            $scope.request = {pending: true};
+            // fetch the custom unit
+            AutoUnit.query({
+                shuffle: true,
+                n_items: $scope.n_items, // works but in ui missing or commented out
+                user_id: auth.profile.user_id,
+                language_id: $scope.lang.from.id,
+                targetlang_id: $scope.lang.to.id
+              },
+              function (success) {
+                $scope.request = {pending: false};
+                $scope.unit_items = success;
+                $scope.unit = { inProgress: true, idx: 0, finished: false };
+                $scope.show = false;
+                $scope.interactive = true;
+                $scope.variant = true;
+                $scope.tipLength = tipDefaultLength;
+              });
+            break;
+          case 'unit':
+            Unit.query({
+                shuffle: true,
+                unit_id: $scope.queryUnit.id
+              },
+              function (success) {
+                $scope.request = {pending: false};
+                $scope.unit_items = success;
+                $scope.unit = { inProgress: true, idx: 0, finished: false };
+                $scope.show = false;
+                $scope.interactive = true;
+                $scope.variant = true;
+                $scope.tipLength = tipDefaultLength;
+              });
+            break;
+        }
+        ;
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
       };
 
       $scope.stopUnit = function () {
@@ -45,7 +88,7 @@ angular.module('famousAngular')
           return;
         }
         //
-        if (!$scope.reverseMode || reverseModeCounter > 0) {
+        if (!$scope.reverseMode || reverseModeCounter > 0) {
           reverseModeCounter = 0;
           $scope.unit.idx += 1;
           $scope.tipLength = tipDefaultLength;
