@@ -4,8 +4,8 @@
 
         <div class="row" ng-show="!unit.inProgress">
             <div class="btn-group" role="group" aria-label="...">
-                <button type="button" ng-click="unitMode='lang'" class="btn btn-default" ng-class="{'active': unitMode==='lang'}">All</button>
-                <button type="button" ng-click="unitMode='unit'" class="btn btn-default" ng-class="{'active': unitMode==='unit'}">Units</button>
+                <button type="button" ng-click="unitMode='lang'" class="btn btn-default" ng-class="{'active btn-info': unitMode==='lang'}">All</button>
+                <button type="button" ng-click="unitMode='unit'" class="btn btn-default" ng-class="{'active btn-info': unitMode==='unit'}">Units</button>
             </div>
             <br>
             <br>
@@ -38,7 +38,7 @@
 
         <br>
         <div class="row">
-            <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-info" ng-click="startUnit()">
+            <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-success" ng-click="startUnit()">
                 <span class="glyphicon glyphicon-start">Start Unit</span>
             </button>
             <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">

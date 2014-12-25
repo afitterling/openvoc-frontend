@@ -60,10 +60,10 @@
                 <li><a ng-click="setSortMode('name', true)">Alphabet (z-a)</a></li>
             </ul>
         </div>
-        <label>stable sort</label>
-        <input type="checkbox" ng-model="stableSort" ng-click="predicateT=predicate; reverseT=reverse;">
+        <label>staple</label>
+        <input type="checkbox" ng-model="stapleSort" ng-click="predicateT=predicate; reverseT=reverse;">
 
-        <div class="btn-group" ng-show="!stableSort">
+        <div class="btn-group" ng-show="!stapleSort">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 To Sort: {{sortMode[predicateT][reverseT+'']}}<span class="caret"></span>
             </button>
