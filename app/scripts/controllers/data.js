@@ -206,6 +206,7 @@ angular.module('famousAngular')
 
       $scope.selectUnit = function (unit) {
         $scope.selectedUnit = unit;
+        $scope.setUnitFilter();
       };
 
       var units = Units($scope.conf);
