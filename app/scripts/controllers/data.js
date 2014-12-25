@@ -182,14 +182,18 @@ angular.module('famousAngular')
           });
       };
 
-      $scope.tag = function (trans) {
-        // persist
-        trans.unit_id = $scope.selectedUnit.id;
+      $scope.tag = function (word, trans) {
+        var Tags = $resource($scope.conf.API_BASEURL + '/translations/tag_unit');
+        Tags.save({word_id: word.id, conversion_id: trans.id, unit_id: $scope.selectedUnit.id}, function () {
+          trans.unit_id = $scope.selectedUnit.id;
+        });
       };
 
-      $scope.untag = function (trans) {
-        // persist
-        trans.unit_id = null;
+      $scope.untag = function (word, trans) {
+        var Tags = $resource($scope.conf.API_BASEURL + '/translations/tag_unit');
+        Tags.save({word_id: word.id, conversion_id: trans.id, unit_id: null}, function () {
+          trans.unit_id = null;
+        });
       };
 
       $scope.openUnitModal = function () {
