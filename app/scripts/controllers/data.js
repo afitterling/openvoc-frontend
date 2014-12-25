@@ -32,18 +32,17 @@ angular.module('famousAngular')
 
       $scope.predicate = 'updated_at';
       $scope.reverse = true;
-      $scope.stableSort = true;
+      $scope.stapleSort = true;
 
       $scope.setSortMode = function (predicate, reverse) {
         $scope.predicate = predicate;
         $scope.reverse = reverse;
-        if ($scope.stableSort === true) {
+        if ($scope.stapleSort === true) {
           $scope.predicateT = predicate;
           $scope.reverseT = reverse;
         }
       };
 
-      //@TODO
       $scope.sortMode = {
         updated_at: {
           false: 'U+',
