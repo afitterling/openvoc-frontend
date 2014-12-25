@@ -215,8 +215,6 @@ angular.module('famousAngular')
         /* jshint camelcase: false */
         unit.user_id = $scope.profile.user_id;
         units.save({unit: unit}, function (success) {
-
-            console.log('called');
             $scope.units.push(success);
           },
           // err callback
@@ -226,7 +224,6 @@ angular.module('famousAngular')
       };
 
       $scope.updateUnit = function (unit) {
-        console.log('called', unit);
         /* jshint camelcase: false */
         units.update({id: unit.id, name:unit.name}, function (success) {
             $scope.units[$scope.units.indexOf(unit)] = success;
@@ -236,16 +233,18 @@ angular.module('famousAngular')
           },
           // err callback
           function (err) {
-            console.error(err);
+//            console.error(err);
             //
         });
       };
 
       $scope.deleteUnit = function (unit) {
-        console.log('called');
         /* jshint camelcase: false */
         units.delete(unit, function (success) {
             $scope.units.splice($scope.units.indexOf(unit),1);
+            if (angular.equals(unit.id, $scope.selectedUnit.id)) {
+              $scope.selectedUnit = $scope.defaultUnit;
+            };
           },
           // err callback
           function () {

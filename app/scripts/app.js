@@ -267,7 +267,6 @@ angular.module('famousAngular',
             AppStore.set('languages', languages);
             units.query({user_id: auth.profile.user_id}, function (units) {
               $rootScope.units = units;
-              console.log('units=', units);
             });
             $rootScope.languages = languages;
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
