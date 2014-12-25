@@ -101,6 +101,9 @@ angular.module('famousAngular')
       $scope.updateTranslation = function (word, translation) {
         words.update(translation, function (success) {
           word.translations[word.translations.indexOf(translation)] = success;
+          if ($scope.filterUnitItems){
+            $scope.tag(word, translation);
+          }
         });
       };
 
