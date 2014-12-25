@@ -65,6 +65,9 @@ angular.module('famousAngular')
             break;
         }
         ;
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
       };
 
       $scope.stopUnit = function () {

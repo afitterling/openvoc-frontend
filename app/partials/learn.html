@@ -60,20 +60,18 @@
         <!--</section>-->
 
         <span ng-show="request.pending">Loading ...</span>
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="variant=!variant"
+        <button data-toggle="tooltip" data-placement="top" title="shows hints in brackets" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="variant=!variant"
                 ng-class="{'active': variant}">
             <span class="glyphicon glyphicon-start">Tip</span>
-        </button>
-
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="interactive=!interactive"
+        </button>&nbsp;
+        <button data-toggle="tooltip" data-placement="top" title="interactive: show input field" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="interactive=!interactive"
                 ng-class="{'active': interactive}">
             <span class="glyphicon glyphicon-start">i</span>
-        </button>
-
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="reverseMode=!reverseMode"
+        </button>&nbsp;
+        <button data-toggle="tooltip" data-placement="top" title="Reverse Mode: switch language after each - very alpha!" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="reverseMode=!reverseMode"
                 ng-class="{'active': reverseMode}">
             <span class="">r</span>
-        </button>
+        </button>&nbsp;
         <!--<div ng-show="learn">-->
         <!--<div>{{words[index].name}}</div>-->
 
@@ -124,4 +122,5 @@
     <br><br>
 
 </div>
+
 

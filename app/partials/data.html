@@ -169,7 +169,7 @@
             </td>
         </tr>
         <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse"
-            ng-hide="word.translations.length || translationsOnly || translationFilterValue">
+            ng-hide="word.translations.length || translationsOnly || translationFilterValue || filterUnitItems">
             <!-- safe filter fix: substitute supplement before update -->
             <td ng-init="wordEdit.name=word.name">
                     <span>
