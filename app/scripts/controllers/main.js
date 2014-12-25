@@ -15,7 +15,12 @@ angular.module('famousAngular')
       var tipDefaultLength = 3;
 
       $scope.unitMode = 'lang';
-      $scope.queryUnit = $scope.units[0];
+
+      $scope.$watch('units', function (newVal) {
+        if (angular.isDefined(newVal)) {
+          $scope.queryUnit = $scope.units[0];
+        }
+      });
 
       $scope.n_items = 12;
       $scope.sort_least_learned = false;
