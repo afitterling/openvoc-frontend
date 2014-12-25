@@ -2,7 +2,16 @@
 
     <div ng-controller="LearnCtrl">
 
-        <section ng-hide="unit.inProgress">
+        <div class="row">
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" ng-click="unitMode='lang'" class="btn btn-default" ng-class="{'active': unitMode==='lang'}">All</button>
+                <button type="button" ng-click="unitMode='unit'" class="btn btn-default" ng-class="{'active': unitMode==='unit'}">Units</button>
+            </div>
+            <br>
+            <br>
+        </div>
+
+        <div class="row" ng-show="unitMode==='lang'" ng-hide="unit.inProgress">
             <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
                       list-model="languages"></dropdown>
             <span class="message error-message">{{error}}</span>
@@ -14,28 +23,41 @@
             <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                       selected="lang_selected.to_id" list-model="languages"></dropdown>
 
-        </section>
-        <br>
-        <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-info" ng-click="startUnit()">
-            <span class="glyphicon glyphicon-start">Start Unit</span>
-        </button>
-        <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
-            <span class="glyphicon glyphicon-start">Stop Unit</span>
-        </button>
-        <button ng-show="unit.inProgress && unit.finished" class="btn btn-default btn-small btn-success"
-                ng-click="unit.idx=0; unit.finished=false">
-            <span class="glyphicon glyphicon-start"><span class="glyphicon glyphicon-repeat"></span></span>
-        </button>
-        <br><br>
+        </div>
 
-        <section ng-hide="unit.inProgress">
-            <label>max items</label>
-            <input style="width: 50px;" ng-disabled="unit.inProgress" type="number" ng-model="n_items">
-            <!--<label>least learned</label><input ng-disabled="unit.inProgress" type="checkbox"-->
-                                               <!--ng-model="sort_least_learned">-->
-            <br>
-            <br>
-        </section>
+        <div class="row" ng-show="unitMode==='unit'">
+            <div class="btn-group" ng-init="unit.name='All'">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    {{queryUnit.name}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="unit in units"><a ng-click="$parent.queryUnit=unit">{{unit.name}}</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-info" ng-click="startUnit()">
+                <span class="glyphicon glyphicon-start">Start Unit</span>
+            </button>
+            <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
+                <span class="glyphicon glyphicon-start">Stop Unit</span>
+            </button>
+            <button ng-show="unit.inProgress && unit.finished" class="btn btn-default btn-small btn-success"
+                    ng-click="unit.idx=0; unit.finished=false">
+                <span class="glyphicon glyphicon-start"><span class="glyphicon glyphicon-repeat"></span></span>
+            </button>
+            <br><br>
+        </div>
+        <!--<section ng-hide="unit.inProgress">-->
+            <!--<label>max items</label>-->
+            <!--<input style="width: 50px;" ng-disabled="unit.inProgress" type="number" ng-model="n_items">-->
+            <!--&lt;!&ndash;<label>least learned</label><input ng-disabled="unit.inProgress" type="checkbox"&ndash;&gt;-->
+                                               <!--&lt;!&ndash;ng-model="sort_least_learned">&ndash;&gt;-->
+            <!--<br>-->
+            <!--<br>-->
+        <!--</section>-->
 
         <span ng-show="request.pending">Loading ...</span>
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="variant=!variant"
