@@ -2,7 +2,7 @@
 
     <div ng-controller="LearnCtrl">
 
-        <div class="row">
+        <div class="row" ng-show="!unit.inProgress">
             <div class="btn-group" role="group" aria-label="...">
                 <button type="button" ng-click="unitMode='lang'" class="btn btn-default" ng-class="{'active': unitMode==='lang'}">All</button>
                 <button type="button" ng-click="unitMode='unit'" class="btn btn-default" ng-class="{'active': unitMode==='unit'}">Units</button>
@@ -11,7 +11,7 @@
             <br>
         </div>
 
-        <div class="row" ng-show="unitMode==='lang'" ng-hide="unit.inProgress">
+        <div class="row" ng-show="unitMode==='lang' && !unit.inProgress">
             <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
                       list-model="languages"></dropdown>
             <span class="message error-message">{{error}}</span>
@@ -25,7 +25,7 @@
 
         </div>
 
-        <div class="row" ng-show="unitMode==='unit'">
+        <div class="row" ng-show="unitMode==='unit' && !unit.inProgress">
             <div class="btn-group" ng-init="unit.name='All'">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     {{queryUnit.name}}<span class="caret"></span>
