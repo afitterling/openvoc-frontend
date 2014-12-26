@@ -100,8 +100,9 @@
         <button class="btn btn-default btn-info"
                 ng-click="openUnitModal()">Edit Units
         </button>
+        <br>
         <p ng-show="selectedUnit.id!==0">
-            <span class="text-info">Tagging activated!</span>
+            <span class="label label-warning">You can tag a pair now! It will get added with selected language direction.</span>
         </p>
 
         <div ng-show="selectedUnit.id!==0">
@@ -141,8 +142,8 @@
         <!-- /input-group -->
     </div>
     <!-- /.col-lg-6 -->
-    <p></p>
 </div>
+<p></p>
 
 <div class="row" ng-show="!words">
     <span>Loading ....</span>
