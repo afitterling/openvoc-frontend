@@ -27,9 +27,9 @@
             <span class="glyphicon glyphicon-plus">{{$parent.selectedUnit.name}}</span>
         </button>
     </span>
-    <span ng-hide="edit || !model || !tag || $parent.selectedUnit.id===0 || $parent.trans.unit_id!==$parent.selectedUnit.id">
+    <span ng-hide="edit || !model || !tag || $parent.trans.unit_id === null || !$parent.trans.unit_id">
         <button ng-click="$parent.untag($parent.word, $parent.trans)" class="btn btn-xs">
-            <span class="glyphicon glyphicon-minus">{{$parent.selectedUnit.name}}</span>
+            <span class="glyphicon glyphicon-minus" unit-name="$parent.trans.unit_id"></span>
         </button>
     </span>
 
