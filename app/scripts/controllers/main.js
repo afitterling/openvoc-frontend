@@ -12,9 +12,12 @@ angular.module('famousAngular')
       var AutoUnit = $resource($scope.conf.API_BASEURL + '/unit_items/auto_generate');
       var Unit = $resource($scope.conf.API_BASEURL + '/unit_items/get_unit');
 
-      var tipDefaultLength = 3;
+      var tipDefaultLength = 2;
+
+      $scope.dots = '..................................................';
 
       $scope.unitMode = 'lang';
+      $scope.swapMode = false;
 
       // @TODO resolve
       $scope.$watch('units', function (newVal) {
@@ -74,6 +77,20 @@ angular.module('famousAngular')
         $scope.unit = { inProgress: false, idx: 0 };
         $scope.tipLength = tipDefaultLength;
         $scope.show = false;
+        $scope.swapMode = false;
+      };
+
+      $scope.swap = function () {
+        $scope.swapMode = !$scope.swapMode;
+        console.log($scope.swapMode);
+        var swappedItems = [];
+        angular.forEach($scope.unit_items, function (item) {
+          var tmp = item.from;
+          item.from = item.to;
+          item.to = tmp;
+          swappedItems.push(item);
+        }, swappedItems);
+        $scope.unit_items = swappedItems;
       };
 
       var reverseModeCounter = 0;
@@ -123,8 +140,10 @@ angular.module('famousAngular')
           }
           return;
         }
-        // upgrade "learn need" score
-        $scope.tipLength += 1;
+
+        if ($scope.tipLength < $scope.unit_items[$scope.unit.idx].to.name.length) {
+          $scope.tipLength += 1;
+        }
       };
 
       // monkey patch swapLanguages as we are in a sub scope
