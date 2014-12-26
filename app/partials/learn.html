@@ -68,9 +68,13 @@
                 ng-class="{'active': interactive}">
             <span class="glyphicon glyphicon-start">i</span>
         </button>&nbsp;
-        <button data-toggle="tooltip" data-placement="top" title="Reverse Mode: switch language after each - very alpha!" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="reverseMode=!reverseMode"
-                ng-class="{'active': reverseMode}">
-            <span class="">r</span>
+        <!--<button data-toggle="tooltip" data-placement="top" title="Reverse Mode: switch language after each - very alpha!" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="reverseMode=!reverseMode"-->
+                <!--ng-class="{'active': reverseMode}">-->
+            <!--<span class="">r</span>-->
+        <!--</button>&nbsp;-->
+        <button data-toggle="tooltip" data-placement="top" title="Swap Direction!" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="swap()"
+        ng-class="{'active': swapMode}">
+        <span class="glyphicon glyphicon-retweet"></span>
         </button>&nbsp;
         <!--<div ng-show="learn">-->
         <!--<div>{{words[index].name}}</div>-->
@@ -96,7 +100,9 @@
         <div ng-show="unit.inProgress">
             <!--{{unit_items[unit.idx]}}-->
             <h3>
-                {{unit_items[unit.idx].from.name}} <span ng-show="variant">({{unit_items[unit.idx].to.name.slice(0,tipLength)}}...)</span>
+                {{unit_items[unit.idx].from.name}} <span ng-show="variant">
+                ({{unit_items[unit.idx].to.name.slice(0,tipLength)}}{{dots.slice(0,unit_items[unit.idx].to.name.length-tipLength)}})
+            </span>
             </h3>
 
             <form name="inputForm" ng-submit="validator(input, unit_items[unit.idx])" novalidate="">
