@@ -99,10 +99,11 @@ angular.module('famousAngular')
 
       $scope.updateTranslation = function (word, translation) {
         words.update(translation, function (success) {
-          word.translations[word.translations.indexOf(translation)] = success;
-          if ($scope.filterUnitItems){
-            $scope.tag(word, translation);
+          // as item got already tagged beforehand, we simulate re-tagging!
+          if (translation.unit_id) {
+            success.unit_id = translation.unit_id;
           }
+          word.translations[word.translations.indexOf(translation)] = success;
         });
       };
 
@@ -263,4 +264,38 @@ angular.module('famousAngular')
 
       };
 
-    }]);
+    }])
+
+.directive('unitName', ['$parse', function ($parse) {
+    return {
+      scope: false,
+      link: function (scope, ele, attrs) {
+
+        var unit_id;
+        var unitName;
+
+        // parse on change
+        scope.$watch(attrs.unitName, function (newVal, oldVal) {
+          if (newVal === oldVal) return;
+          parse();
+        });
+
+        var parse = function () {
+          unit_id = $parse(attrs.unitName)(scope);
+          scope.$parent.units.some(function (unit) {
+            if (unit.id === unit_id) {
+              unitName = unit.name;
+              return;
+            }
+          });
+          ele.html(unitName);
+        };
+
+        // parse when link function triggers first time
+        parse();
+
+      }
+    };
+}])
+
+;
