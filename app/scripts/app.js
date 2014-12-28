@@ -179,20 +179,8 @@ angular.module('famousAngular',
       var checkAnimationReady = function () {
         if($window.TweenLite && $window.CSSPlugin){
           console.log('loaded');
-//          var nav; // = document.getElementsByClassName('navbar')[0];
-//          nav = $('.navbar');
-          var tl = new TimelineMax({delay: 0.5});
-          $('footer').css('position', 'relative');
-          $('footer').css('top','1000px');
-          var navbar = $('#navbar .container');
-//          var part = $('[ui-view] > div')[0];
-          tl.to('#navbar', 2, {left: '0px', ease:Bounce.easeOut})
-          .to(navbar, 1, {opacity: '1', ease:Bounce.easeOut}, '-=0.5')
-//            .to('footer', 0.8, {left: '0px', ease:Bounce.easeOut}, '-=1')
-          .to('footer', 0.8, {opacity: '1', ease:Bounce.easeOut}, '-=1')
-          .to('footer', 2.2, {top: '0px', ease:Bounce.easeOut}, '-=2.2')
-//        .from('footer', 0.4, {top: '1000px', ease:Bounce.easeOut}, '-=1');
-//          .to(part, 0.8, {opacity: '1', ease:Bounce.easeOut});
+          var nav = document.getElementsByClassName('navbar')[0];
+          TweenMax.to(nav, 2.8, {left: '0px', ease:Bounce.easeOut});
         }
         else{
           //perhaps start a setInterval to check for the assets to be loaded
@@ -306,6 +294,4 @@ angular.module('famousAngular',
 
     }]
   );
-
-
 
