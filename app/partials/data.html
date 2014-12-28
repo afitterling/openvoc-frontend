@@ -17,7 +17,7 @@
                                 >
                         </editable-simple>
                     </li>
-                    <li ng-repeat="unit in units">
+                    <li ng-repeat="unit in units track by unit.id">
                         <editable-simple model="unit.name"
                                          submit-callback="updateUnit(unit)"
                                          delete-callback="deleteUnit(unit)"
@@ -163,7 +163,7 @@
             <td>
             </td>
         </tr>
-        <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse"
+        <tr ng-repeat-start="word in words track by word.id | filter:{'name':filterValue} | orderBy:predicate:reverse"
             ng-hide="word.translations.length || translationsOnly || translationFilterValue || filterUnitItems">
             <!-- safe filter fix: substitute supplement before update -->
             <td ng-init="wordEdit.name=word.name">
@@ -186,7 +186,7 @@
                     </span>
             </td>
         </tr>
-        <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':translationFilterValue} | filter:{'unit_id':filterUnitId}">
+        <tr ng-repeat-start="trans in word.translations track by trans.id | orderBy:predicateT:reverseT | filter:{'name':translationFilterValue} | filter:{'unit_id':filterUnitId}">
             <!-- safe filter fix: substitute supplement before update -->
             <td ng-init="wordEdit.name=word.name">
                     <span ng-show="$first">
