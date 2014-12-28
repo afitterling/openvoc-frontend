@@ -173,8 +173,22 @@ angular.module('famousAngular',
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
-  .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'Units', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings',
-    function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, Units, jwtHelper, store, $resource, AppStore, Languages, UISettings) {
+  .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'Units', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings','$window',
+    function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, Units, jwtHelper, store, $resource, AppStore, Languages, UISettings, $window) {
+
+      var checkAnimationReady = function () {
+        if($window.TweenLite && $window.CSSPlugin){
+          console.log('loaded');
+          var nav = document.getElementsByClassName('navbar')[0];
+          TweenMax.to(nav, 2.8, {left: '0px', ease:Bounce.easeOut});
+        }
+        else{
+          //perhaps start a setInterval to check for the assets to be loaded
+          checkAnimationReady();
+        }
+      };
+
+      checkAnimationReady();
 
       $rootScope.goTo = function (arg) {
         $location.path(arg);
