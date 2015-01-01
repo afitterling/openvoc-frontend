@@ -34,6 +34,9 @@ angular.module('famousAngular')
       $scope.reverse = true;
       $scope.stapleSort = true;
 
+      $scope.translationFilterValue = '';
+      $scope.filterValue = '';
+
       $scope.setSortMode = function (predicate, reverse) {
         $scope.predicate = predicate;
         $scope.reverse = reverse;
