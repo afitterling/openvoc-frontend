@@ -22,7 +22,18 @@
 
             <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                       selected="lang_selected.to_id" list-model="languages"></dropdown>
-
+            <br>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    {{n_items}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="n_items=12">12</a></li>
+                    <li><a ng-click="n_items=20">20</a></li>
+                    <li><a ng-click="n_items=50">50</a></li>
+                </ul>
+            </div>
+            shuffle <input type="checkbox" ng-model="shuffle">
         </div>
 
         <div class="row" ng-show="unitMode==='unit' && !unit.inProgress">

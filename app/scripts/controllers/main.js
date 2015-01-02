@@ -27,6 +27,7 @@ angular.module('famousAngular')
       });
 
       $scope.n_items = 12;
+      $scope.shuffle = true;
       $scope.sort_least_learned = false;
 
       $scope.startUnit = function () {
@@ -35,7 +36,7 @@ angular.module('famousAngular')
             $scope.request = {pending: true};
             // fetch the custom unit
             AutoUnit.query({
-                shuffle: true,
+                shuffle: $scope.shuffle,
                 n_items: $scope.n_items, // works but in ui missing or commented out
                 user_id: auth.profile.user_id,
                 language_id: $scope.lang.from.id,
