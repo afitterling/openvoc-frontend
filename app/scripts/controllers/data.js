@@ -30,8 +30,9 @@ angular.module('famousAngular')
 
       var self = this;
 
-      $scope.predicate = 'updated_at';
-      $scope.reverse = true;
+//      $scope.predicate = 'updated_at';
+//      $scope.reverse = true;
+
       $scope.stapleSort = true;
 
       $scope.translationFilterValue = '';
@@ -45,6 +46,9 @@ angular.module('famousAngular')
           $scope.reverseT = reverse;
         }
       };
+
+      // init stable sort at beginning
+      $scope.setSortMode('updated_at', true);
 
       $scope.sortMode = {
         updated_at: {
