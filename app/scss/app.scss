@@ -8,8 +8,13 @@ footer {
   //text-align: center;
   //padding: 8rem;
   a { color: white; }
-  background: #999;
-  height: 300px;
+  font-weight: bolder;
+  background: #ddd;
+  height: 500px;
+  .container {
+    padding-top: 5px;
+  }
+  border-top: 2px solid silver;
 }
 
 .main.container {
