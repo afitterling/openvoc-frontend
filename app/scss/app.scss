@@ -1,6 +1,6 @@
 
 .partial {
-  margin-top: 7rem;
+  //margin-top: 7rem;
 }
 
 footer {
@@ -10,4 +10,10 @@ footer {
   a { color: white; }
   background: #999;
   height: 300px;
+}
+
+.main.container {
+  min-height: 300px;
+  //background: red;
+  padding-top: 90px;
 }
