@@ -272,6 +272,13 @@ angular.module('famousAngular',
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
             $rootScope.lang_selected = {from_id: 1, to_id: 2};
             words.query({language_id: 1, targetlang_id: 2, user_id: auth.profile.user_id}, function (words) {
+//              angular.forEach(words, function(word) {
+//                if (angular.isDefined(word.translations)) {
+//                  angular.forEach(word.translations, function (trans) {
+//                    console.log(trans);
+//                  });
+//                }
+//              });
               AppStore.set('words', words);
             });
           });

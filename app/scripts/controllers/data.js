@@ -123,7 +123,13 @@ angular.module('famousAngular')
 
       $scope.deleteTranslation = function (word, trans) {
         words.delete({id: trans.id}, function () {
-          word.translations.splice(word.translations.indexOf(trans), 1);
+          angular.forEach($scope.words, function (w) {
+            angular.forEach(w.translations, function (t) {
+              if (t.id === trans.id) {
+                w.translations.splice(w.translations.indexOf(t), 1);
+              }
+            });
+          });
         });
       };
 
