@@ -110,7 +110,13 @@ angular.module('famousAngular')
           if (translation.unit_id) {
             success.unit_id = translation.unit_id;
           }
-          word.translations[word.translations.indexOf(translation)] = success;
+          angular.forEach($scope.words, function (w) {
+            angular.forEach(w.translations, function (t) {
+              if (t.id === translation.id) {
+                w.translations[w.translations.indexOf(t)] = success;
+              }
+            });
+          });
         });
       };
 
