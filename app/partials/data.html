@@ -49,6 +49,10 @@
         <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                   selected="lang_selected.to_id" list-model="languages"></dropdown>
 
+        <span class="small text-info label label-warning" ng-show="pendingFetch">update in progress</span>
+        <span class="small text-info label label-danger" ng-show="pendingFetch==false">update scheduled</span>
+        <br>
+
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 From Sort: {{sortMode[predicate][reverse+'']}}<span class="caret"></span>
@@ -62,6 +66,7 @@
                 <li><a ng-click="setSortMode('name', true)">Alphabet (z-a)</a></li>
             </ul>
         </div>
+
         <label>staple</label>
         <input type="checkbox" ng-model="stapleSort" ng-click="predicateT=predicate; reverseT=reverse;">
 
