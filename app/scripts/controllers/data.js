@@ -162,8 +162,16 @@ angular.module('famousAngular')
         }
       };
 
-      $scope.$watch('lang', function (newVal) {
-        $scope.updateTableItems(newVal);
+      var promise, newpromise;
+      $scope.$watch('lang', function (newVal, oldVal) {
+        // if promise pending delete
+        newpromise = $timeout(function () {
+          if (promise) {
+            $timeout.cancel(promise);
+          }
+          promise = newpromise;
+          $scope.updateTableItems(newVal);
+        }, 2500);
       }, true);
 
       var first = 0;
