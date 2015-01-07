@@ -35,7 +35,7 @@ angular.module('famousAngular')
           case 'lang':
             $scope.request = {pending: true};
             // fetch the custom unit
-            AutoUnit.query({
+            AutoUnit.get({
                 shuffle: $scope.shuffle,
                 n_items: $scope.n_items, // works but in ui missing or commented out
                 user_id: auth.profile.user_id,
@@ -44,7 +44,7 @@ angular.module('famousAngular')
               },
               function (success) {
                 $scope.request = {pending: false};
-                $scope.unit_items = success;
+                $scope.unit_items = success.data.unit_items;
                 $scope.unit = { inProgress: true, idx: 0, finished: false };
                 $scope.show = false;
                 $scope.interactive = true;
@@ -53,13 +53,13 @@ angular.module('famousAngular')
               });
             break;
           case 'unit':
-            Unit.query({
+            Unit.get({
                 shuffle: true,
                 unit_id: $scope.queryUnit.id
               },
               function (success) {
                 $scope.request = {pending: false};
-                $scope.unit_items = success;
+                $scope.unit_items = success.data.unit_items;
                 $scope.unit = { inProgress: true, idx: 0, finished: false };
                 $scope.show = false;
                 $scope.interactive = true;
