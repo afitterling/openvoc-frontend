@@ -60,6 +60,9 @@ angular.module('famousAngular')
               function (success) {
                 $scope.request = {pending: false};
                 $scope.unit_items = success.data.unit_items;
+                $scope.containing_langs = null;
+                $scope.containing_langs = success.data.langs;
+                $log.debug($scope.containing_langs);
                 $scope.unit = { inProgress: true, idx: 0, finished: false };
                 $scope.show = false;
                 $scope.interactive = true;
@@ -79,6 +82,7 @@ angular.module('famousAngular')
         $scope.tipLength = tipDefaultLength;
         $scope.show = false;
         $scope.swapMode = false;
+        $scope.containing_langs = null;
       };
 
       $scope.swap = function () {
@@ -92,6 +96,16 @@ angular.module('famousAngular')
           swappedItems.push(item);
         }, swappedItems);
         $scope.unit_items = swappedItems;
+
+        // swap containinglangs
+        if (angular.isDefined($scope.containing_langs)) {
+          var swapped_langs = [];
+          angular.forEach($scope.containing_langs, function (item) {
+            this.push({from: item.to, to: item.from});
+          }, swapped_langs);
+          $scope.containing_langs = swapped_langs;
+        }
+//        console.log($scope.containing_langs, swapped_langs);
       };
 
       var reverseModeCounter = 0;
@@ -152,6 +166,16 @@ angular.module('famousAngular')
         var temp = $scope.lang.from;
         $scope.lang.from = $scope.lang.to;
         $scope.lang.to = temp;
+      };
+
+      $scope.getLang = function (lang_id) {
+        var lang = null;
+        angular.forEach($scope.languages, function (ll) {
+          if (angular.equals(lang_id, ll.id)) {
+            lang = ll;
+          }
+        });
+        return lang;
       };
 
     }])

@@ -62,6 +62,14 @@
             </button>
             <br><br>
         </div>
+        <div class="row" ng-show="containing_langs">
+            <h5>contains:</h5>
+            <ul>
+                <li ng-repeat="lang in containing_langs">
+                    {{getLang(lang.from).name}} - {{getLang(lang.to).name}}
+                </li>
+            </ul>
+        </div>
         <!--<section ng-hide="unit.inProgress">-->
             <!--<label>max items</label>-->
             <!--<input style="width: 50px;" ng-disabled="unit.inProgress" type="number" ng-model="n_items">-->
@@ -115,6 +123,7 @@
                 {{unit_items[unit.idx].from.name}} <span ng-show="variant">
                 ({{unit_items[unit.idx].to.name.slice(0,tipLength)}}{{dots.slice(0,unit_items[unit.idx].to.name.length-tipLength)}})
             </span>
+            <span class="small">[{{getLang(unit_items[unit.idx].from.language_id).locale_string}} - {{getLang(unit_items[unit.idx].to.language_id).locale_string}}]</span>
             </h3>
 
             <form name="inputForm" ng-submit="validator(input, unit_items[unit.idx])" novalidate="">
