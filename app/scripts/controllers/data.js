@@ -187,7 +187,7 @@ angular.module('famousAngular')
           $scope.pendingFetch = false;
           $timeout(function () {
             $scope.pendingFetch = true;
-          }, $scope.fetch_timeout / 1.5);
+          }, $scope.fetch_timeout / 3);
           $scope.words = [];
 //          console.log('called', promise);
         }

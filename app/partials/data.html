@@ -49,8 +49,8 @@
         <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                   selected="lang_selected.to_id" list-model="languages"></dropdown>
 
-        <span class="small text-info label label-warning" ng-show="pendingFetch">update in progress</span>
-        <span class="small text-info label label-danger" ng-show="pendingFetch==false">update scheduled</span>
+        <span class="small text-info" ng-show="pendingFetch"><img src="images/ajax-loader.gif"/> pending update</span>
+        <span class="small text-info" ng-show="pendingFetch==false">menu change - update scheduled.</span>
         <br>
 
         <div class="btn-group">
