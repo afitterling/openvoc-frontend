@@ -120,7 +120,7 @@
         <div ng-show="unit.inProgress">
             <!--{{unit_items[unit.idx]}}-->
             <h3>
-                {{unit_items[unit.idx].from.name}} <span ng-show="variant">
+                {{unit_items[unit.idx].from.name}} <span ng-show="variant" class="text-info">
                 ({{unit_items[unit.idx].to.name.slice(0,tipLength)}}{{dots.slice(0,unit_items[unit.idx].to.name.length-tipLength)}})
             </span>
             <span class="small">[{{getLang(unit_items[unit.idx].from.language_id).locale_string}} - {{getLang(unit_items[unit.idx].to.language_id).locale_string}}]</span>
