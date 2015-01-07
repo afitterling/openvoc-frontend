@@ -162,12 +162,41 @@ angular.module('famousAngular')
         }
       };
 
-      $scope.$watch('lang', function (newVal) {
-        $scope.updateTableItems(newVal);
+      // $timeout fetch
+      /////////////////////////////////////////////////////
+      var promise, newpromise;
+      promise = [];
+      $scope.fetch_timeout = 5000;
+
+      $scope.$watch('lang', function (newVal, oldVal) {
+        // if promise pending delete
+        newpromise = $timeout(function () {
+          $scope.updateTableItems(newVal, function(){
+            $scope.pendingFetch = null;
+          });
+        }, $scope.fetch_timeout);
+        if (oldVal) {
+//          console.log('pr', promise);
+          var sub = [];
+          promise.map(function (p) {
+            $timeout.cancel(p);
+          });
+          promise = sub;
+//          console.log('pr after', promise);
+          promise.push(newpromise);
+          $scope.pendingFetch = false;
+          $timeout(function () {
+            $scope.pendingFetch = true;
+          }, $scope.fetch_timeout / 3);
+          $scope.words = [];
+//          console.log('called', promise);
+        }
       }, true);
 
+      /////////////////////////////////////////////////////
+
       var first = 0;
-      $scope.updateTableItems = function (lang) {
+      $scope.updateTableItems = function (lang, cb) {
         if (first < 2) {
           first += 1;
           return;
@@ -178,6 +207,9 @@ angular.module('famousAngular')
         words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
           AppStore.set('words', {}); // empty as we don't need to resolve
           $scope.words = words;
+          if (angular.isDefined(cb)) {
+            cb();
+          }
         });
 
       };

@@ -98,7 +98,8 @@ angular.module('famousAngular')
         $scope.unit_items = swappedItems;
 
         // swap containinglangs
-        if (angular.isDefined($scope.containing_langs)) {
+        if ($scope.containing_langs) {
+
           var swapped_langs = [];
           angular.forEach($scope.containing_langs, function (item) {
             this.push({from: item.to, to: item.from});
