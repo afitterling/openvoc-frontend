@@ -169,8 +169,13 @@ angular.module('famousAngular')
       $scope.fetch_timeout = 5000;
 
 //      function countDown () {
-//        $scope.timer -= 500;
-//        $timeout(countDown, $scope.fetch_timeout/10);
+//        if (countdown) {
+//          $timeout.cancel(countdown);
+//        }
+//        if ($scope.pendingFetch){
+//          countdown = $timeout(countDown, $scope.fetch_timeout/100);
+//        }
+//        $scope.timer -= 50;
 //      };
 
       $scope.$watch('lang', function (newVal, oldVal) {
