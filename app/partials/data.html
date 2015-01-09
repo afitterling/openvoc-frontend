@@ -87,6 +87,8 @@
 
         <label>items with translations only</label>
         <input type="checkbox" ng-model="translationsOnly">
+        <label ng-show="translationsOnly">hide new translation</label>
+        <input ng-show="translationsOnly" type="checkbox" ng-model="hideNewTranslations">
         <br>
 
     </div>
@@ -221,7 +223,7 @@
         </tr>
         <tr ng-repeat-end></tr>
 
-        <tr ng-repeat-end ng-show="word.translations.length && !translationFilterValue && !filterUnitId">
+        <tr ng-repeat-end ng-show="word.translations.length && !translationFilterValue && !filterUnitId && !hideNewTranslations">
             <td></td>
             <td>
                 <editable-simple model="newTranslation.name"
