@@ -126,9 +126,8 @@
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search 'From' for..." ng-model="filterValue">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" ng-click="filterValue=''" ng-disabled="!filterValue"
-                            type="button">reset!
-                    </button>
+                    <button class="btn btn-default" ng-class="{'btn-danger': filterValue}" ng-click="filterValue=''" ng-disabled="!filterValue"
+                            type="button"><span class="glyphicon glyphicon-trash"></span></button>
                   </span>
         </div>
         <!-- /input-group -->
@@ -139,9 +138,8 @@
             <input type="text" class="form-control" placeholder="Search 'To' for..."
                    ng-model="translationFilterValue">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" ng-click="translationFilterValue=''"
-                            ng-disabled="!translationFilterValue" type="button">reset!
-                    </button>
+                    <button class="btn btn-default" ng-class="{'btn-danger': translationFilterValue}" ng-click="translationFilterValue=''"
+                            ng-disabled="!translationFilterValue" type="button"><span class="glyphicon glyphicon-trash"></span></button>
                   </span>
         </div>
         <!-- /input-group -->
