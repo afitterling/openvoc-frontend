@@ -86,7 +86,7 @@
         <p></p>
 
         <label>items with translations only</label>
-        <input type="checkbox" ng-model="translationsOnly">
+        <input type="checkbox" ng-model="translationsOnly" ng-click="(translationsOnly==false) && (hideNewTranslations=false)">
         <label ng-show="translationsOnly">hide new translation</label>
         <input ng-show="translationsOnly" type="checkbox" ng-model="hideNewTranslations">
         <br>
