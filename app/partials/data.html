@@ -49,7 +49,7 @@
                   selected="lang_selected.to_id" list-model="languages"></dropdown>
 
         <!--<span class="small text-info" ng-show="pendingFetch"><img src="images/ajax-loader.gif"/> update pending</span>-->
-        <span class="small text-info" ng-show="pendingFetch">update scheduled ({{timer}}ms) - can change still change UI</span>
+        <span class="small text-info" ng-show="pendingFetchMsg">can change still change UI ({{timer/1000}}sec)</span>
         <!--<span class="small text-info" ng-show="pendingFetch==false">menu change - update scheduled.</span>-->
         <br>
 
@@ -157,7 +157,10 @@
 <div class="row">
     <table class="table table-bordered">
         <tr>
-            <th>{{lang.from.name}}</th>
+            <th>{{lang.from.name}}
+                <!--<span ng-show="pendingFetchMsg" class="label label-danger">re-marked for delayed update</span>-->
+                <span ng-show="pendingFetch" class="label label-danger">marked for delayed update</span>
+            </th>
             <th>{{lang.to.name}}</th>
         </tr>
         <tr ng-show="!translationsOnly">

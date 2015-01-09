@@ -193,11 +193,12 @@ angular.module('famousAngular')
           $scope.timer = $scope.fetch_timeout;
 //          countDown();
           $scope.pendingFetch = true;
+          $scope.pendingFetchMsg = true;
           if (hidePendingFetch) {
             $timeout.cancel(hidePendingFetch);
           }
           hidePendingFetch = $timeout(function () {
-            $scope.pendingFetch = null;
+            $scope.pendingFetchMsg = null;
           }, $scope.fetch_timeout / 4);
 
           $scope.words = [];
