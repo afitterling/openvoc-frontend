@@ -157,24 +157,24 @@
 <div class="row">
     <table class="table table-bordered">
         <tr>
-            <th>{{lang.from.name}}
+            <th class="col-lg-6">{{lang.from.name}}
                 <!--<span ng-show="pendingFetchMsg" class="label label-danger">re-marked for delayed update</span>-->
                 <span ng-show="pendingFetch" class="label label-danger">marked for delayed update</span>
             </th>
-            <th>{{lang.to.name}}</th>
+            <th class="col-lg-6">{{lang.to.name}}</th>
         </tr>
         <tr ng-show="!translationsOnly">
-            <td>
+            <td class="col-lg-6">
                 <editable-simple reset-cancel="true" submit-callback="saveWord(newWord) && (newWord=null)"
                                  model="newWord.name"></editable-simple>
             </td>
-            <td>
+            <td class="col-lg-6">
             </td>
         </tr>
         <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse track by word.updated_at"
             ng-hide="word.translations.length || translationsOnly || translationFilterValue || filterUnitItems">
             <!-- safe filter fix: substitute supplement before update -->
-            <td ng-init="wordEdit.name=word.name">
+            <td class="col-lg-6" ng-init="wordEdit.name=word.name">
                     <span>
                         <editable-simple model="wordEdit.name"
                                          bing="true"
@@ -184,7 +184,7 @@
                         </editable-simple>
                     </span>
             </td>
-            <td>
+            <td class="col-lg-6">
                     <span>
                         <editable-simple model="newTranslation.name"
                                          submit-callback="saveTranslation(word, newTranslation) && (newTranslation=null)"
@@ -196,7 +196,7 @@
         </tr>
         <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':translationFilterValue} | filter:{'unit_id':filterUnitId} track by trans.updated_at">
             <!-- safe filter fix: substitute supplement before update -->
-            <td ng-init="wordEdit.name=word.name">
+            <td class="col-lg-6" ng-init="wordEdit.name=word.name">
                     <span ng-show="$first">
                         <editable-simple model="wordEdit.name"
                                          bing="true"
@@ -207,7 +207,7 @@
                     </span>
             </td>
             <!-- safe filter fix: substitute supplement before update -->
-            <td ng-init="transEdit.name=trans.name">
+            <td class="col-lg-6" ng-init="transEdit.name=trans.name">
                 <!--{{trans}}-->
                     <span>
                         <editable-simple model="transEdit.name"
@@ -224,8 +224,8 @@
         <tr ng-repeat-end></tr>
 
         <tr ng-repeat-end ng-show="word.translations.length && !translationFilterValue && !filterUnitId && !hideNewTranslations">
-            <td></td>
-            <td>
+            <td class="col-lg-6"></td>
+            <td class="col-lg-6">
                 <editable-simple model="newTranslation.name"
                                  submit-callback="saveTranslation(word, newTranslation) && (newTranslation=null)"
                         >
