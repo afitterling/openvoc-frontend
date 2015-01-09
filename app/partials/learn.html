@@ -12,15 +12,15 @@
         </div>
 
         <div class="row" ng-show="unitMode==='lang' && !unit.inProgress">
-            <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
+            <dropdown ready="ready" name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
                       list-model="languages"></dropdown>
             <span class="message error-message">{{error}}</span>
 
-            <button class="btn btn-default btn-small" ng-click="swapLanguages()">
+            <button ng-show="ready" class="btn btn-default btn-small" ng-click="swapLanguages()">
                 <span class="glyphicon glyphicon-transfer"></span>
             </button>
 
-            <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
+            <dropdown ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                       selected="lang_selected.to_id" list-model="languages"></dropdown>
             <br>
             <div class="btn-group">

@@ -38,19 +38,19 @@
     <div class="col-lg-6">
 
         <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
-                  list-model="languages"></dropdown>
+                  list-model="languages" ready="ready"></dropdown>
         <span class="message error-message">{{error}}</span>
 
-        <button class="btn btn-default btn-small" ng-click="swapLanguages()" ng-disabled="!words">
-            <span ng-show="words" class="glyphicon glyphicon-transfer"></span>
-            <span ng-show="!words">...</span>
+        <button id="swap" ng-show="ready" class="btn btn-default btn-small" ng-click="swapLanguages($event)">
+            <span class="glyphicon glyphicon-transfer"></span>
         </button>
 
-        <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
+        <dropdown ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                   selected="lang_selected.to_id" list-model="languages"></dropdown>
 
-        <span class="small text-info" ng-show="pendingFetch"><img src="images/ajax-loader.gif"/> update pending</span>
-        <span class="small text-info" ng-show="pendingFetch==false">menu change - update scheduled.</span>
+        <!--<span class="small text-info" ng-show="pendingFetch"><img src="images/ajax-loader.gif"/> update pending</span>-->
+        <span class="small text-info" ng-show="pendingFetchMsg">update scheduled in {{fetch_timeout/1000}}s - can still change UI</span>
+        <!--<span class="small text-info" ng-show="pendingFetch==false">menu change - update scheduled.</span>-->
         <br>
 
         <div class="btn-group">
@@ -86,7 +86,9 @@
         <p></p>
 
         <label>items with translations only</label>
-        <input type="checkbox" ng-model="translationsOnly">
+        <input type="checkbox" ng-model="translationsOnly" ng-click="(translationsOnly==false) && (hideNewTranslations=false)">
+        <label ng-show="translationsOnly">hide new translation</label>
+        <input ng-show="translationsOnly" type="checkbox" ng-model="hideNewTranslations">
         <br>
 
     </div>
@@ -126,9 +128,8 @@
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search 'From' for..." ng-model="filterValue">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" ng-click="filterValue=''" ng-disabled="!filterValue"
-                            type="button">reset!
-                    </button>
+                    <button class="btn btn-default" ng-class="{'btn-danger': filterValue}" ng-click="filterValue=''" ng-disabled="!filterValue"
+                            type="button"><span class="glyphicon glyphicon-trash"></span></button>
                   </span>
         </div>
         <!-- /input-group -->
@@ -139,9 +140,8 @@
             <input type="text" class="form-control" placeholder="Search 'To' for..."
                    ng-model="translationFilterValue">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" ng-click="translationFilterValue=''"
-                            ng-disabled="!translationFilterValue" type="button">reset!
-                    </button>
+                    <button class="btn btn-default" ng-class="{'btn-danger': translationFilterValue}" ng-click="translationFilterValue=''"
+                            ng-disabled="!translationFilterValue" type="button"><span class="glyphicon glyphicon-trash"></span></button>
                   </span>
         </div>
         <!-- /input-group -->
@@ -157,21 +157,24 @@
 <div class="row">
     <table class="table table-bordered">
         <tr>
-            <th>{{lang.from.name}}</th>
-            <th>{{lang.to.name}}</th>
+            <th class="col-lg-6">{{lang.from.name}}
+                <!--<span ng-show="pendingFetchMsg" class="label label-danger">re-marked for delayed update</span>-->
+                <span ng-show="pendingFetch" class="label label-danger">marked for delayed update</span>
+            </th>
+            <th class="col-lg-6">{{lang.to.name}}</th>
         </tr>
         <tr ng-show="!translationsOnly">
-            <td>
+            <td class="col-lg-6">
                 <editable-simple reset-cancel="true" submit-callback="saveWord(newWord) && (newWord=null)"
                                  model="newWord.name"></editable-simple>
             </td>
-            <td>
+            <td class="col-lg-6">
             </td>
         </tr>
         <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse track by word.updated_at"
             ng-hide="word.translations.length || translationsOnly || translationFilterValue || filterUnitItems">
             <!-- safe filter fix: substitute supplement before update -->
-            <td ng-init="wordEdit.name=word.name">
+            <td class="col-lg-6" ng-init="wordEdit.name=word.name">
                     <span>
                         <editable-simple model="wordEdit.name"
                                          bing="true"
@@ -181,7 +184,7 @@
                         </editable-simple>
                     </span>
             </td>
-            <td>
+            <td class="col-lg-6">
                     <span>
                         <editable-simple model="newTranslation.name"
                                          submit-callback="saveTranslation(word, newTranslation) && (newTranslation=null)"
@@ -193,7 +196,7 @@
         </tr>
         <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':translationFilterValue} | filter:{'unit_id':filterUnitId} track by trans.updated_at">
             <!-- safe filter fix: substitute supplement before update -->
-            <td ng-init="wordEdit.name=word.name">
+            <td class="col-lg-6" ng-init="wordEdit.name=word.name">
                     <span ng-show="$first">
                         <editable-simple model="wordEdit.name"
                                          bing="true"
@@ -204,7 +207,7 @@
                     </span>
             </td>
             <!-- safe filter fix: substitute supplement before update -->
-            <td ng-init="transEdit.name=trans.name">
+            <td class="col-lg-6" ng-init="transEdit.name=trans.name">
                 <!--{{trans}}-->
                     <span>
                         <editable-simple model="transEdit.name"
@@ -220,9 +223,9 @@
         </tr>
         <tr ng-repeat-end></tr>
 
-        <tr ng-repeat-end ng-show="word.translations.length && !translationFilterValue && !filterUnitId">
-            <td></td>
-            <td>
+        <tr ng-repeat-end ng-show="word.translations.length && !translationFilterValue && !filterUnitId && !hideNewTranslations">
+            <td class="col-lg-6"></td>
+            <td class="col-lg-6">
                 <editable-simple model="newTranslation.name"
                                  submit-callback="saveTranslation(word, newTranslation) && (newTranslation=null)"
                         >

@@ -164,9 +164,19 @@ angular.module('famousAngular')
 
       // $timeout fetch
       /////////////////////////////////////////////////////
-      var promise, newpromise;
+      var promise, newpromise, hidePendingFetch, countdown;
       promise = [];
       $scope.fetch_timeout = 5000;
+
+//      function countDown () {
+//        if (countdown) {
+//          $timeout.cancel(countdown);
+//        }
+//        if ($scope.pendingFetch){
+//          countdown = $timeout(countDown, $scope.fetch_timeout/100);
+//        }
+//        $scope.timer -= 50;
+//      };
 
       $scope.$watch('lang', function (newVal, oldVal) {
         // if promise pending delete
@@ -184,10 +194,18 @@ angular.module('famousAngular')
           promise = sub;
 //          console.log('pr after', promise);
           promise.push(newpromise);
-          $scope.pendingFetch = false;
-          $timeout(function () {
-            $scope.pendingFetch = true;
-          }, $scope.fetch_timeout / 3);
+//          $scope.pendingFetch = false;
+          $scope.timer = $scope.fetch_timeout;
+//          countDown();
+          $scope.pendingFetch = true;
+          $scope.pendingFetchMsg = true;
+          if (hidePendingFetch) {
+            $timeout.cancel(hidePendingFetch);
+          }
+          hidePendingFetch = $timeout(function () {
+            $scope.pendingFetchMsg = null;
+          }, $scope.fetch_timeout / 4);
+
           $scope.words = [];
 //          console.log('called', promise);
         }
@@ -216,6 +234,7 @@ angular.module('famousAngular')
 
       // swap languages
       $scope.swapLanguages = function () {
+        $('button#swap').blur();
         var temp = $scope.lang.from;
         $scope.lang.from = $scope.lang.to;
         $scope.lang.to = temp;
