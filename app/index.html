@@ -21,6 +21,13 @@
     <!-- endbower -->
     <!-- endbuild -->
 
+    <!-- ng-cloak -->
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="css/app.css">
     <!-- endbuild -->
@@ -74,7 +81,7 @@
                 OpenVoc <span class="glyphicon glyphicon-list glyphicon-list" style="font-size: 2.8rem;"></span>
             </a>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
+        <div id="navbar" class="collapse navbar-collapse ng-cloak">
             <ul class="nav navbar-nav">
                 <!--<li class="active"><a href="#">Home</a></li>-->
                 <li ng-show="profile" ng-class="{'active': link==='/dictionary'}" data-toggle="tooltip" data-placement="bottom" title="Edit your personal dictionary!"><a ng-click="goTo('/dictionary')">Dictionary</a></li>
