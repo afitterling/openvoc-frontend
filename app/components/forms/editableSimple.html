@@ -28,9 +28,15 @@
         </button>
     </span>
     <!-- lang changer -->
-    <span ng-hide="edit || !model || !translationLangChanger" data-toggle="tooltip" data-placement="top" title="move item to another language">
+    <span ng-hide="edit || !model || !translationLangChanger" data-toggle="tooltip" data-placement="top" title="move to another language">
         <button ng-click="$parent.openLangModal($parent.word, $parent.trans, 'translation')" class="btn btn-xs">
-            <span class="glyphicon glyphicon-edit"></span>
+            <span class="glyphicon glyphicon-share-alt"></span>
+        </button>
+    </span>
+    <!-- word lang changer -->
+    <span ng-hide="edit || !model || !wordLangChanger" data-toggle="tooltip" data-placement="top" title="move to another language">
+        <button ng-click="$parent.openLangModal($parent.word, $parent.trans, 'word')" class="btn btn-xs">
+            <span class="glyphicon glyphicon-share-alt"></span>
         </button>
     </span>
     <span ng-hide="edit || !model || !tag || $parent.trans.unit_id === null || !$parent.trans.unit_id" data-toggle="tooltip" data-placement="top" title="tag/untag unit">

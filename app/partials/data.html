@@ -54,9 +54,13 @@
                         <li ng-repeat="item in languages" role="presentation"><a role="menuitem" tabindex="-1" href="#"
                                                                                  ng-click="moveTranslationToLang(item.id)">{{item.name}}</a></li>
                     </ul>
+                    <ul ng-show="langModal.model.mode==='word'" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <li ng-repeat="item in languages" role="presentation"><a role="menuitem" tabindex="-1" href="#"
+                                                                                 ng-click="moveWordToLang(item.id)">{{item.name}}</a></li>
+                    </ul>
                 </div>
                 <br>
-                <div class="label label-danger" ng-show="changeLangErrorMsg">already in this language!</div>
+                <div class="label label-danger" ng-show="changeLangErrorMsg">Already in this language!</div>
 
             </div>
             <div class="modal-footer">
@@ -225,6 +229,7 @@
                                          bing="true"
                                          submit-callback="word.name=wordEdit.name; updateWord(word)"
                                          delete-callback="deleteWord(word)"
+                                         word-lang-changer="true"
                                 >
                         </editable-simple>
                     </span>
@@ -247,6 +252,7 @@
                                          bing="true"
                                          submit-callback="word.name=wordEdit.name; updateWord(word)"
                                          delete-callback="deleteWord(word)"
+                                         word-lang-changer="true"
                                 >
                         </editable-simple>
                     </span>
