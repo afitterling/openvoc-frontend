@@ -52,9 +52,11 @@
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         <li ng-repeat="item in languages" role="presentation"><a role="menuitem" tabindex="-1" href="#"
-                                                                                 ng-click="moveToLang(item.id)">{{item.name}}</a></li>
+                                                                                 ng-click="moveTranslationToLang(item.id)">{{item.name}}</a></li>
                     </ul>
                 </div>
+                <br>
+                <div class="label label-danger" ng-show="changeLangErrorMsg">already in this language!</div>
 
             </div>
             <div class="modal-footer">
