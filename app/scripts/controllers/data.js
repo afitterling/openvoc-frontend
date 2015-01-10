@@ -342,9 +342,6 @@ angular.module('famousAngular')
       }, 5000);
 
       $scope.openLangModal = function(word, trans, mode){
-        $('#changeLangModal').modal({});
-
-        $scope.langModal = true;
         $scope.changeLangErrorMsg = false;
         $scope.langModal = {
           model: {
@@ -353,6 +350,7 @@ angular.module('famousAngular')
             mode: mode
           }
         };
+        $('#changeLangModal').modal({});
       };
 
       // move to different lang over modal changeLang
@@ -373,7 +371,7 @@ angular.module('famousAngular')
         if (lang_id !== $scope.lang.from.id) {
           $scope.langModal.model.word.language_id = lang_id;
           words.update($scope.langModal.model.word, function (success) {
-            $scope.words.splice($scope.words.indexOf($scope.langModal.model.word, 1));
+            $scope.words.splice($scope.words.indexOf($scope.langModal.model.word), 1);
           });
           $('#changeLangModal').modal('hide');
         } else {
