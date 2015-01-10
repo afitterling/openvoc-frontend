@@ -11,7 +11,8 @@ angular.module('directives.formHelpers', [])
         selected : '=',
         model: '=',
         name: '@',
-        onChange: '&'
+        onChange: '&',
+        ready: '='
       },
       link: function (scope, elm, attrs) {
 
@@ -21,6 +22,7 @@ angular.module('directives.formHelpers', [])
           spliceMenuItems();
           scope.current = newVal;
           scope.model = scope.current;
+          scope.ready = true;
         });
 
         var spliceMenuItems = function () {

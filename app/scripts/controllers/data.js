@@ -30,9 +30,13 @@ angular.module('famousAngular')
 
       var self = this;
 
-      $scope.predicate = 'updated_at';
-      $scope.reverse = true;
+//      $scope.predicate = 'updated_at';
+//      $scope.reverse = true;
+
       $scope.stapleSort = true;
+
+      $scope.translationFilterValue = '';
+      $scope.filterValue = '';
 
       $scope.setSortMode = function (predicate, reverse) {
         $scope.predicate = predicate;
@@ -42,6 +46,9 @@ angular.module('famousAngular')
           $scope.reverseT = reverse;
         }
       };
+
+      // init stable sort at beginning
+      $scope.setSortMode('updated_at', true);
 
       $scope.sortMode = {
         updated_at: {
@@ -103,7 +110,13 @@ angular.module('famousAngular')
           if (translation.unit_id) {
             success.unit_id = translation.unit_id;
           }
-          word.translations[word.translations.indexOf(translation)] = success;
+          angular.forEach($scope.words, function (w) {
+            angular.forEach(w.translations, function (t) {
+              if (t.id === translation.id) {
+                w.translations[w.translations.indexOf(t)] = success;
+              }
+            });
+          });
         });
       };
 
@@ -116,7 +129,13 @@ angular.module('famousAngular')
 
       $scope.deleteTranslation = function (word, trans) {
         words.delete({id: trans.id}, function () {
-          word.translations.splice(word.translations.indexOf(trans), 1);
+          angular.forEach($scope.words, function (w) {
+            angular.forEach(w.translations, function (t) {
+              if (t.id === trans.id) {
+                w.translations.splice(w.translations.indexOf(t), 1);
+              }
+            });
+          });
         });
       };
 
@@ -143,12 +162,59 @@ angular.module('famousAngular')
         }
       };
 
-      $scope.$watch('lang', function (newVal) {
-        $scope.updateTableItems(newVal);
+      // $timeout fetch
+      /////////////////////////////////////////////////////
+      var promise, newpromise, hidePendingFetch, countdown;
+      promise = [];
+      $scope.fetch_timeout = 5000;
+
+//      function countDown () {
+//        if (countdown) {
+//          $timeout.cancel(countdown);
+//        }
+//        if ($scope.pendingFetch){
+//          countdown = $timeout(countDown, $scope.fetch_timeout/100);
+//        }
+//        $scope.timer -= 50;
+//      };
+
+      $scope.$watch('lang', function (newVal, oldVal) {
+        // if promise pending delete
+        newpromise = $timeout(function () {
+          $scope.updateTableItems(newVal, function(){
+            $scope.pendingFetch = null;
+          });
+        }, $scope.fetch_timeout);
+        if (oldVal) {
+//          console.log('pr', promise);
+          var sub = [];
+          promise.map(function (p) {
+            $timeout.cancel(p);
+          });
+          promise = sub;
+//          console.log('pr after', promise);
+          promise.push(newpromise);
+//          $scope.pendingFetch = false;
+          $scope.timer = $scope.fetch_timeout;
+//          countDown();
+          $scope.pendingFetch = true;
+          $scope.pendingFetchMsg = true;
+          if (hidePendingFetch) {
+            $timeout.cancel(hidePendingFetch);
+          }
+          hidePendingFetch = $timeout(function () {
+            $scope.pendingFetchMsg = null;
+          }, $scope.fetch_timeout / 4);
+
+          $scope.words = [];
+//          console.log('called', promise);
+        }
       }, true);
 
+      /////////////////////////////////////////////////////
+
       var first = 0;
-      $scope.updateTableItems = function (lang) {
+      $scope.updateTableItems = function (lang, cb) {
         if (first < 2) {
           first += 1;
           return;
@@ -159,12 +225,19 @@ angular.module('famousAngular')
         words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
           AppStore.set('words', {}); // empty as we don't need to resolve
           $scope.words = words;
+          if (angular.isDefined(cb)) {
+            cb();
+            $timeout(function () {
+              $('[data-toggle="tooltip"]').tooltip();
+            }, 1000);
+          }
         });
 
       };
 
       // swap languages
       $scope.swapLanguages = function () {
+        $('button#swap').blur();
         var temp = $scope.lang.from;
         $scope.lang.from = $scope.lang.to;
         $scope.lang.to = temp;
@@ -262,6 +335,34 @@ angular.module('famousAngular')
           $scope.filterUnitId = undefined;
         }
 
+      };
+
+      $timeout(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      }, 5000);
+
+      $scope.openLangModal = function(word, trans){
+        $('#changeLangModal').modal({});
+        $scope.langModal = true;
+        $scope.langModal = {
+          model: {
+            word: word,
+            trans: trans
+          }
+        };
+      };
+
+      // move to different lang over modal changeLang
+      $scope.moveToLang = function(lang_id){
+        $scope.langModal.model.trans.language_id = lang_id;
+        words.update($scope.langModal.model.trans, function (success) {
+          //$scope.words[$scope.words.indexOf(word)] = success;
+          if (lang_id !== $scope.lang.from.id) {
+            $scope.langModal.model.word.translations.splice($scope.langModal.model.word.translations.indexOf($scope.langModal.model.trans), 1);
+          }
+        });
+
+        $('#changeLangModal').modal('hide');
       };
 
     }])

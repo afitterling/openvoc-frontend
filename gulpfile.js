@@ -42,6 +42,12 @@ gulp.task('partials', function () {
     .pipe(gulp.dest('dist/partials'));
 });
 
+gulp.task('images', function () {
+  gulp.src('./app/images/**/*')
+    .pipe(gulp.dest('dist/images'));
+});
+
+
 gulp.task('components', function () {
   gulp.src('./app/components/**/*.html')
     .pipe(gulp.dest('dist/components'));

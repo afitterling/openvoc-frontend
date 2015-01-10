@@ -12,20 +12,38 @@
         </div>
 
         <div class="row" ng-show="unitMode==='lang' && !unit.inProgress">
-            <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
+            <dropdown ready="ready" name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
                       list-model="languages"></dropdown>
             <span class="message error-message">{{error}}</span>
 
-            <button class="btn btn-default btn-small" ng-click="swapLanguages()">
+            <button ng-show="ready" class="btn btn-default btn-small" ng-click="swapLanguages()">
                 <span class="glyphicon glyphicon-transfer"></span>
             </button>
 
-            <dropdown name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
+            <dropdown ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                       selected="lang_selected.to_id" list-model="languages"></dropdown>
-
+            <br>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    {{n_items}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="n_items=5">5</a></li>
+                    <li><a ng-click="n_items=12">12</a></li>
+                    <li><a ng-click="n_items=20">20</a></li>
+                    <li><a ng-click="n_items=50">50</a></li>
+                </ul>
+            </div>
+            <div class="btn-group btn-group-sm" role="group" aria-label="button group">
+                <button type="button" class="btn btn-default" ng-class="{'active': !shuffle}" ng-click="shuffle=false">last</button>
+                <button type="button" class="btn btn-default" ng-class="{'active': shuffle}" ng-click="shuffle=true">shuffle</button>
+            </div>
+            <!--shuffle <input type="checkbox" ng-model="shuffle">-->
         </div>
 
-        <div class="row" ng-show="unitMode==='unit' && !unit.inProgress">
+        <div ng-show="units.length===0 && unitMode==='unit'" class="row"><div class="alert alert-danger col-lg-1">no units found</div></div>
+        
+        <div class="row" ng-show="unitMode==='unit' && !unit.inProgress && units.length !== 0">
             <div class="btn-group" ng-init="unit.name='All'">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     {{queryUnit.name}}<span class="caret"></span>
@@ -38,7 +56,7 @@
 
         <br>
         <div class="row">
-            <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-success" ng-click="startUnit()">
+            <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-success" ng-click="startUnit()" ng-disabled="units.length === 0">
                 <span class="glyphicon glyphicon-start">Start Unit</span>
             </button>
             <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
@@ -49,6 +67,14 @@
                 <span class="glyphicon glyphicon-start"><span class="glyphicon glyphicon-repeat"></span></span>
             </button>
             <br><br>
+        </div>
+        <div class="row" ng-show="containing_langs">
+            <h5>contains:</h5>
+            <ul>
+                <li ng-repeat="lang in containing_langs">
+                    {{getLang(lang.from).name}} - {{getLang(lang.to).name}}
+                </li>
+            </ul>
         </div>
         <!--<section ng-hide="unit.inProgress">-->
             <!--<label>max items</label>-->
@@ -86,23 +112,24 @@
         <!--</div>-->
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-disabled="unit.idx==0"
                 ng-click="prev()">
-            <span class="glyphicon glyphicon-start">prev.</span>
+            <span class="glyphicon glyphicon-arrow-left"></span>
         </button>
         <button ng-show="unit.inProgress" class="btn btn-default btn-small" ng-click="showItem()"
                 ng-class="{'active': show}">
-            <span class="glyphicon glyphicon-start">show</span>
+            <span class="">show</span>
         </button>
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning"
                 ng-disabled="unit.idx==unit_items.length-1" ng-click="next()">
-            <span class="glyphicon glyphicon-start">next</span>
+            <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
 
         <div ng-show="unit.inProgress">
             <!--{{unit_items[unit.idx]}}-->
             <h3>
-                {{unit_items[unit.idx].from.name}} <span ng-show="variant">
+                {{unit_items[unit.idx].from.name}} <span ng-show="variant" class="text-info">
                 ({{unit_items[unit.idx].to.name.slice(0,tipLength)}}{{dots.slice(0,unit_items[unit.idx].to.name.length-tipLength)}})
             </span>
+            <span class="small">[{{getLang(unit_items[unit.idx].from.language_id).locale_string}} - {{getLang(unit_items[unit.idx].to.language_id).locale_string}}]</span>
             </h3>
 
             <form name="inputForm" ng-submit="validator(input, unit_items[unit.idx])" novalidate="">

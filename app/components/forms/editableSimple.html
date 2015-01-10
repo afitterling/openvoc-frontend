@@ -3,7 +3,7 @@
         <div class="input-group">
             <span class="input-group-btn">
                 <button class="btn btn-default btn-warning" type="button" ng-click="edit=false; model=oldModel;">
-                    cancel
+                    <span class="glyphicon glyphicon-remove"></span>
                 </button>
             </span>
             <input type="text" class="form-control" ng-required="true" ng-model="model"></input>
@@ -11,7 +11,7 @@
                 <button ng-click="submitCallbackFunc(model); edit=false" class="btn btn-default btn-success"
                         ng-disabled="!formItem.$valid"
                         type="submit">
-                    Submit!
+                    <span class="glyphicon glyphicon-ok"></span>
                 </button>
             </span>
         </div>
@@ -19,19 +19,25 @@
     <!-- @TODO -->
     <!--<span ng-hide="edit" ng-click="edit=true">{{(!resetCancel && model) || '+'}}</span>-->
     <span ng-hide="edit || model" ng-click="edit=true"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></button></span>
-    <span class="model" ng-hide="edit || !model" ng-click="edit=true">{{model}}</span>
-    <span ng-hide="edit || !model"><button ng-click="deleteCallback(model)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></span>
+    <span class="model" ng-hide="edit || !model" ng-click="edit=true">{{model}}&nbsp;<span style="font-size: 0.9rem;" ng-show="id" class="badge" data-toggle="tooltip" data-placement="top" title="'id': identical id means identical item" >{{$parent.trans.id}}</span></span>
+    <span ng-hide="edit || !model"><button ng-click="deleteCallback(model)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button></span>
     <!-- tagging -->
     <span ng-hide="edit || !model || !tag || $parent.selectedUnit.id===0 || $parent.trans.unit_id===$parent.selectedUnit.id">
         <button ng-click="$parent.tag($parent.word, $parent.trans)" class="btn btn-info btn-xs">
             <span class="glyphicon glyphicon-plus">{{$parent.selectedUnit.name}}</span>
         </button>
     </span>
-    <span ng-hide="edit || !model || !tag || $parent.trans.unit_id === null || !$parent.trans.unit_id">
+    <!-- lang changer -->
+    <span ng-hide="edit || !model || !langChanger" data-toggle="tooltip" data-placement="top" title="change language">
+        <button ng-click="$parent.openLangModal($parent.word, $parent.trans)" class="btn btn-xs">
+            <span class="glyphicon glyphicon-edit"></span>
+        </button>
+    </span>
+    <span ng-hide="edit || !model || !tag || $parent.trans.unit_id === null || !$parent.trans.unit_id" data-toggle="tooltip" data-placement="top" title="tag/untag unit">
         <button ng-click="$parent.untag($parent.word, $parent.trans)" class="btn btn-xs">
             <span class="glyphicon glyphicon-minus" unit-name="$parent.trans.unit_id"></span>
         </button>
     </span>
 
-    <span ng-hide="edit || !model || !bing"><button ng-click="$parent.bingTranslate($parent.word)" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-add">bing!</span></button></span>
+    <span ng-hide="edit || !model || !bing" data-toggle="tooltip" data-placement="top" title="translate using bing service!"><button ng-click="$parent.bingTranslate($parent.word)" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-add">bing!</span></button></span>
 </div>

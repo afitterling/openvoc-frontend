@@ -13,6 +13,8 @@ angular.module('famousAngular.formHelpers.editables', [])
         model: '=',
         resetCancel: '=',
         bing: '=',
+        id: '=',
+        langChanger: '=',
         tag: '='
       },
       link: function (scope, elm, attrs) {

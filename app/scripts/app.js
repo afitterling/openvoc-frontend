@@ -104,7 +104,7 @@ angular.module('famousAngular',
 
       $stateProvider
         .state('data', {
-          url: '/translations',
+          url: '/dictionary',
           templateUrl: 'partials/data.html',
           //controller: 'DataCtrl', // see the partial ng-ctrl
           resolve: {
@@ -176,10 +176,6 @@ angular.module('famousAngular',
   .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'Units', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings',
     function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, Units, jwtHelper, store, $resource, AppStore, Languages, UISettings) {
 
-      $rootScope.goTo = function (arg) {
-        $location.path(arg);
-      };
-
       ValidationActionsStore.register('dropdown.lang.to'); //, function(scope.current, ){})
       ValidationActionsStore.register('dropdown.lang.from');
 
@@ -187,6 +183,7 @@ angular.module('famousAngular',
 
       $rootScope.goTo = function (arg) {
         $location.path(arg);
+        $rootScope.link = arg;
       };
 
       $rootScope.$on('onError', function () {
@@ -272,6 +269,13 @@ angular.module('famousAngular',
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
             $rootScope.lang_selected = {from_id: 1, to_id: 2};
             words.query({language_id: 1, targetlang_id: 2, user_id: auth.profile.user_id}, function (words) {
+//              angular.forEach(words, function(word) {
+//                if (angular.isDefined(word.translations)) {
+//                  angular.forEach(word.translations, function (trans) {
+//                    console.log(trans);
+//                  });
+//                }
+//              });
               AppStore.set('words', words);
             });
           });
