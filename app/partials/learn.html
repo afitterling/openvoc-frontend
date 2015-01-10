@@ -110,15 +110,15 @@
         <!--</div>-->
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-disabled="unit.idx==0"
                 ng-click="prev()">
-            <span class="glyphicon glyphicon-start">prev.</span>
+            <span class="glyphicon glyphicon-arrow-left"></span>
         </button>
         <button ng-show="unit.inProgress" class="btn btn-default btn-small" ng-click="showItem()"
                 ng-class="{'active': show}">
-            <span class="glyphicon glyphicon-start">show</span>
+            <span class="">show</span>
         </button>
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning"
                 ng-disabled="unit.idx==unit_items.length-1" ng-click="next()">
-            <span class="glyphicon glyphicon-start">next</span>
+            <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
 
         <div ng-show="unit.inProgress">

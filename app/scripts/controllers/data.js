@@ -227,6 +227,9 @@ angular.module('famousAngular')
           $scope.words = words;
           if (angular.isDefined(cb)) {
             cb();
+            $timeout(function () {
+              $('[data-toggle="tooltip"]').tooltip();
+            }, 1000);
           }
         });
 
@@ -333,6 +336,10 @@ angular.module('famousAngular')
         }
 
       };
+
+      $timeout(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      }, 5000);
 
     }])
 
