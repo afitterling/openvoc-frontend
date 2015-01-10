@@ -34,7 +34,11 @@
                     <li><a ng-click="n_items=50">50</a></li>
                 </ul>
             </div>
-            shuffle <input type="checkbox" ng-model="shuffle">
+            <div class="btn-group btn-group-sm" role="group" aria-label="button group">
+                <button type="button" class="btn btn-default" ng-class="{'active': !shuffle}" ng-click="shuffle=false">last</button>
+                <button type="button" class="btn btn-default" ng-class="{'active': shuffle}" ng-click="shuffle=true">shuffle</button>
+            </div>
+            <!--shuffle <input type="checkbox" ng-model="shuffle">-->
         </div>
 
         <div class="row" ng-show="unitMode==='unit' && !unit.inProgress">
