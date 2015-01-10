@@ -23,15 +23,42 @@ angular.module('famousAngular',
       // the models to be able to resolve on them, must set even we don't know the data yet to return the identical promises
       var AppStoreDefaultModels = ['words', 'languages'];
 
-      $provide.factory('errorInterceptor', function ($q, $rootScope) {
+      ///////////////////////// interceptors ////////////////////////////
+
+      $provide.factory('openRequestInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
+        $rootScope.requestCounter = 0;
+
+        return {
+          request: function(config) {
+            $rootScope.requestCounter += 1;
+            return config;
+          },
+          response: function(response) {
+            $rootScope.requestCounter -= 1;
+            return response || $q.when(response);
+          },
+          'responseError': function (response) {
+            $rootScope.requestCounter -= 1;
+            return response;
+          }
+        };
+      }]);
+
+      $provide.factory('errorInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
         return {
           'responseError': function (response) {
             $rootScope.$broadcast('onError');
             return response;
+          },
+          requestError: function (rejection) {
+            $rootScope.$broadcast('onError');
+            return $q.reject(rejection);
           }
         };
-      });
+      }]);
 
+      $httpProvider.interceptors.push('openRequestInterceptor');
+      // must be last one!
       $httpProvider.interceptors.push('errorInterceptor');
 
       jwtInterceptorProvider.tokenGetter = function (store) {

@@ -66,7 +66,7 @@
         <span class="glyphicon glyphicon-link"></span>
     </a></p>
 <![endif]-->
-<nav class="ng-cloak navbar navbar-inverse navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -82,7 +82,7 @@
             </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse ng-cloak">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav ng-cloak">
                 <!--<li class="active"><a href="#">Home</a></li>-->
                 <li ng-show="profile" ng-class="{'active': link==='/dictionary'}" data-toggle="tooltip" data-placement="bottom" title="Edit your personal dictionary!"><a ng-click="goTo('/dictionary')">Dictionary</a></li>
                 <li ng-show="profile" ng-class="{'active': link==='/learn'}" data-toggle="tooltip" data-placement="bottom" title="Learn your vocabulary!"><a ng-click="goTo('/learn')">Learn</a></li>
@@ -94,14 +94,14 @@
                         <span ng-show="profile" class="glyphicon glyphicon-off" data-toggle="tooltip" data-placement="right" title="logout!"></span>
                     </button>
                 </a></li>
-                <li><a ng-show="loadingState==='pending'"></a></li>
+                <li><a ng-show="requestCounter > 0" data-toggle="tooltip" data-placement="right" title="Internet requests are pending!"><span class="three-quarters" style="color: gold;"><span class="glyphicon glyphicon-refresh"></span></span></a></li>
             </ul>
         </div>
         <!--/.nav-collapse -->
     </div>
 </nav>
 
-<div class="main container ng-cloak" ui-view></div>
+<div class="main container" ui-view></div>
 
 <footer>
     <div class="container">
