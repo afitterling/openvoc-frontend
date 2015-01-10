@@ -41,7 +41,9 @@
             <!--shuffle <input type="checkbox" ng-model="shuffle">-->
         </div>
 
-        <div class="row" ng-show="unitMode==='unit' && !unit.inProgress">
+        <div ng-show="units.length===0 && unitMode==='unit'" class="row"><div class="alert alert-danger col-lg-1">no units found</div></div>
+        
+        <div class="row" ng-show="unitMode==='unit' && !unit.inProgress && !units.length === 0">
             <div class="btn-group" ng-init="unit.name='All'">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     {{queryUnit.name}}<span class="caret"></span>
@@ -54,7 +56,7 @@
 
         <br>
         <div class="row">
-            <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-success" ng-click="startUnit()">
+            <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-success" ng-click="startUnit()" ng-disabled="units.length === 0">
                 <span class="glyphicon glyphicon-start">Start Unit</span>
             </button>
             <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
