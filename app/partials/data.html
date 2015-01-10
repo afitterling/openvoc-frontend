@@ -32,13 +32,50 @@
     </div>
 </div>
 
+<!-- Unit Modal -->
+<div ng-show="langModal" class="modal fade" id="changeLangModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Change Language</h4>
+            </div>
+            <div class="modal-body">
+               <!--{{langModal.model}}-->
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button"
+                            id="dropdownMenu1" data-toggle="dropdown"
+                            aria-expanded="true">
+                        move to
+                        <span class="caret"></span>
+                    </button>
+                    <ul ng-show="langModal.model.mode==='translation'" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <li ng-repeat="item in languages" role="presentation"><a role="menuitem" tabindex="-1" href="#"
+                                                                                 ng-click="moveTranslationToLang(item.id)">{{item.name}}</a></li>
+                    </ul>
+                    <ul ng-show="langModal.model.mode==='word'" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <li ng-repeat="item in languages" role="presentation"><a role="menuitem" tabindex="-1" href="#"
+                                                                                 ng-click="moveWordToLang(item.id)">{{item.name}}</a></li>
+                    </ul>
+                </div>
+                <br>
+                <div class="label label-danger" ng-show="changeLangErrorMsg">Already in this language!</div>
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- main data -->
 <div class="row">
 
     <div class="col-lg-6">
 
         <div class="langDropdown selector" ng-hide="ready">
-            <span class="three-quarters"><span class="glyphicon glyphicon-leaf"></span></span>
+            <span class="three-quarters"><span class="glyphicon glyphicon-refresh"></span></span>
         </div>
         <dropdown class="langDropdown selector" name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
                   list-model="languages" ready="ready"
@@ -192,6 +229,7 @@
                                          bing="true"
                                          submit-callback="word.name=wordEdit.name; updateWord(word)"
                                          delete-callback="deleteWord(word)"
+                                         word-lang-changer="true"
                                 >
                         </editable-simple>
                     </span>
@@ -214,6 +252,7 @@
                                          bing="true"
                                          submit-callback="word.name=wordEdit.name; updateWord(word)"
                                          delete-callback="deleteWord(word)"
+                                         word-lang-changer="true"
                                 >
                         </editable-simple>
                     </span>
@@ -227,7 +266,7 @@
                                          delete-callback="deleteTranslation(word, trans)"
                                          tag="true"
                                          id="true"
-                                         lang-changer="true"
+                                         translation-lang-changer="true"
                                 >
                         </editable-simple>
                     </span>

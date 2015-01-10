@@ -341,6 +341,47 @@ angular.module('famousAngular')
         $('[data-toggle="tooltip"]').tooltip();
       }, 5000);
 
+      $scope.openLangModal = function(word, trans, mode){
+        $('#changeLangModal').modal({});
+
+        $scope.langModal = true;
+        $scope.changeLangErrorMsg = false;
+        $scope.langModal = {
+          model: {
+            word: word,
+            trans: trans,
+            mode: mode
+          }
+        };
+      };
+
+      // move to different lang over modal changeLang
+      $scope.moveTranslationToLang = function(lang_id){
+        if (lang_id !== $scope.lang.to.id) {
+          $scope.langModal.model.trans.language_id = lang_id;
+          words.update($scope.langModal.model.trans, function (success) {
+            $scope.langModal.model.word.translations.splice($scope.langModal.model.word.translations.indexOf($scope.langModal.model.trans), 1);
+          });
+          $('#changeLangModal').modal('hide');
+        } else {
+          $scope.changeLangErrorMsg = true;
+        }
+      };
+
+      // move word to different lang over modal changeLang
+      $scope.moveWordToLang = function(lang_id){
+        if (lang_id !== $scope.lang.from.id) {
+          $scope.langModal.model.word.language_id = lang_id;
+          words.update($scope.langModal.model.word, function (success) {
+            $scope.words.splice($scope.words.indexOf($scope.langModal.model.word, 1));
+          });
+          $('#changeLangModal').modal('hide');
+        } else {
+          $scope.changeLangErrorMsg = true;
+        }
+      };
+
+
     }])
 
 .directive('unitName', ['$parse', function ($parse) {
