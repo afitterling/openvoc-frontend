@@ -42,10 +42,19 @@
                 <h4 class="modal-title" id="myModalLabel">Change Language</h4>
             </div>
             <div class="modal-body">
-               {{langModal.model}}
-                <!--<dropdown name="movTo" model="langModal.lang_to" selected="langModal.model.word.language_id"-->
-                          <!--list-model="langModal.languages" ready="ready"-->
-                        <!--></dropdown>-->
+               <!--{{langModal.model}}-->
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button"
+                            id="dropdownMenu1" data-toggle="dropdown"
+                            aria-expanded="true">
+                        move to
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <li ng-repeat="item in languages" role="presentation"><a role="menuitem" tabindex="-1" href="#"
+                                                                                 ng-click="moveToLang(item.id)">{{item.name}}</a></li>
+                    </ul>
+                </div>
 
             </div>
             <div class="modal-footer">
