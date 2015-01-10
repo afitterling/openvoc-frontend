@@ -28,8 +28,8 @@
         </button>
     </span>
     <!-- lang changer -->
-    <span ng-hide="edit || !model || !langChanger" data-toggle="tooltip" data-placement="top" title="change language">
-        <button ng-click="$parent.openLangModal($parent.word, $parent.trans)" class="btn btn-xs">
+    <span ng-hide="edit || !model || !translationLangChanger" data-toggle="tooltip" data-placement="top" title="move item to another language">
+        <button ng-click="$parent.openLangModal($parent.word, $parent.trans, 'translation')" class="btn btn-xs">
             <span class="glyphicon glyphicon-edit"></span>
         </button>
     </span>

@@ -341,14 +341,16 @@ angular.module('famousAngular')
         $('[data-toggle="tooltip"]').tooltip();
       }, 5000);
 
-      $scope.openLangModal = function(word, trans){
+      $scope.openLangModal = function(word, trans, mode){
         $('#changeLangModal').modal({});
+
         $scope.langModal = true;
         $scope.changeLangErrorMsg = false;
         $scope.langModal = {
           model: {
             word: word,
-            trans: trans
+            trans: trans,
+            mode: mode
           }
         };
       };

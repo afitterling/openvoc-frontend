@@ -50,7 +50,7 @@
                         move to
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <ul ng-show="langModal.model.mode==='translation'" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         <li ng-repeat="item in languages" role="presentation"><a role="menuitem" tabindex="-1" href="#"
                                                                                  ng-click="moveTranslationToLang(item.id)">{{item.name}}</a></li>
                     </ul>
@@ -260,7 +260,7 @@
                                          delete-callback="deleteTranslation(word, trans)"
                                          tag="true"
                                          id="true"
-                                         lang-changer="true"
+                                         translation-lang-changer="true"
                                 >
                         </editable-simple>
                     </span>
