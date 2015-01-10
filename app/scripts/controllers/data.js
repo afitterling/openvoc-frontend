@@ -341,23 +341,24 @@ angular.module('famousAngular')
         $('[data-toggle="tooltip"]').tooltip();
       }, 5000);
 
-      $scope.openLangModal = function(word){
+      $scope.openLangModal = function(word, trans){
         $('#changeLangModal').modal({});
         $scope.langModal = true;
         $scope.langModal = {
           model: {
-            word: word
+            word: word,
+            trans: trans
           }
         };
       };
 
       // move to different lang over modal changeLang
       $scope.moveToLang = function(lang_id){
-        $scope.langModal.model.word.language_id = lang_id;
-        words.update($scope.langModal.model.word, function (success) {
+        $scope.langModal.model.trans.language_id = lang_id;
+        words.update($scope.langModal.model.trans, function (success) {
           //$scope.words[$scope.words.indexOf(word)] = success;
           if (lang_id !== $scope.lang.from.id) {
-            $scope.words.splice($scope.words.indexOf($scope.langModal.model.word), 1);
+            $scope.langModal.model.word.translations.splice($scope.langModal.model.word.translations.indexOf($scope.langModal.model.trans), 1);
           }
         });
 

@@ -27,24 +27,11 @@
             <span class="glyphicon glyphicon-plus">{{$parent.selectedUnit.name}}</span>
         </button>
     </span>
+    <!-- lang changer -->
     <span ng-hide="edit || !model || !langChanger" data-toggle="tooltip" data-placement="top" title="change language">
-        <button ng-click="$parent.openLangModal($parent.trans)" class="btn btn-xs">
+        <button ng-click="$parent.openLangModal($parent.word, $parent.trans)" class="btn btn-xs">
             <span class="glyphicon glyphicon-edit"></span>
         </button>
-        <!--<div class="dropdown" ng-show="langSwitcher">-->
-            <!--<button class="btn btn-default dropdown-toggle" ng-class="{'btn-danger': $parent.status==false}" type="button"-->
-                    <!--id="dropdownMenu1" data-toggle="dropdown"-->
-                    <!--aria-expanded="true">-->
-                <!--move to-->
-                <!--<span class="caret"></span>-->
-            <!--</button>-->
-            <!--<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">-->
-                <!--<li ng-repeat="item in $parent.languages" role="presentation"><a role="menuitem" tabindex="-1" href="#"-->
-                                                                         <!--ng-click="">{{item.name}}</a></li>-->
-            <!--</ul>-->
-        <!--</div>-->
-
-
     </span>
     <span ng-hide="edit || !model || !tag || $parent.trans.unit_id === null || !$parent.trans.unit_id" data-toggle="tooltip" data-placement="top" title="tag/untag unit">
         <button ng-click="$parent.untag($parent.word, $parent.trans)" class="btn btn-xs">
