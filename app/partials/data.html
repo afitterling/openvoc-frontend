@@ -32,28 +32,68 @@
     </div>
 </div>
 
+<!-- Unit Modal -->
+<div ng-show="langModal" class="modal fade" id="changeLangModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Change Language</h4>
+            </div>
+            <div class="modal-body">
+               <!--{{langModal.model}}-->
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button"
+                            id="dropdownMenu1" data-toggle="dropdown"
+                            aria-expanded="true">
+                        move to
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <li ng-repeat="item in languages" role="presentation"><a role="menuitem" tabindex="-1" href="#"
+                                                                                 ng-click="moveToLang(item.id)">{{item.name}}</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- main data -->
 <div class="row">
 
     <div class="col-lg-6">
 
-        <dropdown name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
-                  list-model="languages" ready="ready"></dropdown>
-        <span class="message error-message">{{error}}</span>
-
-        <button id="swap" ng-show="ready" class="btn btn-default btn-small" ng-click="swapLanguages($event)">
-            <span class="glyphicon glyphicon-transfer"></span>
+        <div class="langDropdown selector" ng-hide="ready">
+            <span class="three-quarters"><span class="glyphicon glyphicon-leaf"></span></span>
+        </div>
+        <dropdown class="langDropdown selector" name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
+                  list-model="languages" ready="ready"
+                  data-toggle="tooltip" data-placement="top" title="Select Language!"
+                ></dropdown>
+        <!--<span class="message error-message">{{error}}</span>-->
+        &nbsp;
+        <button id="swap" ng-show="ready" class="btn btn-default btn-small langDropdown" ng-click="swapLanguages($event)"
+                data-toggle="tooltip" data-placement="top" title="Swap Languages!"
+                ><span class="glyphicon glyphicon-transfer"></span>
         </button>
-
-        <dropdown ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
-                  selected="lang_selected.to_id" list-model="languages"></dropdown>
+        &nbsp;
+        <dropdown  class="langDropdown selector" ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
+                  selected="lang_selected.to_id" list-model="languages"
+                  data-toggle="tooltip" data-placement="top" title="Select Language!"
+                ></dropdown>
+        <br>
 
         <!--<span class="small text-info" ng-show="pendingFetch"><img src="images/ajax-loader.gif"/> update pending</span>-->
         <span class="small text-danger label label-default" ng-show="pendingFetchMsg">update scheduled in {{fetch_timeout/1000}}s - can still change UI</span>
         <!--<span class="small text-info" ng-show="pendingFetch==false">menu change - update scheduled.</span>-->
         <br>
-
-        <div class="btn-group">
+        <br>
+        <div class="btn-group" data-toggle="tooltip" data-placement="top" title="Select Sort Mode!">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 From Sort: {{sortMode[predicate][reverse+'']}}<span class="caret"></span>
             </button>
@@ -66,7 +106,7 @@
                 <li><a ng-click="setSortMode('name', true)">Alphabet (z-a)</a></li>
             </ul>
         </div>
-
+        &nbsp;
         <label>staple</label>
         <input type="checkbox" ng-model="stapleSort" ng-click="predicateT=predicate; reverseT=reverse;">
 
@@ -159,7 +199,10 @@
         <tr>
             <th class="col-lg-6">{{lang.from.name}}
                 <!--<span ng-show="pendingFetchMsg" class="label label-danger">re-marked for delayed update</span>-->
-                <span ng-show="pendingFetch" class="label label-danger">marked for delayed update</span>
+                <span ng-show="pendingFetch" class="label label-danger">
+                    marked for delayed update - please wait
+                    <!--<span class="three-quarters"><span class="glyphicon glyphicon-leaf"></span></span>-->
+                </span>
             </th>
             <th class="col-lg-6">{{lang.to.name}}</th>
         </tr>
