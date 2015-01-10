@@ -129,7 +129,7 @@
             <input type="text" class="form-control" placeholder="Search 'From' for..." ng-model="filterValue">
                   <span class="input-group-btn">
                     <button class="btn btn-default" ng-class="{'btn-danger': filterValue}" ng-click="filterValue=''" ng-disabled="!filterValue"
-                            type="button"><span class="glyphicon glyphicon-trash"></span></button>
+                            type="button"><span class="glyphicon glyphicon-remove"></span></button>
                   </span>
         </div>
         <!-- /input-group -->
@@ -141,7 +141,7 @@
                    ng-model="translationFilterValue">
                   <span class="input-group-btn">
                     <button class="btn btn-default" ng-class="{'btn-danger': translationFilterValue}" ng-click="translationFilterValue=''"
-                            ng-disabled="!translationFilterValue" type="button"><span class="glyphicon glyphicon-trash"></span></button>
+                            ng-disabled="!translationFilterValue" type="button"><span class="glyphicon glyphicon-remove"></span></button>
                   </span>
         </div>
         <!-- /input-group -->
@@ -214,9 +214,9 @@
                                          submit-callback="trans.name=transEdit.name; updateTranslation(word, trans)"
                                          delete-callback="deleteTranslation(word, trans)"
                                          tag="true"
+                                         id="true"
                                 >
                         </editable-simple>
-                        <span class="label label-default" title="if id equals it is an identical item">id:{{trans.id}}</span>
                     </span>
 
             </td>
