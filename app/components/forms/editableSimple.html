@@ -27,15 +27,12 @@
             <span class="glyphicon glyphicon-plus">{{$parent.selectedUnit.name}}</span>
         </button>
     </span>
-    <!--<span ng-hide="edit || !model || !langChanger" data-toggle="tooltip" data-placement="top" title="change language">-->
-        <!--<button ng-click="langSwitcher=!langSwitcher" class="btn btn-xs">-->
-            <!--<span class="glyphicon glyphicon-edit"></span>-->
-        <!--</button>-->
-        <!--&lt;!&ndash;<button ng-show="langSwitcher">Switch</button>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<dropdown ng-show="langSwitcher" ready="ready" name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"&ndash;&gt;-->
-                              <!--&lt;!&ndash;list-model="languages"></dropdown>&ndash;&gt;-->
-
-    <!--</span>-->
+    <!-- lang changer -->
+    <span ng-hide="edit || !model || !langChanger" data-toggle="tooltip" data-placement="top" title="change language">
+        <button ng-click="$parent.openLangModal($parent.word, $parent.trans)" class="btn btn-xs">
+            <span class="glyphicon glyphicon-edit"></span>
+        </button>
+    </span>
     <span ng-hide="edit || !model || !tag || $parent.trans.unit_id === null || !$parent.trans.unit_id" data-toggle="tooltip" data-placement="top" title="tag/untag unit">
         <button ng-click="$parent.untag($parent.word, $parent.trans)" class="btn btn-xs">
             <span class="glyphicon glyphicon-minus" unit-name="$parent.trans.unit_id"></span>
