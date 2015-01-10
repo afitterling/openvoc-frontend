@@ -42,6 +42,11 @@
                 <h4 class="modal-title" id="myModalLabel">Change Language</h4>
             </div>
             <div class="modal-body">
+               {{langModal.model}}
+                <dropdown class="langDropdown selector" name="movTo" model="movTo"
+                          list-model="languages" ready="ready"
+                          data-toggle="tooltip" data-placement="top" title="Select Language!"
+                        ></dropdown>
 
             </div>
             <div class="modal-footer">

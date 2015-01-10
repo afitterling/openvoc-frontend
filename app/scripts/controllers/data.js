@@ -341,6 +341,15 @@ angular.module('famousAngular')
         $('[data-toggle="tooltip"]').tooltip();
       }, 5000);
 
+      $scope.openLangModal = function(word){
+        $('#changeLangModal').modal({});
+        $scope.langModal = {
+          model: {
+            word: word
+          }
+        };
+      };
+
     }])
 
 .directive('unitName', ['$parse', function ($parse) {
