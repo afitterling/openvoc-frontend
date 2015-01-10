@@ -37,6 +37,7 @@
 
     <div class="col-lg-6">
 
+        <button ng-hide="ready" class="langDropdown selector btn btn-default" disabled><span class="glyphicon glyphicon-play-circle"></span></button>
         <dropdown class="langDropdown selector" name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
                   list-model="languages" ready="ready"
                   data-toggle="tooltip" data-placement="top" title="Select Language!"
