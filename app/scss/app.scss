@@ -24,3 +24,12 @@ footer {
 }
 
 #unitModal span.model { min-width: 200px; display: inline-block; }
+
+.langDropdown {
+  display: inline-block;
+  &.selector {
+    .dropdown-toggle {
+      width: 120px;
+    }
+  }
+}
