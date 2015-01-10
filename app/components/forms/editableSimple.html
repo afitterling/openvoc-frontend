@@ -19,7 +19,7 @@
     <!-- @TODO -->
     <!--<span ng-hide="edit" ng-click="edit=true">{{(!resetCancel && model) || '+'}}</span>-->
     <span ng-hide="edit || model" ng-click="edit=true"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></button></span>
-    <span class="model" ng-hide="edit || !model" ng-click="edit=true">{{model}}<span ng-show="id" class="badge" title="if id equals it is an identical item">id:{{$parent.trans.id}}</span></span>
+    <span class="model" ng-hide="edit || !model" ng-click="edit=true">{{model}}&nbsp;<span ng-show="id" class="badge" title="if id equals it is an identical item"><span style="font-size: 0.9rem;">id</span>{{$parent.trans.id}}</span></span>
     <span ng-hide="edit || !model"><button ng-click="deleteCallback(model)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button></span>
     <!-- tagging -->
     <span ng-hide="edit || !model || !tag || $parent.selectedUnit.id===0 || $parent.trans.unit_id===$parent.selectedUnit.id">
