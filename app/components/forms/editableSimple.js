@@ -14,6 +14,7 @@ angular.module('famousAngular.formHelpers.editables', [])
         resetCancel: '=',
         bing: '=',
         id: '=',
+        langChanger: '=',
         tag: '='
       },
       link: function (scope, elm, attrs) {

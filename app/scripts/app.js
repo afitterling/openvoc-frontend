@@ -176,10 +176,6 @@ angular.module('famousAngular',
   .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'Units', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings',
     function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, Units, jwtHelper, store, $resource, AppStore, Languages, UISettings) {
 
-      $rootScope.goTo = function (arg) {
-        $location.path(arg);
-      };
-
       ValidationActionsStore.register('dropdown.lang.to'); //, function(scope.current, ){})
       ValidationActionsStore.register('dropdown.lang.from');
 
@@ -187,6 +183,7 @@ angular.module('famousAngular',
 
       $rootScope.goTo = function (arg) {
         $location.path(arg);
+        $rootScope.link = arg;
       };
 
       $rootScope.$on('onError', function () {
