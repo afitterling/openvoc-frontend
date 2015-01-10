@@ -25,7 +25,7 @@ angular.module('famousAngular',
 
       ///////////////////////// interceptors ////////////////////////////
 
-      $provide.factory('errorInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
+      $provide.factory('openRequestInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
         $rootScope.requestCounter = 0;
 
         return {
@@ -44,16 +44,22 @@ angular.module('famousAngular',
         };
       }]);
 
-      $provide.factory('openRequestCounter', function ($q) {
+      $provide.factory('errorInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
         return {
           'responseError': function (response) {
+            $rootScope.$broadcast('onError');
             return response;
+          },
+          requestError: function (rejection) {
+            $rootScope.$broadcast('onError');
+            return $q.reject(rejection);
           }
         };
-      });
+      }]);
 
+      $httpProvider.interceptors.push('openRequestInterceptor');
+      // must be last one!
       $httpProvider.interceptors.push('errorInterceptor');
-      $httpProvider.interceptors.push('openRequestCounter');
 
       jwtInterceptorProvider.tokenGetter = function (store) {
         return store.get('token');
