@@ -38,7 +38,7 @@
     <div class="col-lg-6">
 
         <button ng-hide="ready" class="langDropdown selector btn btn-default" disabled>
-            <span class="three-quarters"><span class="glyphicon glyphicon-play-circle"></span></span>
+            <span class="three-quarters"><span class="glyphicon glyphicon-leaf"></span></span>
         </button>
         <dropdown class="langDropdown selector" name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
                   list-model="languages" ready="ready"
@@ -168,7 +168,10 @@
         <tr>
             <th class="col-lg-6">{{lang.from.name}}
                 <!--<span ng-show="pendingFetchMsg" class="label label-danger">re-marked for delayed update</span>-->
-                <span ng-show="pendingFetch" class="label label-danger">marked for delayed update</span>
+                <span ng-show="pendingFetch" class="label label-danger">
+                    marked for delayed update - please wait
+                    <span class="three-quarters"><span class="glyphicon glyphicon-leaf"></span></span>
+                </span>
             </th>
             <th class="col-lg-6">{{lang.to.name}}</th>
         </tr>
