@@ -82,7 +82,7 @@
             </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse ng-cloak">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav ng-cloak">
                 <!--<li class="active"><a href="#">Home</a></li>-->
                 <li ng-show="profile" ng-class="{'active': link==='/dictionary'}" data-toggle="tooltip" data-placement="bottom" title="Edit your personal dictionary!"><a ng-click="goTo('/dictionary')">Dictionary</a></li>
                 <li ng-show="profile" ng-class="{'active': link==='/learn'}" data-toggle="tooltip" data-placement="bottom" title="Learn your vocabulary!"><a ng-click="goTo('/learn')">Learn</a></li>
@@ -100,7 +100,7 @@
     </div>
 </nav>
 
-<div class="main container ng-cloak" ui-view></div>
+<div class="main container" ui-view></div>
 
 <footer>
     <div class="container">
