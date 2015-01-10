@@ -69,20 +69,21 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" ng-click="goTo('/')" style="font-size: 4rem; letter-spacing: 1.5px; margin-right: 10px;">
+            <a class="navbar-brand" ng-click="goTo('/')" style="font-size: 4rem; letter-spacing: 1.5px; margin-right: 10px;"
+               data-toggle="tooltip" data-placement="bottom" title="Use Free OpenVoc anywhere! Click for Title Page.">
                 OpenVoc <span class="glyphicon glyphicon-list glyphicon-list" style="font-size: 2.8rem;"></span>
             </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <!--<li class="active"><a href="#">Home</a></li>-->
-                <li ng-show="profile" ng-class="{'active': link==='/dictionary'}"><a ng-click="goTo('/dictionary')">Dictionary</a></li>
-                <li ng-show="profile" ng-class="{'active': link==='/learn'}"><a ng-click="goTo('/learn')">Learn</a></li>
-                <li ng-show="profile" ng-class="{'active': link==='/profile'}"><a ng-click="goTo('/profile')">Profile <span class="glyphicon glyphicon-user"></span></a></li>
+                <li ng-show="profile" ng-class="{'active': link==='/dictionary'}" data-toggle="tooltip" data-placement="bottom" title="Edit your personal dictionary!"><a ng-click="goTo('/dictionary')">Dictionary</a></li>
+                <li ng-show="profile" ng-class="{'active': link==='/learn'}" data-toggle="tooltip" data-placement="bottom" title="Learn your vocabulary!"><a ng-click="goTo('/learn')">Learn</a></li>
+                <li ng-show="profile" ng-class="{'active': link==='/profile'}" data-toggle="tooltip" data-placement="bottom" title="See your profile!"><a ng-click="goTo('/profile')">Profile <span class="glyphicon glyphicon-user"></span></a></li>
                 <li><a ng-click="handleSession()">
                     <button class="ng-cloak btn btn-default btn-xs btn-info" ng-class="{'btn-danger': profile}">
-                        <span ng-hide="profile" class="glyphicon glyphicon-log-in"></span>
-                        <span ng-show="profile" class="glyphicon glyphicon-off"></span>
+                        <span ng-hide="profile" class="glyphicon glyphicon-log-in" data-toggle="tooltip" data-placement="right" title="login!"></span>
+                        <span ng-show="profile" class="glyphicon glyphicon-off" data-toggle="tooltip" data-placement="right" title="logout!"></span>
                     </button>
                 </a></li>
                 <li><a ng-show="loadingState==='pending'"></a></li>
@@ -154,6 +155,10 @@
 <script src="bower_components/auth0.js/build/auth0.min.js"></script>
 <script src="bower_components/auth0-angular/build/auth0-angular.min.js"></script>
 <script src="bower_components/auth0-lock/build/auth0-lock.min.js"></script>
+
+<script>
+    $('nav [data-toggle="tooltip"]').tooltip();
+</script>
 
 </body>
 </html>
