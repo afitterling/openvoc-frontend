@@ -95,10 +95,9 @@ angular.module('famousAngular',
           auth.profilePromise.then(function (profile) {
             $rootScope.profile = profile;
             $log.debug('profile resolved:', profile);
+            $location.path('/profile');
+            $rootScope.$broadcast('sig:::profileLoaded');
           });
-
-          $location.path('/profile');
-          $rootScope.$broadcast('sig:::profileLoaded');
 
         }]);
 
