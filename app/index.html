@@ -76,9 +76,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" ng-click="goTo('/')" style="font-size: 4rem; letter-spacing: 1.5px; margin-right: 10px;"
+            <a class="navbar-brand" ng-click="goTo('/')" style="font-size: 3.75rem; letter-spacing: 1.5px; margin-right: 10px;"
                data-toggle="tooltip" data-placement="bottom" title="Use Free OpenVoc anywhere! Click for Title Page.">
-                OpenVoc <span class="glyphicon glyphicon-list glyphicon-list" style="font-size: 2.8rem;"></span>
+                Open-Voc<span class="small" style="font-size: 45%;">.org</span> <span class="glyphicon glyphicon-list glyphicon-list" style="font-size: 2.7rem;"></span>
             </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse ng-cloak">
@@ -94,7 +94,7 @@
                         <span ng-show="profile" class="glyphicon glyphicon-off" data-toggle="tooltip" data-placement="right" title="logout!"></span>
                     </button>
                 </a></li>
-                <li><a ng-show="requestCounter > 0" data-toggle="tooltip" data-placement="right" title="Internet requests are pending!"><span class="three-quarters" style="color: gold;"><span class="glyphicon glyphicon-refresh"></span></span></a></li>
+                <li><a ng-show="pendingRequests" data-toggle="tooltip" data-placement="right" title="Internet requests are pending!"><div class="spin"><span style="color: gold;" class="glyphicon glyphicon-refresh"></span></div></a></li>
             </ul>
         </div>
         <!--/.nav-collapse -->

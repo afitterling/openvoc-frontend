@@ -26,19 +26,23 @@ angular.module('famousAngular',
       ///////////////////////// interceptors ////////////////////////////
 
       $provide.factory('openRequestInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
-        $rootScope.requestCounter = 0;
+        var self = this;
+        self.requestCounter = 0;
 
         return {
-          request: function(config) {
-            $rootScope.requestCounter += 1;
+          request: function (config) {
+            self.requestCounter += 1;
+            $rootScope.pendingRequests = !!self.requestCounter;
             return config;
           },
-          response: function(response) {
-            $rootScope.requestCounter -= 1;
+          response: function (response) {
+            self.requestCounter -= 1;
+            $rootScope.pendingRequests = !!self.requestCounter;
             return response || $q.when(response);
           },
           'responseError': function (response) {
-            $rootScope.requestCounter -= 1;
+            self.requestCounter -= 1;
+            $rootScope.pendingRequests = !!self.requestCounter;
             return response;
           }
         };
@@ -91,10 +95,9 @@ angular.module('famousAngular',
           auth.profilePromise.then(function (profile) {
             $rootScope.profile = profile;
             $log.debug('profile resolved:', profile);
+            $location.path('/profile');
+            $rootScope.$broadcast('sig:::profileLoaded');
           });
-
-          $location.path('/profile');
-          $rootScope.$broadcast('sig:::profileLoaded');
 
         }]);
 
