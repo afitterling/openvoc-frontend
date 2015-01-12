@@ -25,7 +25,7 @@ angular.module('famousAngular')
 //
 //      ValidationActionsStore.validation.push('dropdown.lang.to', ['dropdown.lang.from', 'dropdown.lang.to'], function (own, foreignObj) {
 //        $log.debug('triggered', own, foreignObj);
-//        return angular.equals(foreignObj['dropdown.lang.from'], foreignObj['dropdown.lang.to']);
+//         return angular.equals(foreignObj['dropdown.lang.from'], foreignObj['dropdown.lang.to']);
 //      }, 'ArrayTest');
 
       var self = this;
@@ -34,6 +34,7 @@ angular.module('famousAngular')
 //      $scope.reverse = true;
 
       $scope.stapleSort = true;
+      $scope.translationsOnly = true;
 
       $scope.translationFilterValue = '';
       $scope.filterValue = '';
@@ -225,6 +226,7 @@ angular.module('famousAngular')
         words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
           AppStore.set('words', {}); // empty as we don't need to resolve
           $scope.words = words;
+          $log.debug(words);
           if (angular.isDefined(cb)) {
             cb();
             $timeout(function () {
