@@ -4,34 +4,9 @@ angular.module('famousAngular')
   .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Units', 'Words', 'AppStore',
     function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Units, Words, AppStore) {
 
-//      // validator
-//      var equalsForeign = function (own, foreign) {
-//        if (own === foreign) {
-//        $scope.status = false;
-//          return true;
-//        }
-//        $scope.status = true;
-//        return false;
-//      };
-//
-//      ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', equalsForeign, 'Equals Foreign', {both: true});
-////      ValidationActionsStore.validation.push('dropdown.lang.from', 'dropdown.lang.to', equalsForeign, 'Equals Foreign');
-//
-//      ValidationActionsStore.validation.push('dropdown.lang.to', 'dropdown.lang.from', function (own, foreign) {
-//        if (own.name === 'Thai') {
-//          return true;
-//        }
-//      }, 'isThai', {both: true});
-//
-//      ValidationActionsStore.validation.push('dropdown.lang.to', ['dropdown.lang.from', 'dropdown.lang.to'], function (own, foreignObj) {
-//        $log.debug('triggered', own, foreignObj);
-//         return angular.equals(foreignObj['dropdown.lang.from'], foreignObj['dropdown.lang.to']);
-//      }, 'ArrayTest');
-
       var self = this;
 
-//      $scope.predicate = 'updated_at';
-//      $scope.reverse = true;
+      $log.debug('words:', $scope.words);
 
       $scope.stapleSort = true;
       $scope.translationsOnly = true;
@@ -65,11 +40,6 @@ angular.module('famousAngular')
           true: 'z-a'
         }
       };
-
-//      self.words = $scope.words; // comes from resolve
-//      $scope.words = null;
-
-      $log.debug('words:', self.words);
 
       $scope.submitTest = function (data) {
         return true;
@@ -169,16 +139,6 @@ angular.module('famousAngular')
       promise = [];
       $scope.fetch_timeout = 5000;
 
-//      function countDown () {
-//        if (countdown) {
-//          $timeout.cancel(countdown);
-//        }
-//        if ($scope.pendingFetch){
-//          countdown = $timeout(countDown, $scope.fetch_timeout/100);
-//        }
-//        $scope.timer -= 50;
-//      };
-
       $scope.$watch('lang', function (newVal, oldVal) {
         // if promise pending delete
         newpromise = $timeout(function () {
@@ -187,17 +147,13 @@ angular.module('famousAngular')
           });
         }, $scope.fetch_timeout);
         if (oldVal) {
-//          console.log('pr', promise);
           var sub = [];
           promise.map(function (p) {
             $timeout.cancel(p);
           });
           promise = sub;
-//          console.log('pr after', promise);
           promise.push(newpromise);
-//          $scope.pendingFetch = false;
           $scope.timer = $scope.fetch_timeout;
-//          countDown();
           $scope.pendingFetch = true;
           $scope.pendingFetchMsg = true;
           if (hidePendingFetch) {
@@ -208,7 +164,6 @@ angular.module('famousAngular')
           }, $scope.fetch_timeout / 4);
 
           $scope.words = [];
-//          console.log('called', promise);
         }
       }, true);
 
@@ -226,7 +181,7 @@ angular.module('famousAngular')
         words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
           AppStore.set('words', {}); // empty as we don't need to resolve
           $scope.words = words;
-          $log.debug(words);
+          $log.debug('words:', words);
           if (angular.isDefined(cb)) {
             cb();
             $timeout(function () {
@@ -243,13 +198,6 @@ angular.module('famousAngular')
         var temp = $scope.lang.from;
         $scope.lang.from = $scope.lang.to;
         $scope.lang.to = temp;
-        // and refetch! // see the on change
-//        $scope.updateTableItems($scope.lang);
-      };
-
-      // dummy
-      $scope.dummy = function () {
-        //
       };
 
       $scope.bingTranslate = function (word) {
