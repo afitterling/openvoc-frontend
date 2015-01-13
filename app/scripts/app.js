@@ -1,21 +1,21 @@
 'use strict';
 
 angular.module('famousAngular',
-  [
-    'auth0',
-    'angular-jwt',
-    'ngAnimate',
-    'ngCookies',
-    'ngTouch',
-    'ngSanitize',
-    'ngResource',
-    'ui.router',
-    'angular-storage',
-    'directives.formHelpers',
-    'famousAngular.formHelpers.editables',
-    'famous.angular',
-    'pascalprecht.translate'
-  ])
+    [
+      'auth0',
+      'angular-jwt',
+      'ngAnimate',
+      'ngCookies',
+      'ngTouch',
+      'ngSanitize',
+      'ngResource',
+      'ui.router',
+      'angular-storage',
+      'directives.formHelpers',
+      'famousAngular.formHelpers.editables',
+      'famous.angular',
+      'pascalprecht.translate'
+    ])
 
   .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', '$provide',
     function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide) {
@@ -167,10 +167,17 @@ angular.module('famousAngular',
               return AppStore.get('languages');
             }]
           },
-          controller: ['$scope', 'conf', 'languages',  function ($scope, conf, languages) {
+          controller: ['$scope', 'conf', 'languages', function ($scope, conf, languages) {
             $scope.conf = conf;
             // resolve languages only, it will be in $rootScope and inherited
           }],
+          data: {}
+        });
+
+      $stateProvider
+        .state('messenger', {
+          url: '/feedback',
+          templateUrl: 'partials/feedback.html',
           data: {}
         });
 
