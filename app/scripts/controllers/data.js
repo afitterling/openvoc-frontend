@@ -9,7 +9,7 @@ angular.module('famousAngular')
       $log.debug('words:', $scope.words);
 
       $scope.stapleSort = true;
-      $scope.translationsOnly = true;
+      $scope.translationsOnly = false;
 
       $scope.translationFilterValue = '';
       $scope.filterValue = '';
@@ -127,6 +127,9 @@ angular.module('famousAngular')
                 word.translations = [];
               }
               word.translations.push(translation);
+              if ($scope.selectedUnit.id !== 0 && $scope.autoTag) {
+                $scope.tag(word, translation);
+              }
             });
 
           });
