@@ -6,7 +6,7 @@ angular.module('famousAngular')
 
     return function (conf) {
       return $resource(conf.API_BASEURL + '/words/:id', {id: '@id'},
-        { update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' } } });
+        { 'query': { method: 'GET', cache: true, isArray: true }, update: { method: 'PATCH', headers: { 'Content-Type': 'application/json' }} });
     };
 
   }])
