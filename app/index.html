@@ -87,6 +87,7 @@
                 <li ng-show="profile" ng-class="{'active': link==='/dictionary'}" data-toggle="tooltip" data-placement="bottom" title="Edit your personal dictionary!"><a ng-click="goTo('/dictionary')">Dictionary</a></li>
                 <li ng-show="profile" ng-class="{'active': link==='/learn'}" data-toggle="tooltip" data-placement="bottom" title="Learn your vocabulary!"><a ng-click="goTo('/learn')">Learn</a></li>
                 <li ng-show="profile" ng-class="{'active': link==='/profile'}" data-toggle="tooltip" data-placement="bottom" title="See your profile!"><a ng-click="goTo('/profile')">Profile <span class="glyphicon glyphicon-user"></span></a></li>
+                <li ng-show="profile" ng-class="{'active': link==='/feedback'}" data-toggle="tooltip" data-placement="bottom" title="Give Feedback!"><a ng-click="goTo('/feedback')"><span class="glyphicon glyphicon-leaf"></span></a></li>
                 <li><a ng-click="handleSession()">
                     <button class="ng-cloak btn btn-default btn-xs btn-info" ng-class="{'btn-danger': profile}">
                         <span ng-hide="profile" class="glyphicon glyphicon-log-in" data-toggle="tooltip" data-placement="right" title="login!"></span>
