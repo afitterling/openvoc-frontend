@@ -1,15 +1,15 @@
-<h3>Feedback</h3>
+<p class="lead">Feedback</p>
 <span class="label label-danger col-lg-6" ng-show="!profile.email_verified">Sorry, your profile is not
         authenticated!
     </span>
 <form name="feedbackForm" ng-submit="postFeedback()">
     <div class="form-group">
-        <span ng-show="feedbackForm.$error.required" class="text text-warning">&nbsp;</span>
+        <span ng-show="feedbackForm.$error.required" class="text text-warning">Give your feedback!</span>
         <span ng-show="feedbackForm.$error.minlength" class="text text-warning">At least 30 characters!</span>
         <span ng-show="feedbackForm.$valid && !success" class="text text-info">&nbsp;</span>
         <span ng-show="success" class="text text-success">Feedback successfully transmitted!</span>
         <!--<label for="feedback">Feedback Message</label><br>-->
-        <textarea style="margin-top: 10px; height: 150px; max-width: 600px;" class="form-control" placeholder="Type in Your Feedback ...." name="feedback"
+        <textarea style="margin-top: 10px; height: 150px; max-width: 600px;" class="form-control" placeholder="" name="feedback"
                   ng-minlength="30"
                   ng-required="true"
                   id="feedback" ng-model="feedback.text" ng-disabled="success || !profile.email_verified"></textarea>
