@@ -178,7 +178,13 @@ angular.module('famousAngular',
         .state('messenger', {
           url: '/feedback',
           templateUrl: 'partials/feedback.html',
-          data: {}
+          data: {},
+          resolve: {
+            conf: ['Settings', function (Settings) {
+              return Settings;
+            }]
+          },
+          controller: 'FeedbackCtrl'
         });
 
       $stateProvider

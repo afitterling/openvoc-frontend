@@ -3,7 +3,24 @@
 angular.module('famousAngular')
   .controller('MainCtrl', ['$log', '$scope', '$resource', '$http',
     function ($log, $scope, $resource, $http) {
-      //
+      $scope.dummy = '';
+    }])
+
+  .controller('FeedbackCtrl', ['$log', '$scope', '$resource', '$http', '$rootScope', 'auth', 'Settings',
+    function ($log, $scope, $resource, $http, $rootScope, auth, Settings) {
+
+      var self = this;
+
+      Settings.then(function(data) {
+        self.conf = data;
+      });
+
+      $scope.postFeedback = function () {
+        $http.post(self.conf.API_BASEURL + '/mail/feedback', $scope.feedback.text).then(function(){
+          $scope.success = true;
+        });
+      };
+
     }])
 
   .controller('LearnCtrl', ['$log', '$scope', '$resource', '$http', '$rootScope', 'auth',
