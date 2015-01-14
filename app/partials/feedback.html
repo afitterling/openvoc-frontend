@@ -1,8 +1,21 @@
-<form ng-submit="postFeedback()">
-    <div class="label label-danger col-lg-6" ng-show="!profile.email_verified">Sorry, your profile is not authenticated!</div><br>
-    <div class="form-group">
-        <label for="feedback">Feedback</label>
-        <textarea style="height: 150px; max-width: 600px;" class="form-control" placeholder="Type in Your Feedback ...." id="feedback" ng-model="feedback.text" ng-disabled="!profile.email_verified"></textarea>
+<form name="feedbackForm" ng-submit="postFeedback()">
+    <div class="label label-danger col-lg-6" ng-show="!profile.email_verified">Sorry, your profile is not
+        authenticated!
     </div>
-    <button type="submit" ng-class="{'btn-success': success}" class="btn btn-default" ng-disabled="!profile.email_verified">Submit</button>
+    <br>
+
+    <div class="form-group">
+        <label for="feedback">Feedback</label><br>
+        <span ng-show="feedbackForm.$error.required" class="text text-warning">&nbsp;</span>
+        <span ng-show="feedbackForm.$error.minlength" class="text text-warning">At least 30 characters!</span>
+        <span ng-show="feedbackForm.$valid && !success" class="text text-info">&nbsp;</span>
+        <span ng-show="success" class="text text-success">Feedback successfully transmitted!</span>
+        <textarea style="height: 150px; max-width: 600px;" class="form-control" placeholder="Type in Your Feedback ...." name="feedback"
+                  ng-minlength="30"
+                  ng-required="true"
+                  id="feedback" ng-model="feedback.text" ng-disabled="success || !profile.email_verified"></textarea>
+    </div>
+    <button type="submit" ng-class="{'btn-success': success}" class="btn btn-default"
+            ng-disabled="feedbackForm.$invalid || success || !profile.email_verified">Post Feedback
+    </button>
 </form>
