@@ -223,8 +223,8 @@ angular.module('famousAngular')
       };
 
       $scope.untag = function (word, trans, callback) {
-        var Tags = $resource($scope.conf.API_BASEURL + '/translations/tag_unit');
-        Tags.save({word_id: word.id, conversion_id: trans.id, unit_id: null}, function () {
+        var Tags = $resource($scope.conf.API_BASEURL + '/translations/untag_unit');
+        Tags.save({word_id: word.id, conversion_id: trans.id}, function () {
           trans.unit_id = null;
           if (angular.isDefined(callback)) {
             callback();
