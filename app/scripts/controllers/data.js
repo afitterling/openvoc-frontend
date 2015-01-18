@@ -99,15 +99,19 @@ angular.module('famousAngular')
       };
 
       $scope.deleteTranslation = function (word, trans) {
-        words.delete({id: trans.id}, function () {
-          angular.forEach($scope.words, function (w) {
-            angular.forEach(w.translations, function (t) {
-              if (t.id === trans.id) {
-                w.translations.splice(w.translations.indexOf(t), 1);
-              }
+        // first untag
+        var remove = function () {
+          words.delete({id: trans.id}, function () {
+            angular.forEach($scope.words, function (w) {
+              angular.forEach(w.translations, function (t) {
+                if (t.id === trans.id) {
+                  w.translations.splice(w.translations.indexOf(t), 1);
+                }
+              });
             });
           });
-        });
+        };
+        $scope.untag(word, trans, remove);
       };
 
       $scope.saveTranslation = function (word, translation) {
@@ -218,10 +222,13 @@ angular.module('famousAngular')
         });
       };
 
-      $scope.untag = function (word, trans) {
+      $scope.untag = function (word, trans, callback) {
         var Tags = $resource($scope.conf.API_BASEURL + '/translations/tag_unit');
         Tags.save({word_id: word.id, conversion_id: trans.id, unit_id: null}, function () {
           trans.unit_id = null;
+          if (angular.isDefined(callback)) {
+            callback();
+          }
         });
       };
 
