@@ -28,8 +28,8 @@ angular.module('famousAngular')
 
     }])
 
-  .controller('LearnCtrl', ['$log', '$scope', '$resource', '$http', '$rootScope', 'auth',
-    function ($log, $scope, $resource, $http, $rootScope, auth) {
+  .controller('LearnCtrl', ['$log', '$scope', '$resource', '$http', '$rootScope', 'auth', '$timeout',
+    function ($log, $scope, $resource, $http, $rootScope, auth, $timeout) {
 
       var AutoUnit = $resource($scope.conf.API_BASEURL + '/unit_items/auto_generate');
       var Unit = $resource($scope.conf.API_BASEURL + '/unit_items/get_unit');
@@ -53,6 +53,11 @@ angular.module('famousAngular')
       $scope.sort_least_learned = false;
 
       $scope.startUnit = function () {
+        $scope.show = false;
+        $scope.interactive = true;
+        $scope.variant = false;
+        $scope.tipLength = tipDefaultLength;
+        $scope.unit = { inProgress: true, idx: 0, finished: false };
         switch ($scope.unitMode) {
           case 'lang':
             $scope.request = {pending: true};
@@ -67,11 +72,6 @@ angular.module('famousAngular')
               function (success) {
                 $scope.request = {pending: false};
                 $scope.unit_items = success.data.unit_items;
-                $scope.unit = { inProgress: true, idx: 0, finished: false };
-                $scope.show = false;
-                $scope.interactive = true;
-                $scope.variant = true;
-                $scope.tipLength = tipDefaultLength;
               });
             break;
           case 'unit':
@@ -85,11 +85,6 @@ angular.module('famousAngular')
                 $scope.containing_langs = null;
                 $scope.containing_langs = success.data.langs;
                 $log.debug($scope.containing_langs);
-                $scope.unit = { inProgress: true, idx: 0, finished: false };
-                $scope.show = false;
-                $scope.interactive = true;
-                $scope.variant = true;
-                $scope.tipLength = tipDefaultLength;
               });
             break;
         }
@@ -179,8 +174,21 @@ angular.module('famousAngular')
           return;
         }
 
-        if ($scope.tipLength < $scope.unit_items[$scope.unit.idx].to.name.length) {
-          $scope.tipLength += 1;
+        if (!$scope.variant){
+          $('#noMatch').modal({});
+          $timeout(function(){
+            $('#noMatch').modal('hide');
+          }, 2000);
+        }
+
+        if ($scope.variant){
+          $scope.noMatch = true;
+          $timeout(function(){
+            $scope.noMatch = false;
+            if ($scope.tipLength < $scope.unit_items[$scope.unit.idx].to.name.length) {
+              $scope.tipLength += 1;
+            }
+          }, 2000);
         }
       };
 
