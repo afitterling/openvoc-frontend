@@ -89,16 +89,7 @@
                 </li>
             </ul>
         </div>
-        <!--<section ng-hide="unit.inProgress">-->
-            <!--<label>max items</label>-->
-            <!--<input style="width: 50px;" ng-disabled="unit.inProgress" type="number" ng-model="n_items">-->
-            <!--&lt;!&ndash;<label>least learned</label><input ng-disabled="unit.inProgress" type="checkbox"&ndash;&gt;-->
-                                               <!--&lt;!&ndash;ng-model="sort_least_learned">&ndash;&gt;-->
-            <!--<br>-->
-            <!--<br>-->
-        <!--</section>-->
 
-        <span ng-show="request.pending">Loading ...</span>
         <button data-toggle="tooltip" data-placement="top" title="shows hints in brackets" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="variant=!variant"
                 ng-class="{'active': variant}">
             <span class="glyphicon glyphicon-start">Tips</span>
@@ -107,22 +98,12 @@
                 ng-class="{'active': interactive}">
             <span class="glyphicon glyphicon-start">i</span>
         </button>&nbsp;
-        <!--<button data-toggle="tooltip" data-placement="top" title="Reverse Mode: switch language after each - very alpha!" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="reverseMode=!reverseMode"-->
-                <!--ng-class="{'active': reverseMode}">-->
-            <!--<span class="">r</span>-->
-        <!--</button>&nbsp;-->
+
         <button data-toggle="tooltip" data-placement="top" title="Swap Direction!" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="swap()"
         ng-class="{'active': swapMode}">
         <span class="glyphicon glyphicon-retweet"></span>
         </button>&nbsp;
-        <!--<div ng-show="learn">-->
-        <!--<div>{{words[index].name}}</div>-->
 
-        <!--<div>-->
-        <!--<input type="text"/>-->
-        <!--</div>-->
-
-        <!--</div>-->
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-disabled="unit.idx==0"
                 ng-click="prev()">
             <span class="glyphicon glyphicon-arrow-left"></span>
@@ -137,7 +118,6 @@
         </button>
 
         <div ng-show="unit.inProgress">
-            <!--{{unit_items[unit.idx]}}-->
             <h3>
                 {{unit_items[unit.idx].from.name}} <span ng-show="variant" class="text-info">
                 ({{unit_items[unit.idx].to.name.slice(0,tipLength)}}{{dots.slice(0,unit_items[unit.idx].to.name.length-tipLength)}})
