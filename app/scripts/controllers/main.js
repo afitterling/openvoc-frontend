@@ -45,7 +45,10 @@ angular.module('famousAngular')
       // @TODO resolve
       $scope.$watch('units', function (newVal) {
         if (angular.isDefined(newVal)) {
-          $scope.queryUnit = $scope.units[0];
+          if ($scope.units.length > 0) {
+            $scope.queryUnit = $scope.units[0];
+            $scope.preFetchUnit($scope.queryUnit);
+          }
         }
       });
 
