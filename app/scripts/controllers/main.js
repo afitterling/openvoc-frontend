@@ -112,6 +112,8 @@ angular.module('famousAngular')
         $scope.swapMode = false;
         $scope.containing_langs = null;
         $scope.unit_items = null;
+        $scope.queryUnit = $scope.units[0];
+        $scope.preFetchUnit($scope.queryUnit);
       };
 
       $scope.swap = function () {

@@ -68,10 +68,10 @@
 
         <br>
         <div class="row">
-            <label class="text-danger" ng-show="unitMode==='unit' && unitEmpty">Unit is empty!</label><br>
             <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-success" ng-click="startUnit()" ng-disabled="unitMode==='unit' && (units.length === 0 || unitEmpty)">
                 <span class="glyphicon glyphicon-play"> Start</span>
             </button>
+            <br><label class="text-danger" ng-show="unitMode==='unit' && unitEmpty">Unit is empty!</label>
             <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
                 <span class="glyphicon glyphicon-stop"> Stop</span>
             </button>
