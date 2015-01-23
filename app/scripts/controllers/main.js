@@ -116,7 +116,6 @@ angular.module('famousAngular')
 
       $scope.swap = function () {
         $scope.swapMode = !$scope.swapMode;
-        console.log($scope.swapMode);
         var swappedItems = [];
         angular.forEach($scope.unit_items, function (item) {
           var tmp = item.from;
@@ -135,7 +134,6 @@ angular.module('famousAngular')
           }, swapped_langs);
           $scope.containing_langs = swapped_langs;
         }
-//        console.log($scope.containing_langs, swapped_langs);
       };
 
       var reverseModeCounter = 0;
@@ -169,7 +167,7 @@ angular.module('famousAngular')
       };
 
       $scope.keyTrigger = function (event) {
-        console.log(event);
+        //console.log(event);
       };
 
       $scope.validator = function (input, model) {
