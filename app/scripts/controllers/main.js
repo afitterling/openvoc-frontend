@@ -11,7 +11,7 @@ angular.module('famousAngular')
 
       var self = this;
 
-      Settings.then(function(data) {
+      Settings.then(function (data) {
         self.conf = data;
       });
 
@@ -38,6 +38,7 @@ angular.module('famousAngular')
 
       $scope.dots = '..................................................';
 
+      $scope.unitEmpty = true;
       $scope.unitMode = 'lang';
       $scope.swapMode = false;
 
@@ -57,7 +58,6 @@ angular.module('famousAngular')
         $scope.interactive = true;
         $scope.variant = false;
         $scope.tipLength = tipDefaultLength;
-        $scope.unit = { inProgress: true, idx: 0, finished: false };
         switch ($scope.unitMode) {
           case 'lang':
             $scope.request = {pending: true};
@@ -75,23 +75,31 @@ angular.module('famousAngular')
               });
             break;
           case 'unit':
-            Unit.get({
-                shuffle: true,
-                unit_id: $scope.queryUnit.id
-              },
-              function (success) {
-                $scope.request = {pending: false};
-                $scope.unit_items = success.data.unit_items;
-                $scope.containing_langs = null;
-                $scope.containing_langs = success.data.langs;
-                $log.debug($scope.containing_langs);
-              });
             break;
         }
-        ;
+        $scope.unit = { inProgress: true, idx: 0, finished: false };
         $(function () {
           $('[data-toggle="tooltip"]').tooltip();
         })
+      };
+
+      $scope.preFetchUnit = function (unit) {
+        $scope.queryUnit = unit;
+
+        Unit.get({
+            shuffle: true,
+            unit_id: $scope.queryUnit.id
+          },
+
+          function (success) {
+            $scope.request = {pending: false};
+            $scope.unit_items = success.data.unit_items;
+            $scope.unitEmpty = !$scope.unit_items.length;
+            $scope.containing_langs = null;
+            $scope.containing_langs = success.data.langs;
+            $log.debug($scope.containing_langs);
+          });
+
       };
 
       $scope.stopUnit = function () {
@@ -100,6 +108,7 @@ angular.module('famousAngular')
         $scope.show = false;
         $scope.swapMode = false;
         $scope.containing_langs = null;
+        $scope.unit_items = null;
       };
 
       $scope.swap = function () {
@@ -174,16 +183,16 @@ angular.module('famousAngular')
           return;
         }
 
-        if (!$scope.variant){
+        if (!$scope.variant) {
           $('#noMatch').modal({});
-          $timeout(function(){
+          $timeout(function () {
             $('#noMatch').modal('hide');
           }, 2000);
         }
 
-        if ($scope.variant){
+        if ($scope.variant) {
           $scope.noMatch = true;
-          $timeout(function(){
+          $timeout(function () {
             $scope.noMatch = false;
             if ($scope.tipLength < $scope.unit_items[$scope.unit.idx].to.name.length) {
               $scope.tipLength += 1;
