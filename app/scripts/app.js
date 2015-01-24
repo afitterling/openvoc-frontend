@@ -255,16 +255,9 @@ angular.module('famousAngular',
 
       };
 
-      var feedbackPromise;
+      $rootScope.feedbackPromise = null;
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-
-        $timeout.cancel(feedbackPromise);
-        $('#feedback').modal('hide');
-        feedbackPromise = $timeout(function () {
-          $('#feedback').modal({});
-        }, 800);
-//        $log.debug('$stateChangeStart');
 
         if (!auth.isAuthenticated) {
           var token = store.get('token');
@@ -292,10 +285,6 @@ angular.module('famousAngular',
       });
 
       $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-
-//        $log.debug('$stateChangeSuccess');
-        $timeout.cancel(feedbackPromise);
-        $('#feedback').modal('hide');
 
       });
 
