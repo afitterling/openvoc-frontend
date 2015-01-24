@@ -57,6 +57,7 @@ angular.module('famousAngular')
       $scope.sort_least_learned = false;
 
       $scope.startUnit = function () {
+        $scope.noItems = false;
         $scope.show = false;
         $scope.interactive = true;
         $scope.variant = false;
@@ -75,15 +76,25 @@ angular.module('famousAngular')
               function (success) {
                 $scope.request = {pending: false};
                 $scope.unit_items = success.data.unit_items;
+                if (!$scope.unit_items.length) {
+                  $scope.noItems = true;
+                  $('#noItems').modal();
+                  $timeout(function(){
+                    $scope.noItems = false;
+                    $scope.stopUnit();
+                    $('#noItems').modal('hide');
+                    return;
+                  }, 3000);
+                } else {
+                  $scope.unit = { inProgress: true, idx: 0, finished: false };
+                }
               });
             break;
           case 'unit':
+            $scope.unit = { inProgress: true, idx: 0, finished: false };
             break;
         }
-        $scope.unit = { inProgress: true, idx: 0, finished: false };
-        $(function () {
-          $('[data-toggle="tooltip"]').tooltip();
-        })
+        $scope.tooltips();
       };
 
       $scope.preFetchUnit = function (unit) {

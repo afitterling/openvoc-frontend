@@ -8,6 +8,15 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="noItems" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" style="text-align: center">
+                <h2><span class="label label-danger">No Vocabularies found!</span></h2>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="match" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -43,6 +52,7 @@
 
             <dropdown ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                       selected="lang_selected.to_id" list-model="languages"></dropdown>
+            <!--<span ng-show="noItems" class="text-danger">No Items found!</span>-->
             <br>
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -80,7 +90,7 @@
         </div>
 
         <div class="row">
-            <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-success" ng-click="startUnit()" ng-disabled="unitMode==='unit' && (units.length === 0 || unitEmpty)">
+            <button ng-hide="unit.inProgress" class="btn btn-default btn-small btn-success" ng-click="startUnit()" ng-disabled="unitMode==='unit' && (units.length === 0 || unitEmpty) || request.pending || noItems">
                 <span class="glyphicon glyphicon-play"> Start</span>
             </button>
             <div ng-show="unitMode==='unit' && unitEmpty">
@@ -131,7 +141,7 @@
             <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
 
-        <div ng-show="unit.inProgress && !request.pending">
+        <div ng-show="unit.inProgress && !request.pending && !noItems">
             <h3>
                 {{unit_items[unit.idx].from.name}} <span ng-show="variant" class="text-info">
                 ({{unit_items[unit.idx].to.name.slice(0,tipLength)}}{{dots.slice(0,unit_items[unit.idx].to.name.length-tipLength)}})
