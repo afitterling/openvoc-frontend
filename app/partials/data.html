@@ -226,7 +226,7 @@
             </td>
         </tr>
         <tr ng-repeat-start="word in words | filter:{'name':filters.word} | orderBy:predicate:reverse track by word.updated_at"
-            ng-hide="word.translations.length || translationsOnly || filters.model.translation || filterUnitItems">
+            ng-hide="word.translations.length || translationsOnly || filters.translation || filterUnitItems">
             <!-- safe filter fix: substitute supplement before update -->
             <td class="col-lg-6" ng-init="wordEdit.name=word.name">
                     <span>
@@ -280,7 +280,7 @@
         </tr>
         <tr ng-repeat-end></tr>
 
-        <tr ng-repeat-end ng-show="word.translations.length && !filters.model.translation && !filterUnitId && !hideNewTranslations">
+        <tr ng-repeat-end ng-show="word.translations.length && !filters.translation && !filterUnitId && !hideNewTranslations">
             <td class="col-lg-6"></td>
             <td class="col-lg-6">
                 <editable-simple model="newTranslation.name"
