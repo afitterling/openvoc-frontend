@@ -90,7 +90,7 @@ angular.module('famousAngular')
         $scope.queryUnit = unit;
 
         Unit.get({
-            shuffle: true,
+            shuffle: $scope.shuffle,
             unit_id: $scope.queryUnit.id
           },
 
@@ -172,17 +172,36 @@ angular.module('famousAngular')
         //console.log(event);
       };
 
+      function proceed(){
+        // downgrade "learn need" score
+        $scope.input = null;
+        if ($scope.unit.idx !== $scope.unit_items.length - 1) {
+          $scope.next();
+        } else {
+          $scope.unit.finished = true;
+        }
+      }
+
       $scope.validator = function (input, model) {
         if (angular.equals(input, model.to.name)) {
-          $scope.input = null;
-          // tag translation as learned
 
-          // downgrade "learn need" score
-          if ($scope.unit.idx !== $scope.unit_items.length - 1) {
-            $scope.next();
-          } else {
-            $scope.unit.finished = true;
+          // tag translation as learned
+          if (!$scope.variant) {
+            $('#match').modal({});
+            $timeout(function () {
+              $('#match').modal('hide');
+              proceed();
+            }, 2000);
           }
+
+          if ($scope.variant) {
+            $scope.match = true;
+            $timeout(function () {
+              $scope.match = false;
+              proceed();
+            }, 2000);
+          }
+
           return;
         }
 

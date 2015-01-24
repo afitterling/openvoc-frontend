@@ -2,8 +2,17 @@
 <div class="modal fade" id="noMatch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-body">
+            <div class="modal-body" style="text-align: center">
                 <h2><span class="label label-danger">Wrong!</span></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="match" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" style="text-align: center">
+                <h2><span class="label label-success">Correct!</span></h2>
             </div>
         </div>
     </div>
@@ -46,16 +55,26 @@
                     <li><a ng-click="n_items=50">50</a></li>
                 </ul>
             </div>
-            <div class="btn-group btn-group-sm" role="group" aria-label="button group">
-                <button type="button" class="btn btn-default" ng-class="{'active': !shuffle}" ng-click="shuffle=false">last</button>
-                <button type="button" class="btn btn-default" ng-class="{'active': shuffle}" ng-click="shuffle=true">shuffle</button>
-            </div>
             <!--shuffle <input type="checkbox" ng-model="shuffle">-->
+            <!--<div class="row">-->
+            <div class="btn-group btn-group-sm" role="group" aria-label="button group">
+            <button type="button" class="btn btn-default" ng-class="{'active': !shuffle}" ng-click="shuffle=false">off</button>
+            <button type="button" class="btn btn-default" ng-class="{'active': shuffle}" ng-click="shuffle=true">on</button>
+            </div> <label>shuffle</label>
+            <!--</div>-->
         </div>
+
+        <!--<div class="row">-->
+            <!--<div class="btn-group btn-group-sm" role="group" aria-label="button group">-->
+                <!--<button type="button" class="btn btn-default" ng-class="{'active': !shuffle}" ng-click="shuffle=false">off</button>-->
+                <!--<button type="button" class="btn btn-default" ng-class="{'active': shuffle}" ng-click="shuffle=true">on</button>-->
+            <!--</div><label>shuffle?</label>-->
+        <!--</div>-->
 
         <div ng-show="units.length===0 && unitMode==='unit'" class="row"><div class="alert alert-danger col-lg-1">no units found</div></div>
 
         <div class="row" ng-show="unitMode==='unit' && !unit.inProgress && units.length !== 0">
+
             <div class="btn-group" ng-init="unit.name='All'">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     {{queryUnit.name}}<span class="caret"></span>
@@ -64,6 +83,12 @@
                     <li ng-repeat="unit in units"><a ng-click="preFetchUnit(unit)">{{unit.name}}</a></li>
                 </ul>
             </div>
+            <br><br>
+            <div class="btn-group btn-group-sm" role="group" aria-label="button group">
+                <button type="button" class="btn btn-default" ng-class="{'active': !shuffle}" ng-click="shuffle=false">off</button>
+                <button type="button" class="btn btn-default" ng-class="{'active': shuffle}" ng-click="shuffle=true">on</button>
+            </div> <label>shuffle</label>
+
         </div>
 
         <br>
@@ -124,6 +149,7 @@
             </span>
             <span class="small">[{{getLang(unit_items[unit.idx].from.language_id).locale_string}} - {{getLang(unit_items[unit.idx].to.language_id).locale_string}}]</span>
             <span ng-show="noMatch" class="label label-danger">Wrong!</span>
+            <span ng-show="match" class="label label-success">Correct!</span>
             </h3>
 
             <form name="inputForm" ng-submit="validator(input, unit_items[unit.idx])" novalidate="">
