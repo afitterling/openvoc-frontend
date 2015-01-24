@@ -114,6 +114,7 @@ angular.module('famousAngular')
                 targetlang_id: $scope.lang.to.id
               },
               function (success) {
+                $log.debug('unit/lang:', success);
                 $scope.request = {pending: false};
                 $scope.unit_items = success.data.unit_items;
                 if (!$scope.unit_items.length) {
