@@ -57,6 +57,7 @@ angular.module('famousAngular')
       $scope.sort_least_learned = false;
 
       $scope.startUnit = function () {
+        $scope.noItems = false;
         $scope.show = false;
         $scope.interactive = true;
         $scope.variant = false;
@@ -75,6 +76,13 @@ angular.module('famousAngular')
               function (success) {
                 $scope.request = {pending: false};
                 $scope.unit_items = success.data.unit_items;
+                if (!$scope.unit_items.length) {
+                  $('#noItems').modal();
+                  $timeout(function(){
+                    $scope.stopUnit();
+                    $('#noItems').modal('hide');
+                  }, 3000);
+                }
               });
             break;
           case 'unit':

@@ -8,6 +8,15 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="noItems" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" style="text-align: center">
+                <h2><span class="label label-danger">No Vocabularies found!</span></h2>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="match" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -43,6 +52,7 @@
 
             <dropdown ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                       selected="lang_selected.to_id" list-model="languages"></dropdown>
+            <!--<span ng-show="noItems" class="text-danger">No Items found!</span>-->
             <br>
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
