@@ -26,12 +26,12 @@ angular.module('famousAngular')
       };
 
       $scope.setFilterAsync = function (filterName, value) {
+        $scope.filters.model[filterName] = value; // why is that: in case of externally reset or set to some value
         $timeout.cancel($scope.filters.q[filterName]);
         $scope.filters.q[filterName] = $timeout(function () {
           $log.debug('filter ' + filterName + ' set to:' + value);
           $scope.filters[filterName] = value;
-          $scope.filters.model[filterName] = value; // why is that: in case of externally reset or set to some value
-        }, 600);
+        }, 400);
       };
 
       $scope.setSortMode = function (predicate, reverse) {
