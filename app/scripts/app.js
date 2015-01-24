@@ -136,7 +136,6 @@ angular.module('famousAngular',
         .state('data', {
           url: '/dictionary',
           templateUrl: 'partials/data.html',
-          //controller: 'DataCtrl', // see the partial ng-ctrl
           resolve: {
             conf: ['Settings', function (Settings) {
               return Settings;
