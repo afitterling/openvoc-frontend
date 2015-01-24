@@ -326,12 +326,13 @@ angular.module('famousAngular',
 
       $rootScope.bootstrap = { tooltips: {
         options: {
-          delay: { show: 200, hide: 200 }
+          delay: { show: 0, hide: 0 }
         }
       }};
 
       $rootScope.tooltips = function () {
         $timeout(function () {
+          $('[data-toggle="tooltip"]').tooltip('destroy');
           $('[data-toggle="tooltip"]').tooltip($rootScope.bootstrap.tooltips.options);
         });
       };
