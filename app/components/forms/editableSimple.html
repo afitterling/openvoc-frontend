@@ -2,7 +2,8 @@
     <form ng-show="edit" name="formItem" ng-submit="submitCallback({model: model}) || (model=oldModel)" novalidate>
         <div class="input-group">
             <span class="input-group-btn">
-                <button class="btn btn-default btn-warning" type="button" ng-click="edit=false; model=oldModel;">
+                <button class="btn btn-default btn-warning" type="button" ng-click="edit=false; model=oldModel;"
+                        data-toggle="tooltip" data-placement="top" title="cancel!">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
             </span>
@@ -10,6 +11,7 @@
             <span class="input-group-btn">
                 <button ng-click="submitCallbackFunc(model); edit=false" class="btn btn-default btn-success"
                         ng-disabled="!formItem.$valid"
+                        data-toggle="tooltip" data-placement="top" title="Add!"
                         type="submit">
                     <span class="glyphicon glyphicon-ok"></span>
                 </button>
@@ -18,11 +20,14 @@
     </form>
     <!-- @TODO -->
     <!--<span ng-hide="edit" ng-click="edit=true">{{(!resetCancel && model) || '+'}}</span>-->
-    <span ng-hide="edit || model" ng-click="edit=true"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></button></span>
-    <span class="model" ng-hide="edit || !model" ng-click="edit=true">{{model}}&nbsp;<span style="font-size: 0.9rem;" ng-show="id" class="badge" data-toggle="tooltip" data-placement="top" title="'id': identical id means identical item" >{{$parent.trans.id}}</span></span>
-    <span ng-hide="edit || !model"><button ng-click="deleteCallback(model)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button></span>
+    <span ng-hide="edit || model" ng-click="edit=true"><button class="btn btn-default btn-xs"
+           data-toggle="tooltip" data-placement="top" title="Add new Item!"
+            ><span class="glyphicon glyphicon-plus"></span></button></span>
+    <span class="model" ng-hide="edit || !model" ng-click="edit=true" data-toggle="tooltip" data-placement="top" title="click to edit!">{{model}}&nbsp;<span style="font-size: 0.9rem;" ng-show="id" class="badge" data-toggle="tooltip" data-placement="top" title="'id': identical id means identical item" >{{$parent.trans.id}}</span></span>
+    <span ng-hide="edit || !model"><button ng-click="deleteCallback(model)" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="Warning: Immediately delete without confirming?"><span class="glyphicon glyphicon-trash"></span></button></span>
     <!-- tagging -->
-    <span ng-hide="edit || !model || !tag || $parent.selectedUnit.id===0 || $parent.trans.unit_id===$parent.selectedUnit.id">
+    <span ng-hide="edit || !model || !tag || $parent.selectedUnit.id===0 || $parent.trans.unit_id===$parent.selectedUnit.id"
+          data-toggle="tooltip" data-placement="top" title="Add to Unit">
         <button ng-click="$parent.tag($parent.word, $parent.trans)" class="btn btn-info btn-xs">
             <span class="glyphicon glyphicon-plus">{{$parent.selectedUnit.name}}</span>
         </button>
@@ -39,8 +44,8 @@
             <span class="glyphicon glyphicon-share-alt"></span>
         </button>
     </span>
-    <span ng-hide="edit || !model || !tag || $parent.trans.unit_id === null || !$parent.trans.unit_id" data-toggle="tooltip" data-placement="top" title="tag/untag unit">
-        <button ng-click="$parent.untag($parent.word, $parent.trans)" class="btn btn-xs">
+    <span ng-hide="edit || !model || !tag || $parent.trans.unit_id === null || !$parent.trans.unit_id" data-toggle="tooltip" data-placement="top" title="Remove from Unit">
+        <button ng-click="$parent.untag($parent.word, $parent.trans)" class="btn btn-xs btn-warning">
             <span class="glyphicon glyphicon-minus" unit-name="$parent.trans.unit_id"></span>
         </button>
     </span>

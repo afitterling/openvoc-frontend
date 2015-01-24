@@ -11,7 +11,7 @@ angular.module('famousAngular')
 
       var self = this;
 
-      Settings.then(function(data) {
+      Settings.then(function (data) {
         self.conf = data;
       });
 
@@ -38,13 +38,17 @@ angular.module('famousAngular')
 
       $scope.dots = '..................................................';
 
+      $scope.unitEmpty = true;
       $scope.unitMode = 'lang';
       $scope.swapMode = false;
 
       // @TODO resolve
       $scope.$watch('units', function (newVal) {
         if (angular.isDefined(newVal)) {
-          $scope.queryUnit = $scope.units[0];
+          if ($scope.units.length > 0) {
+            $scope.queryUnit = $scope.units[0];
+            $scope.preFetchUnit($scope.queryUnit);
+          }
         }
       });
 
@@ -57,7 +61,6 @@ angular.module('famousAngular')
         $scope.interactive = true;
         $scope.variant = false;
         $scope.tipLength = tipDefaultLength;
-        $scope.unit = { inProgress: true, idx: 0, finished: false };
         switch ($scope.unitMode) {
           case 'lang':
             $scope.request = {pending: true};
@@ -75,23 +78,31 @@ angular.module('famousAngular')
               });
             break;
           case 'unit':
-            Unit.get({
-                shuffle: true,
-                unit_id: $scope.queryUnit.id
-              },
-              function (success) {
-                $scope.request = {pending: false};
-                $scope.unit_items = success.data.unit_items;
-                $scope.containing_langs = null;
-                $scope.containing_langs = success.data.langs;
-                $log.debug($scope.containing_langs);
-              });
             break;
         }
-        ;
+        $scope.unit = { inProgress: true, idx: 0, finished: false };
         $(function () {
           $('[data-toggle="tooltip"]').tooltip();
         })
+      };
+
+      $scope.preFetchUnit = function (unit) {
+        $scope.queryUnit = unit;
+
+        Unit.get({
+            shuffle: true,
+            unit_id: $scope.queryUnit.id
+          },
+
+          function (success) {
+            $scope.request = {pending: false};
+            $scope.unit_items = success.data.unit_items;
+            $scope.unitEmpty = !$scope.unit_items.length;
+            $scope.containing_langs = null;
+            $scope.containing_langs = success.data.langs;
+            $log.debug($scope.containing_langs);
+          });
+
       };
 
       $scope.stopUnit = function () {
@@ -100,11 +111,13 @@ angular.module('famousAngular')
         $scope.show = false;
         $scope.swapMode = false;
         $scope.containing_langs = null;
+        $scope.unit_items = null;
+        $scope.queryUnit = $scope.units[0];
+        $scope.preFetchUnit($scope.queryUnit);
       };
 
       $scope.swap = function () {
         $scope.swapMode = !$scope.swapMode;
-        console.log($scope.swapMode);
         var swappedItems = [];
         angular.forEach($scope.unit_items, function (item) {
           var tmp = item.from;
@@ -123,7 +136,6 @@ angular.module('famousAngular')
           }, swapped_langs);
           $scope.containing_langs = swapped_langs;
         }
-//        console.log($scope.containing_langs, swapped_langs);
       };
 
       var reverseModeCounter = 0;
@@ -157,7 +169,7 @@ angular.module('famousAngular')
       };
 
       $scope.keyTrigger = function (event) {
-        console.log(event);
+        //console.log(event);
       };
 
       $scope.validator = function (input, model) {
@@ -174,16 +186,16 @@ angular.module('famousAngular')
           return;
         }
 
-        if (!$scope.variant){
+        if (!$scope.variant) {
           $('#noMatch').modal({});
-          $timeout(function(){
+          $timeout(function () {
             $('#noMatch').modal('hide');
           }, 2000);
         }
 
-        if ($scope.variant){
+        if ($scope.variant) {
           $scope.noMatch = true;
-          $timeout(function(){
+          $timeout(function () {
             $scope.noMatch = false;
             if ($scope.tipLength < $scope.unit_items[$scope.unit.idx].to.name.length) {
               $scope.tipLength += 1;

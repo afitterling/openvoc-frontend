@@ -216,8 +216,8 @@ angular.module('famousAngular',
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
-  .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'Units', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings',
-    function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, Units, jwtHelper, store, $resource, AppStore, Languages, UISettings) {
+  .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'Units', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings', '$timeout',
+    function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, Units, jwtHelper, store, $resource, AppStore, Languages, UISettings, $timeout) {
 
       ValidationActionsStore.register('dropdown.lang.to'); //, function(scope.current, ){})
       ValidationActionsStore.register('dropdown.lang.from');
@@ -291,6 +291,8 @@ angular.module('famousAngular',
         });
       };
 
+
+
       // on profile load (authenticate/login)
       $rootScope.$on('sig:::profileLoaded', function () {
         Settings.then(function (conf) {
@@ -303,7 +305,6 @@ angular.module('famousAngular',
           //@TODO uid // language_id, targetlang_id form Settings
           languages.query({}, function (languages) {
             /* jshint camelcase: false */
-//          words.query({user_id: auth.profile.user_id}, function (items) {
             AppStore.set('languages', languages);
             units.query({user_id: auth.profile.user_id}, function (units) {
               $rootScope.units = units;
@@ -312,18 +313,25 @@ angular.module('famousAngular',
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
             $rootScope.lang_selected = {from_id: 1, to_id: 2};
             words.query({language_id: 1, targetlang_id: 2, user_id: auth.profile.user_id}, function (words) {
-//              angular.forEach(words, function(word) {
-//                if (angular.isDefined(word.translations)) {
-//                  angular.forEach(word.translations, function (trans) {
-//                    console.log(trans);
-//                  });
-//                }
-//              });
               AppStore.set('words', words);
             });
           });
         });
       });
+
+      $rootScope.bootstrap = { tooltips: {
+        options: {
+          delay: { show: 200, hide: 200 }
+        }
+      }};
+
+      $rootScope.tooltips = function () {
+        $timeout(function () {
+          $('[data-toggle="tooltip"]').tooltip($rootScope.bootstrap.tooltips.options);
+        });
+      };
+
+      $rootScope.tooltips();
 
     }]
   );
