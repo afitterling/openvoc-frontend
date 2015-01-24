@@ -55,21 +55,7 @@
                     <li><a ng-click="n_items=50">50</a></li>
                 </ul>
             </div>
-            <!--shuffle <input type="checkbox" ng-model="shuffle">-->
-            <!--<div class="row">-->
-            <div class="btn-group btn-group-sm" role="group" aria-label="button group">
-            <button type="button" class="btn btn-default" ng-class="{'active': !shuffle}" ng-click="shuffle=false">off</button>
-            <button type="button" class="btn btn-default" ng-class="{'active': shuffle}" ng-click="shuffle=true">on</button>
-            </div> <label>shuffle</label>
-            <!--</div>-->
         </div>
-
-        <!--<div class="row">-->
-            <!--<div class="btn-group btn-group-sm" role="group" aria-label="button group">-->
-                <!--<button type="button" class="btn btn-default" ng-class="{'active': !shuffle}" ng-click="shuffle=false">off</button>-->
-                <!--<button type="button" class="btn btn-default" ng-class="{'active': shuffle}" ng-click="shuffle=true">on</button>-->
-            <!--</div><label>shuffle?</label>-->
-        <!--</div>-->
 
         <div ng-show="units.length===0 && unitMode==='unit'" class="row"><div class="alert alert-danger col-lg-1">no units found</div></div>
 
