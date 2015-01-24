@@ -23,10 +23,10 @@
     <div ng-controller="LearnCtrl">
 
         <div class="row" ng-show="!unit.inProgress">
-            <label>Choose Learn Mode</label><br>
+            <label>Pick Vocabulary from</label><br>
             <div class="btn-group" role="group" aria-label="...">
-                <button type="button" ng-click="unitMode='lang'" class="btn btn-default" ng-class="{'active': unitMode==='lang'}">All Words</button>
-                <button type="button" ng-click="unitMode='unit'" class="btn btn-default" ng-class="{'active': unitMode==='unit'}">Selected Unit</button>
+                <button type="button" ng-click="unitMode='lang'" class="btn btn-default" ng-class="{'active': unitMode==='lang'}">Dictionary</button>
+                <button type="button" ng-click="unitMode='unit'" class="btn btn-default" ng-class="{'active': unitMode==='unit'}">Units</button>
             </div>
             <br>
             <br>
