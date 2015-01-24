@@ -50,12 +50,13 @@ angular.module('famousAngular',
 
       $provide.factory('errorInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
         return {
+          // check server
           'responseError': function (response) {
             $rootScope.$broadcast('onError');
             return response;
           },
           requestError: function (rejection) {
-            $rootScope.$broadcast('onError');
+            //$rootScope.$broadcast('onError');
             return $q.reject(rejection);
           }
         };
@@ -115,7 +116,7 @@ angular.module('famousAngular',
           AppStore.init(AppStoreDefaultModels);
 
           $rootScope.profile = auth.profile;
-          $location.path('/profile');
+          //$location.path('/profile');
           $rootScope.$broadcast('sig:::profileLoaded');
         }]);
 
@@ -211,7 +212,7 @@ angular.module('famousAngular',
           }
         });
 
-      $urlRouterProvider.otherwise('/');
+      $urlRouterProvider.otherwise('/profile');
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
