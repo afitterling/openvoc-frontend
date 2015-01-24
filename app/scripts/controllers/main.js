@@ -22,7 +22,7 @@ angular.module('famousAngular')
             $scope.feedbackForm.$setPristine();
             $scope.feedback.text = null;
             $scope.success = null;
-          }, 3000);
+          }, 5000);
         });
       };
 

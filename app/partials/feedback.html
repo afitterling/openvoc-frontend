@@ -14,7 +14,7 @@
                   ng-required="true"
                   id="feedback" ng-model="feedback.text" ng-disabled="success || !profile.email_verified"></textarea>
     </div>
-    <button type="submit" ng-class="{'btn-success': success}" class="btn btn-default"
+    <button type="submit" ng-class="{'btn-success': feedbackForm.$valid}" class="btn btn-default"
             ng-disabled="feedbackForm.$invalid || success || !profile.email_verified">Post Feedback
     </button>
 </form>
