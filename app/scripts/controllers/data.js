@@ -62,6 +62,7 @@ angular.module('famousAngular')
           if (angular.isDefined(successCB)) {
             successCB(success);
           }
+          $scope.tooltips();
         }, function (error) {
           $scope.success = false;
           $scope.word = word;
@@ -134,6 +135,7 @@ angular.module('famousAngular')
               if ($scope.selectedUnit.id !== 0 && $scope.autoTag) {
                 $scope.tag(word, translation);
               }
+              $scope.tooltips();
             });
 
           });
@@ -236,13 +238,14 @@ angular.module('famousAngular')
         $('#unitModal').modal({});
       };
 
-      $scope.defaultUnit = {id: 0, name: 'All'};
+      $scope.defaultUnit = {id: 0, name: 'Select Unit'};
 
       $scope.selectedUnit = $scope.defaultUnit;
 
       $scope.selectUnit = function (unit) {
         $scope.selectedUnit = unit;
         $scope.setUnitFilter();
+        $scope.tooltips();
       };
 
       var units = Units($scope.conf);
@@ -297,9 +300,9 @@ angular.module('famousAngular')
 
       };
 
-      $timeout(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-      }, 5000);
+//      $timeout(function () {
+//        $('[data-toggle="tooltip"]').tooltip();
+//      }, 5000);
 
       $scope.openLangModal = function(word, trans, mode){
         $scope.changeLangErrorMsg = false;
@@ -339,6 +342,9 @@ angular.module('famousAngular')
         }
       };
 
+      $timeout(function () {
+        $scope.tooltips();
+      }, 0);
 
     }])
 

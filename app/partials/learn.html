@@ -54,7 +54,7 @@
         </div>
 
         <div ng-show="units.length===0 && unitMode==='unit'" class="row"><div class="alert alert-danger col-lg-1">no units found</div></div>
-        
+
         <div class="row" ng-show="unitMode==='unit' && !unit.inProgress && units.length !== 0">
             <div class="btn-group" ng-init="unit.name='All'">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -72,7 +72,7 @@
                 <span class="glyphicon glyphicon-play"> Start</span>
             </button>
             <br><label class="text-danger" ng-show="unitMode==='unit' && unitEmpty">Unit is empty!</label>
-            <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
+            <button ng-show="unit.inProgress" ng-disabled="request.pending" class="btn btn-default btn-small btn-danger" ng-click="stopUnit()">
                 <span class="glyphicon glyphicon-stop"> Stop</span>
             </button>
             <button ng-show="unit.inProgress && unit.finished" class="btn btn-default btn-small btn-success"
@@ -81,7 +81,7 @@
             </button>
             <br><br>
         </div>
-        <div class="row" ng-show="containing_langs && unit.inProgress">
+        <div class="row" ng-show="containing_langs && unit.inProgress && unitMode=='unit'">
             <h5>contains:</h5>
             <ul>
                 <li ng-repeat="lang in containing_langs">
@@ -117,7 +117,7 @@
             <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
 
-        <div ng-show="unit.inProgress">
+        <div ng-show="unit.inProgress && !request.pending">
             <h3>
                 {{unit_items[unit.idx].from.name}} <span ng-show="variant" class="text-info">
                 ({{unit_items[unit.idx].to.name.slice(0,tipLength)}}{{dots.slice(0,unit_items[unit.idx].to.name.length-tipLength)}})

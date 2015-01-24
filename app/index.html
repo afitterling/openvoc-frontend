@@ -96,7 +96,7 @@
                         <span class="glyphicon glyphicon-off"></span>
                     </button>
                 </a></li>
-                <li><a ng-show="pendingRequests" data-toggle="tooltip" data-placement="right" title="Internet requests are pending!"><div class="spin"><span style="color: gold;" class="glyphicon glyphicon-refresh"></span></div></a></li>
+                <li><a id="pendingRequests" ng-show="pendingRequests" data-toggle="tooltip" data-placement="bottom" title="Internet requests are pending!"><div class="spin"><span style="color: white;" class="glyphicon glyphicon-refresh"></span></div></a></li>
             </ul>
         </div>
         <!--/.nav-collapse -->
@@ -165,10 +165,6 @@
 <script src="bower_components/auth0.js/build/auth0.min.js"></script>
 <script src="bower_components/auth0-angular/build/auth0-angular.min.js"></script>
 <script src="bower_components/auth0-lock/build/auth0-lock.min.js"></script>
-
-<script>
-    $('nav [data-toggle="tooltip"]').tooltip();
-</script>
 
 </body>
 </html>

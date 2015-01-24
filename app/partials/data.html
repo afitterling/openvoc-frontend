@@ -141,22 +141,23 @@
 
     <div class="col-lg-6">
 
-        <div class="btn-group" ng-init="unit.name='All'">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <div class="btn-group" ng-init="unit.name='All'" data-toggle="tooltip" data-placement="top" title="Select Unit to tag Items">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+                    ng-class="{'btn-info': selectedUnit.id!==0}">
                 {{selectedUnit.name}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="selectedUnit=defaultUnit; filterUnitItems=undefined; setUnitFilter();">All</a></li>
+                <li><a ng-click="selectedUnit=defaultUnit; filterUnitItems=undefined; setUnitFilter();">None</a></li>
                 <li ng-repeat="unit in units"><a ng-click="selectUnit(unit)">{{unit.name}}</a></li>
             </ul>
         </div>
-        <button class="btn btn-default btn-info"
+        <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Open Units' Edit Dialogue"
                 ng-click="openUnitModal()">Edit Units
         </button>
         <br>
-        <p ng-show="selectedUnit.id!==0">
-            <span class="label label-warning">You can now tag items!</span>
-        </p>
+        <!--<p ng-show="selectedUnit.id!==0">-->
+            <!--<span class="label label-warning">You can now tag items!</span>-->
+        <!--</p>-->
 
         <div ng-show="selectedUnit.id!==0">
             <label>show only unit specific items</label>
