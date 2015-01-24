@@ -14,6 +14,26 @@ angular.module('famousAngular')
       $scope.translationFilterValue = '';
       $scope.filterValue = '';
 
+      $scope.filters = {
+        translation: '',
+        word: '',
+        q: {translation: null, word: null},
+        // view Models
+        model: {
+          translation: '',
+          word: ''
+        }
+      };
+
+      $scope.setFilterAsync = function (filterName, value) {
+        $timeout.cancel($scope.filters.q[filterName]);
+        $scope.filters.q[filterName] = $timeout(function () {
+          $log.debug('filter ' + filterName + ' set to:' + value);
+          $scope.filters[filterName] = value;
+          $scope.filters.model[filterName] = value; // why is that: in case of externally reset or set to some value
+        }, 600);
+      };
+
       $scope.setSortMode = function (predicate, reverse) {
         $scope.predicate = predicate;
         $scope.reverse = reverse;

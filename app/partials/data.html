@@ -176,22 +176,23 @@
 
     <div class="col-lg-6">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search 'From' for..." ng-model="filterValue">
+            <input type="text" class="form-control" placeholder="Search 'From' for..."
+                   ng-model="filters.model.word"
+                   ng-change="setFilterAsync('word', filters.model.word)">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" ng-class="{'btn-danger': filterValue}" ng-click="filterValue=''" ng-disabled="!filterValue"
-                            type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                    <button class="btn btn-default" ng-class="{'btn-danger': filters.model.word}" ng-click="setFilterAsync('word', '')"
+                            ng-disabled="!filters.model.word" type="button"><span class="glyphicon glyphicon-remove"></span></button>
                   </span>
         </div>
-        <!-- /input-group -->
     </div>
-    <!-- /.col-lg-6 -->
     <div class="col-lg-6">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search 'To' for..."
-                   ng-model="translationFilterValue">
+                   ng-model="filters.model.translation"
+                   ng-change="setFilterAsync('translation', filters.model.translation)">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" ng-class="{'btn-danger': translationFilterValue}" ng-click="translationFilterValue=''"
-                            ng-disabled="!translationFilterValue" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                    <button class="btn btn-default" ng-class="{'btn-danger': filters.model.translation}" ng-click="setFilterAsync('translation', '')"
+                            ng-disabled="!filters.model.translation" type="button"><span class="glyphicon glyphicon-remove"></span></button>
                   </span>
         </div>
         <!-- /input-group -->
@@ -224,8 +225,8 @@
             <td class="col-lg-6">
             </td>
         </tr>
-        <tr ng-repeat-start="word in words | filter:{'name':filterValue} | orderBy:predicate:reverse track by word.updated_at"
-            ng-hide="word.translations.length || translationsOnly || translationFilterValue || filterUnitItems">
+        <tr ng-repeat-start="word in words | filter:{'name':filters.word} | orderBy:predicate:reverse track by word.updated_at"
+            ng-hide="word.translations.length || translationsOnly || filters.model.translation || filterUnitItems">
             <!-- safe filter fix: substitute supplement before update -->
             <td class="col-lg-6" ng-init="wordEdit.name=word.name">
                     <span>
@@ -248,7 +249,7 @@
                     </span>
             </td>
         </tr>
-        <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':translationFilterValue} | filter:{'unit_id':filterUnitId} track by trans.updated_at">
+        <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':filters.translation} | filter:{'unit_id':filterUnitId} track by trans.updated_at">
             <!-- safe filter fix: substitute supplement before update -->
             <td class="col-lg-6" ng-init="wordEdit.name=word.name">
                     <span ng-show="$first">
@@ -279,7 +280,7 @@
         </tr>
         <tr ng-repeat-end></tr>
 
-        <tr ng-repeat-end ng-show="word.translations.length && !translationFilterValue && !filterUnitId && !hideNewTranslations">
+        <tr ng-repeat-end ng-show="word.translations.length && !filters.model.translation && !filterUnitId && !hideNewTranslations">
             <td class="col-lg-6"></td>
             <td class="col-lg-6">
                 <editable-simple model="newTranslation.name"
