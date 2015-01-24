@@ -66,7 +66,7 @@ angular.module('famousAngular')
             $scope.request = {pending: true};
             // fetch the custom unit
             AutoUnit.get({
-                shuffle: $scope.shuffle,
+                shuffle: true,
                 n_items: $scope.n_items, // works but in ui missing or commented out
                 user_id: auth.profile.user_id,
                 language_id: $scope.lang.from.id,
