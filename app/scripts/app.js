@@ -263,7 +263,8 @@ angular.module('famousAngular',
         $('#feedback').modal('hide');
         feedbackPromise = $timeout(function () {
           $('#feedback').modal({});
-        }, 450);
+        }, 800);
+        $log.debug('$stateChangeStart');
 
         if (!auth.isAuthenticated) {
           var token = store.get('token');
@@ -292,6 +293,7 @@ angular.module('famousAngular',
 
       $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
 
+        $log.debug('$stateChangeSuccess');
         $timeout.cancel(feedbackPromise);
         $('#feedback').modal('hide');
 
