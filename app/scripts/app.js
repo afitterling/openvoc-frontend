@@ -255,7 +255,15 @@ angular.module('famousAngular',
 
       };
 
+      var feedbackPromise;
+
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+
+        $timeout.cancel(feedbackPromise);
+        $('#feedback').modal('hide');
+        feedbackPromise = $timeout(function () {
+          $('#feedback').modal({});
+        }, 450);
 
         if (!auth.isAuthenticated) {
           var token = store.get('token');
@@ -282,7 +290,14 @@ angular.module('famousAngular',
 
       });
 
-      var apiCall = function (conf) {
+      $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+
+        $timeout.cancel(feedbackPromise);
+        $('#feedback').modal('hide');
+
+      });
+
+        var apiCall = function (conf) {
         var api = $resource(conf.API_BASEURL + '/secured/ping');
         api.get({}, function (data) {
           $log.debug('secured api test call: ', data);
