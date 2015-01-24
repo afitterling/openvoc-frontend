@@ -193,9 +193,7 @@ angular.module('famousAngular')
           $log.debug('words:', words);
           if (angular.isDefined(cb)) {
             cb();
-            $timeout(function () {
-              $('[data-toggle="tooltip"]').tooltip();
-            }, 1000);
+            $scope.tooltips();
           }
         });
 
