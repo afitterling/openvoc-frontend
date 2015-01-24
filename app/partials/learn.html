@@ -141,7 +141,7 @@
             <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
 
-        <div ng-show="unit.inProgress && !request.pending">
+        <div ng-show="unit.inProgress && !request.pending && !noItems">
             <h3>
                 {{unit_items[unit.idx].from.name}} <span ng-show="variant" class="text-info">
                 ({{unit_items[unit.idx].to.name.slice(0,tipLength)}}{{dots.slice(0,unit_items[unit.idx].to.name.length-tipLength)}})

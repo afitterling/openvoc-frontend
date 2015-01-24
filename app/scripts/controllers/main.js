@@ -77,8 +77,10 @@ angular.module('famousAngular')
                 $scope.request = {pending: false};
                 $scope.unit_items = success.data.unit_items;
                 if (!$scope.unit_items.length) {
+                  $scope.noItems = true;
                   $('#noItems').modal();
                   $timeout(function(){
+                    $scope.noItems = false;
                     $scope.stopUnit();
                     $('#noItems').modal('hide');
                   }, 3000);
