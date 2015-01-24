@@ -176,6 +176,7 @@ angular.module('famousAngular')
         // downgrade "learn need" score
         $scope.input = null;
         if ($scope.unit.idx !== $scope.unit_items.length - 1) {
+          $('[name="inputForm"] #query').focus();
           $scope.next();
         } else {
           $scope.unit.finished = true;
@@ -209,6 +210,7 @@ angular.module('famousAngular')
           $('#noMatch').modal({});
           $timeout(function () {
             $('#noMatch').modal('hide');
+            $('[name="inputForm"] #query').focus();
           }, 2000);
         }
 
