@@ -180,8 +180,10 @@
                    ng-model="filters.model.word"
                    ng-change="setFilterAsync('word', filters.model.word)">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" ng-class="{'btn-danger': filters.model.word}" ng-click="setFilterAsync('word', '')"
-                            ng-disabled="!filters.model.word" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                    <button class="btn btn-default" ng-class="{'btn-warning': filters.model.word  === filters.word && filters.word}" ng-click="setFilterAsync('word', '')"
+                            ng-disabled="!filters.model.word" type="button"
+                            data-toggle="tooltip" data-placement="top" title="Reset!"
+                            ><span class="glyphicon glyphicon-remove"></span></button>
                   </span>
         </div>
     </div>
@@ -191,8 +193,9 @@
                    ng-model="filters.model.translation"
                    ng-change="setFilterAsync('translation', filters.model.translation)">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" ng-class="{'btn-danger': filters.model.translation}" ng-click="setFilterAsync('translation', '')"
-                            ng-disabled="!filters.model.translation" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                    <button class="btn btn-default" ng-class="{'btn-warning': filters.model.translation === filters.translation && filters.translation}" ng-click="setFilterAsync('translation', '')"
+                            ng-disabled="!filters.model.translation" type="button"
+                            data-toggle="tooltip" data-placement="top" title="Reset!"><span class="glyphicon glyphicon-remove"></span></button>
                   </span>
         </div>
         <!-- /input-group -->
@@ -226,7 +229,7 @@
             </td>
         </tr>
         <tr ng-repeat-start="word in words | filter:{'name':filters.word} | orderBy:predicate:reverse track by word.updated_at"
-            ng-hide="word.translations.length || translationsOnly || filters.model.translation || filterUnitItems">
+            ng-hide="word.translations.length || translationsOnly || filters.translation || filterUnitItems">
             <!-- safe filter fix: substitute supplement before update -->
             <td class="col-lg-6" ng-init="wordEdit.name=word.name">
                     <span>
@@ -280,7 +283,7 @@
         </tr>
         <tr ng-repeat-end></tr>
 
-        <tr ng-repeat-end ng-show="word.translations.length && !filters.model.translation && !filterUnitId && !hideNewTranslations">
+        <tr ng-repeat-end ng-show="word.translations.length && !filters.translation && !filterUnitId && !hideNewTranslations">
             <td class="col-lg-6"></td>
             <td class="col-lg-6">
                 <editable-simple model="newTranslation.name"
