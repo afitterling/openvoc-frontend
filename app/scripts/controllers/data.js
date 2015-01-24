@@ -201,10 +201,12 @@ angular.module('famousAngular')
 
       // swap languages
       $scope.swapLanguages = function () {
-        $('button#swap').blur();
-        var temp = $scope.lang.from;
-        $scope.lang.from = $scope.lang.to;
-        $scope.lang.to = temp;
+        $timeout(function () {
+          var temp = $scope.lang.from;
+          $scope.lang.from = $scope.lang.to;
+          $scope.lang.to = temp;
+        });
+        //$('button#swap').blur();
       };
 
       $scope.bingTranslate = function (word) {
