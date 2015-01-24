@@ -42,6 +42,44 @@ angular.module('famousAngular')
       $scope.unitMode = 'lang';
       $scope.swapMode = false;
 
+
+      // mode helper
+      $scope.modeHelpers = {
+        all: {
+          pickFilter: function (filter) {
+            $scope.modeHelpers.all.filterSelected = filter;
+          },
+          availableFilters: [
+            {
+              identifier: 'random',
+              name: 'Random Pick'
+            },
+            {
+              identifier: 'learned-',
+              name: 'Less Learned'
+            },
+            {
+              identifier: 'missed-',
+              name: 'Mostly Missed'
+            },
+            {
+              identifier: 'learned+',
+              name: 'Last Learned'
+            },
+            {
+              identifier: 'updated+',
+              name: 'Last Edited'
+            },
+            {
+              identifier: 'created+',
+              name: 'Last Created'
+            }
+          ]
+        }
+      };
+
+      $scope.modeHelpers.all.filterSelected = $scope.modeHelpers.all.availableFilters[0];
+
       // @TODO resolve
       $scope.$watch('units', function (newVal) {
         if (angular.isDefined(newVal)) {
@@ -67,6 +105,8 @@ angular.module('famousAngular')
             // fetch the custom unit
             AutoUnit.get({
                 shuffle: true,
+                // choose the selected filter
+                filter: $scope.modeHelpers.all.filterSelected.identifier,
                 n_items: $scope.n_items, // works but in ui missing or commented out
                 user_id: auth.profile.user_id,
                 language_id: $scope.lang.from.id,
