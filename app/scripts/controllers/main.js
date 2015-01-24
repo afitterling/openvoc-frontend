@@ -123,17 +123,18 @@ angular.module('famousAngular')
                     $scope.noItems = false;
                     $scope.stopUnit();
                     $('#noItems').modal('hide');
+                    return;
                   }, 3000);
+                } else {
+                  $scope.unit = { inProgress: true, idx: 0, finished: false };
                 }
               });
             break;
           case 'unit':
+            $scope.unit = { inProgress: true, idx: 0, finished: false };
             break;
         }
-        $scope.unit = { inProgress: true, idx: 0, finished: false };
-        $(function () {
-          $('[data-toggle="tooltip"]').tooltip();
-        })
+        $scope.tooltips();
       };
 
       $scope.preFetchUnit = function (unit) {
