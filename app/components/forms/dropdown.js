@@ -26,24 +26,16 @@ angular.module('directives.formHelpers', [])
 
         ////////////// helpers ////////////////////////////////////
 
-
         scope.select = function (item_id) {
+          scope.menuItems = [];
           angular.forEach(scope.listModel, function (item) {
             if (item_id === item.id) {
               scope.model = item;
-              return;
+            } else {
+              this.push(item);
             }
-          });
-
-          // obsolete!
-
-          //scope.model = scope.current;
-          // why you need this: the model binding is two way to some upper scope model wait until it is really updated
-//          var cancel = scope.$watch('model', function () {
-//            scope.onChange();
-//            cancel();
-//          });
-
+          }, scope.menuItems);
+          scope.selected = item_id;
         };
 
         var setup = function () {
@@ -51,9 +43,7 @@ angular.module('directives.formHelpers', [])
             if (!newId) {
               return;
             }
-
             scope.select(newId);
-            spliceMenuItems();
             scope.ready = true;
 
             // update value store
@@ -61,18 +51,11 @@ angular.module('directives.formHelpers', [])
 //          $log.debug(scope.name, ' anyValidation =', ValidationActionsStore.anyValidation(scope.name));
 //          $log.debug(scope.name, ' anyValidationArray =', ValidationActionsStore.anyValidationArray(scope.name));
           });
+
           scope.$watch('model', function (newVal, oldVal) {
             if (!newVal || newVal === oldVal) return;
             // changed value
-
-            //$log.debug(id, newVal, oldVal);
           });
-        };
-
-        var spliceMenuItems = function () {
-          scope.menuItems = [];
-          angular.copy(scope.listModel, scope.menuItems);
-          scope.menuItems.splice(scope.listModel.indexOf(scope.model), 1);
         };
 
         setup();

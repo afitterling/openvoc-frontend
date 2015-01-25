@@ -236,11 +236,12 @@ angular.module('famousAngular')
         }
       };
 
-      // monkey patch swapLanguages as we are in a sub scope
+      ///////////////////////////////////////////
+      // swap languages
       $scope.swapLanguages = function () {
-        var temp = $scope.langLearnUISelector.from;
-        $scope.langLearnUISelector.from = $scope.langLearnUISelector.to;
-        $scope.langLearnUISelector.to = temp;
+        var temp = $scope.lang_selected2.from_id;
+        $scope.lang_selected2.from_id = $scope.lang_selected2.to_id;
+        $scope.lang_selected2.to_id = temp;
       };
 
       $scope.getLang = function (lang_id) {
