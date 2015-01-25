@@ -61,10 +61,9 @@ angular.module('famousAngular')
         $scope.settings.ui.autoTag = false;
         $scope.settings.ui.hideNewTranslations = false;
         $scope.setSortMode('updated_at', true);
+        $scope.defaultUnit = {id: 0, name: 'Select Unit'};
+        $scope.settings.ui.selectedUnit = $scope.defaultUnit;
       }
-
-      $scope.defaultUnit = {id: 0, name: 'Select Unit'};
-      $scope.selectedUnit = $scope.defaultUnit;
 
       //// debug
       $log.debug('words:', $scope.words);
@@ -185,7 +184,7 @@ angular.module('famousAngular')
                 word.translations = [];
               }
               word.translations.push(translation);
-              if ($scope.selectedUnit.id !== 0 && $scope.settings.ui.autoTag) {
+              if ($scope.settings.ui.selectedUnit.id !== 0 && $scope.settings.ui.autoTag) {
                 $scope.tag(word, translation);
               }
               $scope.tooltips();
@@ -287,8 +286,8 @@ angular.module('famousAngular')
 
       $scope.tag = function (word, trans) {
         var Tags = $resource($scope.conf.API_BASEURL + '/translations/tag_unit');
-        Tags.save({word_id: word.id, conversion_id: trans.id, unit_id: $scope.selectedUnit.id}, function () {
-          trans.unit_id = $scope.selectedUnit.id;
+        Tags.save({word_id: word.id, conversion_id: trans.id, unit_id: $scope.settings.ui.selectedUnit.id}, function () {
+          trans.unit_id = $scope.settings.ui.selectedUnit.id;
         });
       };
 
@@ -309,7 +308,7 @@ angular.module('famousAngular')
       };
 
       $scope.selectUnit = function (unit) {
-        $scope.selectedUnit = unit;
+        $scope.settings.ui.selectedUnit = unit;
         $scope.setUnitFilter();
         $scope.tooltips();
       };
@@ -330,8 +329,8 @@ angular.module('famousAngular')
         /* jshint camelcase: false */
         units.update({id: unit.id, name:unit.name}, function (success) {
             $scope.units[$scope.units.indexOf(unit)] = success;
-            if (angular.equals(unit.id, $scope.selectedUnit.id)) {
-              $scope.selectedUnit = success;
+            if (angular.equals(unit.id, $scope.settings.ui.selectedUnit.id)) {
+              $scope.settings.ui.selectedUnit = success;
             };
           },
           // err callback
@@ -345,8 +344,8 @@ angular.module('famousAngular')
         /* jshint camelcase: false */
         units.delete(unit, function (success) {
             $scope.units.splice($scope.units.indexOf(unit),1);
-            if (angular.equals(unit.id, $scope.selectedUnit.id)) {
-              $scope.selectedUnit = $scope.defaultUnit;
+            if (angular.equals(unit.id, $scope.settings.ui.selectedUnit.id)) {
+              $scope.settings.ui.selectedUnit = $scope.defaultUnit;
             };
           },
           // err callback
@@ -357,7 +356,7 @@ angular.module('famousAngular')
 
       $scope.setUnitFilter = function () {
         if ($scope.settings.ui.filterUnitItems) {
-          $scope.filterUnitId = $scope.selectedUnit.id;
+          $scope.filterUnitId = $scope.settings.ui.selectedUnit.id;
         } else {
           $scope.filterUnitId = undefined;
         }

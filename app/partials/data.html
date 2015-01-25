@@ -144,11 +144,11 @@
 
         <div class="btn-group" ng-init="unit.name='All'" data-toggle="tooltip" data-placement="top" title="Select Unit to tag Items">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
-                    ng-class="{'btn-info': selectedUnit.id!==0}">
-                {{selectedUnit.name}}<span class="caret"></span>
+                    ng-class="{'btn-info': settings.ui.selectedUnit.id!==0}">
+                {{settings.ui.selectedUnit.name}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="selectedUnit=defaultUnit; settings.ui.filterUnitItems=undefined; setUnitFilter();">None</a></li>
+                <li><a ng-click="settings.ui.selectedUnit=defaultUnit; settings.ui.filterUnitItems=undefined; setUnitFilter();">None</a></li>
                 <li ng-repeat="unit in units"><a ng-click="selectUnit(unit)">{{unit.name}}</a></li>
             </ul>
         </div>
@@ -156,11 +156,8 @@
                 ng-click="openUnitModal()">Edit Units
         </button>
         <br>
-        <!--<p ng-show="selectedUnit.id!==0">-->
-            <!--<span class="label label-warning">You can now tag items!</span>-->
-        <!--</p>-->
 
-        <div ng-show="selectedUnit.id!==0">
+        <div ng-show="settings.ui.selectedUnit.id!==0">
             <label>show only unit specific items</label>
             <input type="checkbox" ng-model="settings.ui.filterUnitItems" ng-click="setUnitFilter()">
             <br>
