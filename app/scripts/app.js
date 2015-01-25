@@ -213,7 +213,10 @@ angular.module('famousAngular',
           }
         });
 
-      $urlRouterProvider.otherwise('/profile');
+      $urlRouterProvider.otherwise(function ($rootScope) {
+        $rootScope.goTo('/profile');
+      });
+
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
@@ -276,7 +279,7 @@ angular.module('famousAngular',
         // block restricted
         if (toState.data.restricted && !auth.isAuthenticated) {
           $log.error('page restricted!');
-          $location.path('/');
+          $rootScope.goTo('/');
         }
 
       });
