@@ -24,14 +24,6 @@ angular.module('famousAngular')
         }
       };
 
-      if (Store.has('lang_selected')) {
-
-        $scope.lang_selected = Store.get('lang_selected');
-        $scope.words = Store.get('words');
-
-        self.bypass.tableUpdate = true;
-      }
-
       var units = Units($scope.conf);
 
       // init stable sort at beginning
@@ -63,6 +55,12 @@ angular.module('famousAngular')
         $scope.setSortMode('updated_at', true);
         $scope.defaultUnit = {id: 0, name: 'Select Unit'};
         $scope.settings.ui.selectedUnit = $scope.defaultUnit;
+        $scope.settings.ui.lang_selected = {from_id: 1, to_id: 2};
+      }
+
+      if (Store.has('words')) {
+        $scope.words = Store.get('words');
+        self.bypass.tableUpdate = true;
       }
 
       //// debug
@@ -201,13 +199,12 @@ angular.module('famousAngular')
       promise = [];
       $scope.fetch_timeout = 0;
 
+      //$scope.lang is used as model on language selectors (dropdowns) and set in directives
       $scope.$watch('lang', function (newVal, oldVal) {
-        // if promise pending delete
-        //$log.debug(newVal, oldVal);
         if (!newVal) return;
 
         newpromise = $timeout(function () {
-          $scope.updateTableItems(newVal, function(){
+          $scope.updateTableItems(newVal, function () {
             $scope.pendingFetch = null;
           });
         }, $scope.fetch_timeout);
@@ -241,9 +238,6 @@ angular.module('famousAngular')
           return;
         }
 
-        // we store lang_selected back side to restore it on ctrl initialize
-        Store.set('lang_selected', {from_id: lang.from.id, to_id: lang.to.id});
-
         $log.debug('updateTableItems fired!');
 
         $scope.words = null;
@@ -264,9 +258,9 @@ angular.module('famousAngular')
       $scope.swapLanguages = function () {
         $timeout.cancel(self.promises.swapLang);
         self.promises.swapLang = $timeout(function () {
-          var temp = $scope.lang_selected.from_id;
-          $scope.lang_selected.from_id = $scope.lang_selected.to_id;
-          $scope.lang_selected.to_id = temp;
+          var temp = $scope.settings.ui.lang_selected.from_id;
+          $scope.settings.ui.lang_selected.from_id = $scope.settings.ui.lang_selected.to_id;
+          $scope.settings.ui.lang_selected.to_id = temp;
         }, 200);
       };
       // end ^^^^
