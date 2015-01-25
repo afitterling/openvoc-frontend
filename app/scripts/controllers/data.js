@@ -251,9 +251,9 @@ angular.module('famousAngular')
       $scope.swapLanguages = function () {
         $timeout.cancel(self.promises.swapLang);
         self.promises.swapLang = $timeout(function () {
-          var temp = $scope.lang.from;
-          $scope.lang.from = $scope.lang.to;
-          $scope.lang.to = temp;
+          var temp = $scope.lang_selected.from_id;
+          $scope.lang_selected.from_id = $scope.lang_selected.to_id;
+          $scope.lang_selected.to_id = temp;
         }, 200);
       };
       // end ^^^^
