@@ -46,8 +46,9 @@ angular.module('famousAngular')
       get: function (key) {
         if (self.appStore.q[key]) {
           return self.appStore.q[key];
+        } else {
+          return $q.reject();
         }
-        return null;
       },
       reset: function () {
         self.appStore = $rootScope.$new();

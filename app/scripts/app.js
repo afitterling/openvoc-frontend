@@ -280,10 +280,10 @@ angular.module('famousAngular',
         }
 
         // warning this won't fire on reload!
-        if (toState.data.api && AppStore.get('offline')) {
-          $log.debug('needs api but offline!');
-          $location.path('/error');
-        }
+//        if (toState.data.api && AppStore.get('offline')) {
+//          $log.debug('needs api but offline!');
+//          $location.path('/error');
+//        }
 
       });
 
