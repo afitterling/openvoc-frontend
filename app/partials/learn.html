@@ -42,7 +42,7 @@
         </div>
 
         <div class="row" ng-show="unitMode==='lang' && !unit.inProgress">
-            <dropdown ready="ready" name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
+            <dropdown ready="ready" name="dropdown.lang.from" model="lang2.from" selected="lang_selected2.from_id"
                       list-model="languages"></dropdown>
             <span class="message error-message">{{error}}</span>
 
@@ -50,8 +50,8 @@
                 <span class="glyphicon glyphicon-transfer"></span>
             </button>
 
-            <dropdown ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
-                      selected="lang_selected.to_id" list-model="languages"></dropdown>
+            <dropdown ready="ready" name="dropdown.lang.to" model="lang2.to" ui-state-item-name="dropdown.to"
+                      selected="lang_selected2.to_id" list-model="languages"></dropdown>
             <!--<span ng-show="noItems" class="text-danger">No Items found!</span>-->
             <br>
             <div class="btn-group">

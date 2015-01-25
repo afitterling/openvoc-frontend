@@ -142,12 +142,13 @@ angular.module('famousAngular',
               return Settings;
             }],
             words: ['AppStore', function (AppStore) {
-              return AppStore.get('words'); // will return q not the items directly so it is resolvable
+              //return AppStore.get('words'); // will return q not the items directly so it is resolvable
+              return true;
             }]
           },
           controller: ['$scope', 'conf', 'words', function ($scope, conf, words) {
             $scope.conf = conf;
-            $scope.words = words;
+            //$scope.words = words;
           }],
           data: {
             restricted: true,
@@ -259,6 +260,8 @@ angular.module('famousAngular',
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
+        $log.debug('$stateChangeStart');
+
         if (!auth.isAuthenticated) {
           var token = store.get('token');
           if (token) {
@@ -285,7 +288,7 @@ angular.module('famousAngular',
       });
 
       $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-
+        $log.debug('$stateChangeSuccess');
       });
 
         var apiCall = function (conf) {
@@ -316,11 +319,14 @@ angular.module('famousAngular',
               $rootScope.units = units;
             });
             $rootScope.languages = languages;
+            $log.debug(languages);
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
             $rootScope.lang_selected = {from_id: 1, to_id: 2};
-            words.query({language_id: 1, targetlang_id: 2, user_id: auth.profile.user_id}, function (words) {
-              AppStore.set('words', words);
-            });
+            $rootScope.lang_selected2 = {from_id: 1, to_id: 2};
+//            words.query({language_id: 1, targetlang_id: 2, user_id: auth.profile.user_id}, function (words) {
+              //AppStore.set('words', null); // setup promise store
+//            });
+            $rootScope.sessionStore = {};
           });
         });
       });
