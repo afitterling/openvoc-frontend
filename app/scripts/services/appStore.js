@@ -57,4 +57,27 @@ angular.module('famousAngular')
       }
     };
 
-  }]);
+  }])
+
+  .factory('Store', ['$rootScope', '$q', function ($rootScope, $q) {
+
+    var self = this;
+    self.store = $rootScope.$new();
+
+    self.set = function (key, data) {
+      self.store[key] = data;
+    };
+
+    return {
+      set: self.set,
+      get: function (key) {
+        if (self.store[key]) {
+          return self.store[key];
+        }
+        return null;
+      }
+    };
+
+  }])
+
+;
