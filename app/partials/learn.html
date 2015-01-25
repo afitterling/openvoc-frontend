@@ -27,7 +27,7 @@
     </div>
 </div>
 
-<div class="partial">
+<div class="partial learn">
 
     <div ng-controller="LearnCtrl">
 
@@ -42,7 +42,7 @@
         </div>
 
         <div class="row" ng-show="unitMode==='lang' && !unit.inProgress">
-            <dropdown class="langDropdown selector" ready="ready" name="dropdown.lang.from" model="langLearnUISelector.from" selected="lang_selected2.from_id"
+            <dropdown class="langSelect" ready="ready" name="dropdown.lang.from" model="langLearnUISelector.from" selected="lang_selected2.from_id"
                       list-model="languages"></dropdown>
             <span class="message error-message">{{error}}</span>
 
@@ -50,7 +50,7 @@
                 <span class="glyphicon glyphicon-transfer"></span>
             </button>
 
-            <dropdown class="langDropdown selector" ready="ready" name="dropdown.lang.to" model="langLearnUISelector.to" ui-state-item-name="dropdown.to"
+            <dropdown class="langSelect" ready="ready" name="dropdown.lang.to" model="langLearnUISelector.to" ui-state-item-name="dropdown.to"
                       selected="lang_selected2.to_id" list-model="languages"></dropdown>
             <!--<span ng-show="noItems" class="text-danger">No Items found!</span>-->
             <br>
