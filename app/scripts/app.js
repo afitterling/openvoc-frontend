@@ -260,7 +260,7 @@ angular.module('famousAngular',
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
-        $log.debug('$stateChangeStart');
+        //$log.debug('$stateChangeStart');
 
         if (!auth.isAuthenticated) {
           var token = store.get('token');
@@ -275,20 +275,14 @@ angular.module('famousAngular',
 
         // block restricted
         if (toState.data.restricted && !auth.isAuthenticated) {
-          $log.debug('page restricted!');
+          $log.error('page restricted!');
           $location.path('/');
         }
-
-        // warning this won't fire on reload!
-//        if (toState.data.api && AppStore.get('offline')) {
-//          $log.debug('needs api but offline!');
-//          $location.path('/error');
-//        }
 
       });
 
       $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-        $log.debug('$stateChangeSuccess');
+        //$log.debug('$stateChangeSuccess');
       });
 
         var apiCall = function (conf) {
