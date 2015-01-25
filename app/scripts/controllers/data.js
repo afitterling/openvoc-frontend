@@ -36,15 +36,11 @@ angular.module('famousAngular')
 
       // init stable sort at beginning
 
-      $scope.settings = { ui: {}};
+      $scope.settings = {};
 
-      $scope.settings.ui.stapleSort = true;
-      $scope.settings.ui.translationsOnly = false;
-      $scope.settings.ui.autoTag = false;
-      $scope.settings.ui.hideNewTranslations = false;
-
-      $scope.$watch('settings', function(newVal) {
-        console.log(newVal);
+      $scope.$watch('settings', function (newVal, oldVal) {
+        if (newVal === oldVal) return;
+        Store.set('settings', $scope.settings);
       }, true);
 
       $scope.setSortMode = function (predicate, reverse) {
@@ -56,7 +52,16 @@ angular.module('famousAngular')
         }
       };
 
-      $scope.setSortMode('updated_at', true);
+      if (Store.has('settings')) {
+        $scope.settings = Store.get('settings');
+      } else {
+        $scope.settings.ui = {};
+        $scope.settings.ui.stapleSort = true;
+        $scope.settings.ui.translationsOnly = false;
+        $scope.settings.ui.autoTag = false;
+        $scope.settings.ui.hideNewTranslations = false;
+        $scope.setSortMode('updated_at', true);
+      }
 
       $scope.defaultUnit = {id: 0, name: 'Select Unit'};
       $scope.selectedUnit = $scope.defaultUnit;
