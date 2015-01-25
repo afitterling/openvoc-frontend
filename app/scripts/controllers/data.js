@@ -1,18 +1,35 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Units', 'Words', 'AppStore',
-    function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Units, Words, AppStore) {
+  .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Units', 'Words', 'Store',
+    function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Units, Words, Store) {
 
       var self = this;
 
-      $log.debug('words:', $scope.words);
+      self.bypass = { tableUpdate: null };
+      self.promises = {}; // promises $timeout
+
+      if (Store.has('lang_selected')) {
+
+        $scope.lang_selected = Store.get('lang_selected');
+        $scope.words = Store.get('words');
+
+        self.bypass.tableUpdate = true;
+      }
+
+      var units = Units($scope.conf);
 
       $scope.stapleSort = true;
       $scope.translationsOnly = false;
 
-      $scope.translationFilterValue = '';
-      $scope.filterValue = '';
+      $scope.defaultUnit = {id: 0, name: 'Select Unit'};
+      $scope.selectedUnit = $scope.defaultUnit;
+
+      //// debug
+      $log.debug('words:', $scope.words);
+
+      ///////////////////////////////////////////////////////////////////
+      // filters
 
       $scope.filters = {
         translation: '',
@@ -33,6 +50,8 @@ angular.module('famousAngular')
           $scope.filters[filterName] = value;
         }, 400);
       };
+
+      // filters end //
 
       $scope.setSortMode = function (predicate, reverse) {
         $scope.predicate = predicate;
@@ -162,19 +181,24 @@ angular.module('famousAngular')
         }
       };
 
-      // $timeout fetch
       /////////////////////////////////////////////////////
+      // $timeout fetch
+
       var promise, newpromise, hidePendingFetch, countdown;
       promise = [];
-      $scope.fetch_timeout = 5000;
+      $scope.fetch_timeout = 0;
 
       $scope.$watch('lang', function (newVal, oldVal) {
         // if promise pending delete
+        //$log.debug(newVal, oldVal);
+        if (!newVal) return;
+
         newpromise = $timeout(function () {
           $scope.updateTableItems(newVal, function(){
             $scope.pendingFetch = null;
           });
         }, $scope.fetch_timeout);
+        $scope.fetch_timeout = 5000;
         if (oldVal) {
           var sub = [];
           promise.map(function (p) {
@@ -196,21 +220,24 @@ angular.module('famousAngular')
         }
       }, true);
 
-      /////////////////////////////////////////////////////
 
-      var first = 0;
       $scope.updateTableItems = function (lang, cb) {
-        if (first < 2) {
-          first += 1;
+        if (self.bypass.tableUpdate) {
+          $log.debug('bypass.tableUpdate');
+          self.bypass.tableUpdate = false;
           return;
         }
+
+        // we store lang_selected back side to restore it on ctrl initialize
+        Store.set('lang_selected', {from_id: lang.from.id, to_id: lang.to.id});
+
+        $log.debug('updateTableItems fired!');
 
         $scope.words = null;
 
         words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
-          AppStore.set('words', {}); // empty as we don't need to resolve
-          $scope.words = words;
-          $log.debug('words:', words);
+          Store.set('words', words);
+          $scope.words = Store.get('words', words);
           if (angular.isDefined(cb)) {
             cb();
             $scope.tooltips();
@@ -219,16 +246,20 @@ angular.module('famousAngular')
 
       };
 
+      ///////////////////////////////////////////
       // swap languages
       $scope.swapLanguages = function () {
-        $timeout(function () {
+        $timeout.cancel(self.promises.swapLang);
+        self.promises.swapLang = $timeout(function () {
           var temp = $scope.lang.from;
           $scope.lang.from = $scope.lang.to;
           $scope.lang.to = temp;
-        });
-        //$('button#swap').blur();
+        }, 200);
       };
+      // end ^^^^
 
+      /////////////////////////////////////////////////////////////
+      // translation
       $scope.bingTranslate = function (word) {
         $http.get($scope.conf.API_BASEURL + '/bing_translation/?source=' + word.name + '&from=' +
             $scope.lang.from.locale_string + '&to=' + $scope.lang.to.locale_string).success(function (success) {
@@ -236,6 +267,9 @@ angular.module('famousAngular')
             $scope.saveTranslation(word, translation);
           });
       };
+
+      //////////////////////////////////////////////////////////////
+      // unit tagger/untaggers
 
       $scope.tag = function (word, trans) {
         var Tags = $resource($scope.conf.API_BASEURL + '/translations/tag_unit');
@@ -254,21 +288,17 @@ angular.module('famousAngular')
         });
       };
 
+      // end
+
       $scope.openUnitModal = function () {
         $('#unitModal').modal({});
       };
-
-      $scope.defaultUnit = {id: 0, name: 'Select Unit'};
-
-      $scope.selectedUnit = $scope.defaultUnit;
 
       $scope.selectUnit = function (unit) {
         $scope.selectedUnit = unit;
         $scope.setUnitFilter();
         $scope.tooltips();
       };
-
-      var units = Units($scope.conf);
 
       $scope.saveUnit = function (unit) {
         /* jshint camelcase: false */
@@ -320,10 +350,6 @@ angular.module('famousAngular')
 
       };
 
-//      $timeout(function () {
-//        $('[data-toggle="tooltip"]').tooltip();
-//      }, 5000);
-
       $scope.openLangModal = function(word, trans, mode){
         $scope.changeLangErrorMsg = false;
         $scope.langModal = {
@@ -367,6 +393,11 @@ angular.module('famousAngular')
       }, 0);
 
     }])
+
+
+/////////////////////////////////////////////////////////////////////
+/// directives
+/////////////////////////////////////////////////////////////////////
 
 .directive('unitName', ['$parse', function ($parse) {
     return {

@@ -6,7 +6,7 @@ angular.module('famousAngular')
   .factory('AppStore', ['$rootScope', '$q', function ($rootScope, $q) {
 
     var self = this;
-    self.appStore = $rootScope.$new();
+    self.appStore = $rootScope.$new(true);
 
     // promises go here
     self.appStore.q = {};
@@ -46,8 +46,9 @@ angular.module('famousAngular')
       get: function (key) {
         if (self.appStore.q[key]) {
           return self.appStore.q[key];
+        } else {
+          return $q.reject();
         }
-        return null;
       },
       reset: function () {
         self.appStore = $rootScope.$new();
@@ -56,4 +57,31 @@ angular.module('famousAngular')
       }
     };
 
-  }]);
+  }])
+
+  .factory('Store', ['$rootScope', '$q', function ($rootScope, $q) {
+
+    var self = this;
+    self.store = $rootScope.$new(true);
+    self.store = {};
+
+    self.set = function (key, data) {
+      self.store[key] = data;
+    };
+
+    return {
+      set: self.set,
+      get: function (key) {
+        if (self.store[key]) {
+          return self.store[key];
+        }
+        return null;
+      },
+      has: function (key) {
+        return self.store.hasOwnProperty(key);
+      }
+    };
+
+  }])
+
+;
