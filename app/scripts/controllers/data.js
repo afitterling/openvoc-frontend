@@ -8,6 +8,7 @@ angular.module('famousAngular')
 
       self.bypass = { tableUpdate: null };
       self.promises = {}; // promises $timeout
+      $scope.defaultUnit = {id: 0, name: 'Select Unit'};
 
       $scope.sortMode = {
         updated_at: {
@@ -53,7 +54,6 @@ angular.module('famousAngular')
         $scope.settings.ui.autoTag = false;
         $scope.settings.ui.hideNewTranslations = false;
         $scope.setSortMode('updated_at', true);
-        $scope.defaultUnit = {id: 0, name: 'Select Unit'};
         $scope.settings.ui.selectedUnit = $scope.defaultUnit;
         $scope.settings.ui.lang_selected = {from_id: 1, to_id: 2};
       }
