@@ -77,7 +77,8 @@
         <div class="langDropdown selector" ng-hide="ready">
             <div class="spin"><span class="glyphicon glyphicon-refresh"></span></div>
         </div>
-        <dropdown class="langDropdown selector" name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
+
+        <dropdown id="lang.from" class="langDropdown selector" name="dropdown.lang.from" model="lang.from" selected="lang_selected.from_id"
                   list-model="languages" ready="ready"
                   data-toggle="tooltip" data-placement="top" title="Select Language!"
                 ></dropdown>
@@ -88,7 +89,7 @@
                 ><span class="glyphicon glyphicon-transfer"></span>
         </button>
         &nbsp;
-        <dropdown  class="langDropdown selector" ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
+        <dropdown id="lang.to" class="langDropdown selector" ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                   selected="lang_selected.to_id" list-model="languages"
                   data-toggle="tooltip" data-placement="top" title="Select Language!"
                 ></dropdown>
