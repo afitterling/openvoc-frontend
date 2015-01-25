@@ -1,22 +1,23 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Units', 'Words', 'AppStore',
-    function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Units, Words, AppStore) {
-
-      var lang_settings = $rootScope.sessionStore.lang_selected;
-
-      if (lang_settings) {
-        $log.debug('ls',lang_settings);
-        $scope.lang_selected = lang_settings;
-        $scope.bypass = true;
-        $scope.words = $rootScope.sessionStore.words;
-      }
+  .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Units', 'Words', 'Store',
+    function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Units, Words, Store) {
 
       var self = this;
-      var units = Units($scope.conf);
 
+      self.bypass = { tableUpdate: null };
       self.promises = {}; // promises $timeout
+
+      if (Store.has('lang_selected')) {
+
+        $scope.lang_selected = Store.get('lang_selected');
+        $scope.words = Store.get('words');
+
+        self.bypass.tableUpdate = true;
+      }
+
+      var units = Units($scope.conf);
 
       $scope.stapleSort = true;
       $scope.translationsOnly = false;
@@ -219,35 +220,24 @@ angular.module('famousAngular')
         }
       }, true);
 
-      /// end ^^^^^^^^^^
-
-
-      // @FIXME
-//      var first = 0;
 
       $scope.updateTableItems = function (lang, cb) {
-        if ($scope.bypass) {
-          $log.debug('bypassed');
-          $scope.bypass = false;
+        if (self.bypass.tableUpdate) {
+          $log.debug('bypass.tableUpdate');
+          self.bypass.tableUpdate = false;
           return;
         }
-//        if (first < 2) {
-//          first += 1;
-//          return;
-//        }
 
         // we store lang_selected back side to restore it on ctrl initialize
-        $rootScope.sessionStore.lang_selected =  {from_id: lang.from.id, to_id: lang.to.id};
+        Store.set('lang_selected', {from_id: lang.from.id, to_id: lang.to.id});
 
         $log.debug('updateTableItems fired!');
 
         $scope.words = null;
 
         words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
-          //AppStore.set('storedWords', words); // empty as we don't need to resolve
-          $rootScope.sessionStore.words = words;
-          $scope.words = $rootScope.sessionStore.words;
-          //$log.debug('words:', words);
+          Store.set('words', words);
+          $scope.words = Store.get('words', words);
           if (angular.isDefined(cb)) {
             cb();
             $scope.tooltips();
