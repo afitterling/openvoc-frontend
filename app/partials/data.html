@@ -102,7 +102,7 @@
         <br>
         <div class="btn-group" data-toggle="tooltip" data-placement="top" title="Select Sort Mode!">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                From Sort: {{sortMode[predicate][reverse+'']}}<span class="caret"></span>
+                From Sort: {{sortMode[settings.ui.predicateWord][settings.ui.reverseWord+'']}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
                 <li><a ng-click="setSortMode('updated_at', true)">Last Updated (latest top)</a></li>
@@ -115,27 +115,27 @@
         </div>
         &nbsp;
         <label>staple</label>
-        <input type="checkbox" ng-model="stapleSort" ng-click="predicateT=predicate; reverseT=reverse;">
+        <input type="checkbox" ng-model="settings.ui.stapleSort" ng-click="settings.ui.predicateTrans=settings.ui.predicateWord; settings.ui.reverseTrans=reverse;">
 
-        <div class="btn-group" ng-show="!stapleSort">
+        <div class="btn-group" ng-show="!settings.ui.stapleSort">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                To Sort: {{sortMode[predicateT][reverseT+'']}}<span class="caret"></span>
+                To Sort: {{sortMode[settings.ui.predicateTrans][settings.ui.reverseTrans+'']}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="predicateT='updated_at'; reverseT=true">Last Updated (latest top)</a></li>
-                <li><a ng-click="predicateT='updated_at'; reverseT=false">Last Updated (oldest top)</a></li>
-                <li><a ng-click="predicateT='created_at'; reverseT=true">Last Created (latest top)</a></li>
-                <li><a ng-click="predicateT='created_at'; reverseT=false">Last Created (oldest top)</a></li>
-                <li><a ng-click="predicateT='name'; reverseT=false">Alphabet (a-z)</a></li>
-                <li><a ng-click="predicateT='name'; reverseT=true">Alphabet (z-a)</a></li>
+                <li><a ng-click="settings.ui.predicateTrans='updated_at'; settings.ui.reverseTrans=true">Last Updated (latest top)</a></li>
+                <li><a ng-click="settings.ui.predicateTrans='updated_at'; settings.ui.reverseTrans=false">Last Updated (oldest top)</a></li>
+                <li><a ng-click="settings.ui.predicateTrans='created_at'; settings.ui.reverseTrans=true">Last Created (latest top)</a></li>
+                <li><a ng-click="settings.ui.predicateTrans='created_at'; settings.ui.reverseTrans=false">Last Created (oldest top)</a></li>
+                <li><a ng-click="settings.ui.predicateTrans='name'; settings.ui.reverseTrans=false">Alphabet (a-z)</a></li>
+                <li><a ng-click="settings.ui.predicateTrans='name'; settings.ui.reverseTrans=true">Alphabet (z-a)</a></li>
             </ul>
         </div>
         <p></p>
 
         <label>items with translations only</label>
-        <input type="checkbox" ng-model="translationsOnly" ng-click="(translationsOnly==false) && (hideNewTranslations=false)">
-        <label ng-show="translationsOnly">hide new translation</label>
-        <input ng-show="translationsOnly" type="checkbox" ng-model="hideNewTranslations">
+        <input type="checkbox" ng-model="settings.ui.translationsOnly" ng-click="(settings.ui.translationsOnly==false) && (settings.ui.hideNewTranslations=false)">
+        <label ng-show="settings.ui.translationsOnly">hide new translation</label>
+        <input ng-show="settings.ui.translationsOnly" type="checkbox" ng-model="settings.ui.hideNewTranslations">
         <br>
 
     </div>
@@ -148,7 +148,7 @@
                 {{selectedUnit.name}}<span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="selectedUnit=defaultUnit; filterUnitItems=undefined; setUnitFilter();">None</a></li>
+                <li><a ng-click="selectedUnit=defaultUnit; settings.ui.filterUnitItems=undefined; setUnitFilter();">None</a></li>
                 <li ng-repeat="unit in units"><a ng-click="selectUnit(unit)">{{unit.name}}</a></li>
             </ul>
         </div>
@@ -162,10 +162,10 @@
 
         <div ng-show="selectedUnit.id!==0">
             <label>show only unit specific items</label>
-            <input type="checkbox" ng-model="filterUnitItems" ng-click="setUnitFilter()">
+            <input type="checkbox" ng-model="settings.ui.filterUnitItems" ng-click="setUnitFilter()">
             <br>
             <label>auto tag new translations</label>
-            <input type="checkbox" ng-model="autoTag">
+            <input type="checkbox" ng-model="settings.ui.autoTag">
         </div>
 
 
@@ -221,7 +221,7 @@
             </th>
             <th class="col-lg-6">{{lang.to.name}}</th>
         </tr>
-        <tr ng-show="!translationsOnly">
+        <tr ng-show="!settings.ui.translationsOnly">
             <td class="col-lg-6">
                 <editable-simple reset-cancel="true" submit-callback="saveWord(newWord) && (newWord=null)"
                                  model="newWord.name"></editable-simple>
@@ -229,8 +229,8 @@
             <td class="col-lg-6">
             </td>
         </tr>
-        <tr ng-repeat-start="word in words | filter:{'name':filters.word} | orderBy:predicate:reverse track by word.updated_at"
-            ng-hide="word.translations.length || translationsOnly || filters.translation || filterUnitItems">
+        <tr ng-repeat-start="word in words | filter:{'name':filters.word} | orderBy:settings.ui.predicateWord:settings.ui.reverseWord track by word.updated_at"
+            ng-hide="word.translations.length || settings.ui.translationsOnly || filters.translation || settings.ui.filterUnitItems">
             <!-- safe filter fix: substitute supplement before update -->
             <td class="col-lg-6" ng-init="wordEdit.name=word.name">
                     <span>
@@ -253,7 +253,7 @@
                     </span>
             </td>
         </tr>
-        <tr ng-repeat-start="trans in word.translations | orderBy:predicateT:reverseT | filter:{'name':filters.translation} | filter:{'unit_id':filterUnitId} track by trans.updated_at">
+        <tr ng-repeat-start="trans in word.translations | orderBy:settings.ui.predicateTrans:settings.ui.reverseTrans | filter:{'name':filters.translation} | filter:{'unit_id':filterUnitId} track by trans.updated_at">
             <!-- safe filter fix: substitute supplement before update -->
             <td class="col-lg-6" ng-init="wordEdit.name=word.name">
                     <span ng-show="$first">
@@ -284,7 +284,7 @@
         </tr>
         <tr ng-repeat-end></tr>
 
-        <tr ng-repeat-end ng-show="word.translations.length && !filters.translation && !filterUnitId && !hideNewTranslations">
+        <tr ng-repeat-end ng-show="word.translations.length && !filters.translation && !filterUnitId && !settings.ui.hideNewTranslations">
             <td class="col-lg-6"></td>
             <td class="col-lg-6">
                 <editable-simple model="newTranslation.name"

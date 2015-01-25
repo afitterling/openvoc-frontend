@@ -9,6 +9,21 @@ angular.module('famousAngular')
       self.bypass = { tableUpdate: null };
       self.promises = {}; // promises $timeout
 
+      $scope.sortMode = {
+        updated_at: {
+          false: 'U+',
+          true: 'U-'
+        },
+        created_at: {
+          false: 'C+',
+          true: 'C-'
+        },
+        name: {
+          false: 'a-z',
+          true: 'z-a'
+        }
+      };
+
       if (Store.has('lang_selected')) {
 
         $scope.lang_selected = Store.get('lang_selected');
@@ -19,8 +34,29 @@ angular.module('famousAngular')
 
       var units = Units($scope.conf);
 
-      $scope.stapleSort = true;
-      $scope.translationsOnly = false;
+      // init stable sort at beginning
+
+      $scope.settings = { ui: {}};
+
+      $scope.settings.ui.stapleSort = true;
+      $scope.settings.ui.translationsOnly = false;
+      $scope.settings.ui.autoTag = false;
+      $scope.settings.ui.hideNewTranslations = false;
+
+      $scope.$watch('settings', function(newVal) {
+        console.log(newVal);
+      }, true);
+
+      $scope.setSortMode = function (predicate, reverse) {
+        $scope.settings.ui.predicateWord = predicate;
+        $scope.settings.ui.reverseWord = reverse;
+        if ($scope.settings.ui.stapleSort === true) {
+          $scope.settings.ui.predicateTrans = predicate;
+          $scope.settings.ui.reverseTrans = reverse;
+        }
+      };
+
+      $scope.setSortMode('updated_at', true);
 
       $scope.defaultUnit = {id: 0, name: 'Select Unit'};
       $scope.selectedUnit = $scope.defaultUnit;
@@ -52,33 +88,6 @@ angular.module('famousAngular')
       };
 
       // filters end //
-
-      $scope.setSortMode = function (predicate, reverse) {
-        $scope.predicate = predicate;
-        $scope.reverse = reverse;
-        if ($scope.stapleSort === true) {
-          $scope.predicateT = predicate;
-          $scope.reverseT = reverse;
-        }
-      };
-
-      // init stable sort at beginning
-      $scope.setSortMode('updated_at', true);
-
-      $scope.sortMode = {
-        updated_at: {
-          false: 'U+',
-          true: 'U-'
-        },
-        created_at: {
-          false: 'C+',
-          true: 'C-'
-        },
-        name: {
-          false: 'a-z',
-          true: 'z-a'
-        }
-      };
 
       $scope.submitTest = function (data) {
         return true;
@@ -171,7 +180,7 @@ angular.module('famousAngular')
                 word.translations = [];
               }
               word.translations.push(translation);
-              if ($scope.selectedUnit.id !== 0 && $scope.autoTag) {
+              if ($scope.selectedUnit.id !== 0 && $scope.settings.ui.autoTag) {
                 $scope.tag(word, translation);
               }
               $scope.tooltips();
@@ -342,7 +351,7 @@ angular.module('famousAngular')
       };
 
       $scope.setUnitFilter = function () {
-        if ($scope.filterUnitItems) {
+        if ($scope.settings.ui.filterUnitItems) {
           $scope.filterUnitId = $scope.selectedUnit.id;
         } else {
           $scope.filterUnitId = undefined;
