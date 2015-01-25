@@ -70,8 +70,8 @@ angular.module('famousAngular')
                 shuffle: true,
                 n_items: $scope.n_items, // works but in ui missing or commented out
                 user_id: auth.profile.user_id,
-                language_id: $scope.lang2.from.id,
-                targetlang_id: $scope.lang2.to.id
+                language_id: $scope.langLearnUISelector.from.id,
+                targetlang_id: $scope.langLearnUISelector.to.id
               },
               function (success) {
                 $scope.request = {pending: false};
@@ -238,9 +238,9 @@ angular.module('famousAngular')
 
       // monkey patch swapLanguages as we are in a sub scope
       $scope.swapLanguages = function () {
-        var temp = $scope.lang2.from;
-        $scope.lang2.from = $scope.lang2.to;
-        $scope.lang2.to = temp;
+        var temp = $scope.langLearnUISelector.from;
+        $scope.langLearnUISelector.from = $scope.langLearnUISelector.to;
+        $scope.langLearnUISelector.to = temp;
       };
 
       $scope.getLang = function (lang_id) {
