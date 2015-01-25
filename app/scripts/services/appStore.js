@@ -63,22 +63,22 @@ angular.module('famousAngular')
 
     var self = this;
     self.store = $rootScope.$new(true);
-    self.store.data = {};
+    self.store = {};
 
     self.set = function (key, data) {
-      self.store.data[key] = data;
+      self.store[key] = data;
     };
 
     return {
       set: self.set,
       get: function (key) {
-        if (self.store.data[key]) {
-          return self.store.data[key];
+        if (self.store[key]) {
+          return self.store[key];
         }
         return null;
       },
       has: function (key) {
-        return self.store.data.hasOwnProperty(key);
+        return self.store.hasOwnProperty(key);
       }
     };
 
