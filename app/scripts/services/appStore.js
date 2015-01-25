@@ -63,16 +63,17 @@ angular.module('famousAngular')
 
     var self = this;
     self.store = $rootScope.$new();
+    self.store.data = {};
 
     self.set = function (key, data) {
-      self.store[key] = data;
+      self.store.data[key] = data;
     };
 
     return {
       set: self.set,
       get: function (key) {
-        if (self.store[key]) {
-          return self.store[key];
+        if (self.store.data[key]) {
+          return self.store.data[key];
         }
         return null;
       }
