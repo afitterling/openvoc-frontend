@@ -4,26 +4,66 @@ angular.module('famousAngular')
   .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Units', 'Words', 'Store',
     function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Units, Words, Store) {
 
+      // ui router resolved: $scope.units, $scope.conf
+      // !not words anymore
+
       var self = this;
+      var units = Units($scope.conf);
 
       self.bypass = { tableUpdate: null };
       self.promises = {}; // promises $timeout
+      $scope.defaultUnit = {id: 0, name: 'Select Unit'};
 
-      if (Store.has('lang_selected')) {
+      $scope.sortMode = {
+        updated_at: {
+          false: 'U+',
+          true: 'U-'
+        },
+        created_at: {
+          false: 'C+',
+          true: 'C-'
+        },
+        name: {
+          false: 'a-z',
+          true: 'z-a'
+        }
+      };
 
-        $scope.lang_selected = Store.get('lang_selected');
-        $scope.words = Store.get('words');
+      // init stable sort at beginning
 
-        self.bypass.tableUpdate = true;
+      $scope.settings = {};
+
+      $scope.$watch('settings', function (newVal, oldVal) {
+        if (newVal === oldVal) return;
+        Store.set('settings', $scope.settings);
+      }, true);
+
+      $scope.setSortMode = function (predicate, reverse) {
+        $scope.settings.ui.predicateWord = predicate;
+        $scope.settings.ui.reverseWord = reverse;
+        if ($scope.settings.ui.stapleSort === true) {
+          $scope.settings.ui.predicateTrans = predicate;
+          $scope.settings.ui.reverseTrans = reverse;
+        }
+      };
+
+      if (Store.has('settings')) {
+        $scope.settings = Store.get('settings');
+      } else {
+        $scope.settings.ui = {};
+        $scope.settings.ui.stapleSort = true;
+        $scope.settings.ui.translationsOnly = false;
+        $scope.settings.ui.autoTag = false;
+        $scope.settings.ui.hideNewTranslations = false;
+        $scope.setSortMode('updated_at', true);
+        $scope.settings.ui.selectedUnit = $scope.defaultUnit;
+        $scope.settings.ui.lang_selected = {from_id: 1, to_id: 2};
       }
 
-      var units = Units($scope.conf);
-
-      $scope.stapleSort = true;
-      $scope.translationsOnly = false;
-
-      $scope.defaultUnit = {id: 0, name: 'Select Unit'};
-      $scope.selectedUnit = $scope.defaultUnit;
+      if (Store.has('words')) {
+        $scope.words = Store.get('words');
+        self.bypass.tableUpdate = true;
+      }
 
       //// debug
       $log.debug('words:', $scope.words);
@@ -52,33 +92,6 @@ angular.module('famousAngular')
       };
 
       // filters end //
-
-      $scope.setSortMode = function (predicate, reverse) {
-        $scope.predicate = predicate;
-        $scope.reverse = reverse;
-        if ($scope.stapleSort === true) {
-          $scope.predicateT = predicate;
-          $scope.reverseT = reverse;
-        }
-      };
-
-      // init stable sort at beginning
-      $scope.setSortMode('updated_at', true);
-
-      $scope.sortMode = {
-        updated_at: {
-          false: 'U+',
-          true: 'U-'
-        },
-        created_at: {
-          false: 'C+',
-          true: 'C-'
-        },
-        name: {
-          false: 'a-z',
-          true: 'z-a'
-        }
-      };
 
       $scope.submitTest = function (data) {
         return true;
@@ -171,7 +184,7 @@ angular.module('famousAngular')
                 word.translations = [];
               }
               word.translations.push(translation);
-              if ($scope.selectedUnit.id !== 0 && $scope.autoTag) {
+              if ($scope.settings.ui.selectedUnit.id !== 0 && $scope.settings.ui.autoTag) {
                 $scope.tag(word, translation);
               }
               $scope.tooltips();
@@ -188,13 +201,12 @@ angular.module('famousAngular')
       promise = [];
       $scope.fetch_timeout = 0;
 
+      //$scope.lang is used as model on language selectors (dropdowns) and set in directives
       $scope.$watch('lang', function (newVal, oldVal) {
-        // if promise pending delete
-        //$log.debug(newVal, oldVal);
         if (!newVal) return;
 
         newpromise = $timeout(function () {
-          $scope.updateTableItems(newVal, function(){
+          $scope.updateTableItems(newVal, function () {
             $scope.pendingFetch = null;
           });
         }, $scope.fetch_timeout);
@@ -228,9 +240,6 @@ angular.module('famousAngular')
           return;
         }
 
-        // we store lang_selected back side to restore it on ctrl initialize
-        Store.set('lang_selected', {from_id: lang.from.id, to_id: lang.to.id});
-
         $log.debug('updateTableItems fired!');
 
         $scope.words = null;
@@ -251,9 +260,9 @@ angular.module('famousAngular')
       $scope.swapLanguages = function () {
         $timeout.cancel(self.promises.swapLang);
         self.promises.swapLang = $timeout(function () {
-          var temp = $scope.lang_selected.from_id;
-          $scope.lang_selected.from_id = $scope.lang_selected.to_id;
-          $scope.lang_selected.to_id = temp;
+          var temp = $scope.settings.ui.lang_selected.from_id;
+          $scope.settings.ui.lang_selected.from_id = $scope.settings.ui.lang_selected.to_id;
+          $scope.settings.ui.lang_selected.to_id = temp;
         }, 200);
       };
       // end ^^^^
@@ -273,8 +282,8 @@ angular.module('famousAngular')
 
       $scope.tag = function (word, trans) {
         var Tags = $resource($scope.conf.API_BASEURL + '/translations/tag_unit');
-        Tags.save({word_id: word.id, conversion_id: trans.id, unit_id: $scope.selectedUnit.id}, function () {
-          trans.unit_id = $scope.selectedUnit.id;
+        Tags.save({word_id: word.id, conversion_id: trans.id, unit_id: $scope.settings.ui.selectedUnit.id}, function () {
+          trans.unit_id = $scope.settings.ui.selectedUnit.id;
         });
       };
 
@@ -295,7 +304,7 @@ angular.module('famousAngular')
       };
 
       $scope.selectUnit = function (unit) {
-        $scope.selectedUnit = unit;
+        $scope.settings.ui.selectedUnit = unit;
         $scope.setUnitFilter();
         $scope.tooltips();
       };
@@ -316,8 +325,8 @@ angular.module('famousAngular')
         /* jshint camelcase: false */
         units.update({id: unit.id, name:unit.name}, function (success) {
             $scope.units[$scope.units.indexOf(unit)] = success;
-            if (angular.equals(unit.id, $scope.selectedUnit.id)) {
-              $scope.selectedUnit = success;
+            if (angular.equals(unit.id, $scope.settings.ui.selectedUnit.id)) {
+              $scope.settings.ui.selectedUnit = success;
             };
           },
           // err callback
@@ -331,8 +340,8 @@ angular.module('famousAngular')
         /* jshint camelcase: false */
         units.delete(unit, function (success) {
             $scope.units.splice($scope.units.indexOf(unit),1);
-            if (angular.equals(unit.id, $scope.selectedUnit.id)) {
-              $scope.selectedUnit = $scope.defaultUnit;
+            if (angular.equals(unit.id, $scope.settings.ui.selectedUnit.id)) {
+              $scope.settings.ui.selectedUnit = $scope.defaultUnit;
             };
           },
           // err callback
@@ -342,8 +351,8 @@ angular.module('famousAngular')
       };
 
       $scope.setUnitFilter = function () {
-        if ($scope.filterUnitItems) {
-          $scope.filterUnitId = $scope.selectedUnit.id;
+        if ($scope.settings.ui.filterUnitItems) {
+          $scope.filterUnitId = $scope.settings.ui.selectedUnit.id;
         } else {
           $scope.filterUnitId = undefined;
         }

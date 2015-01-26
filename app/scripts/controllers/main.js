@@ -42,6 +42,10 @@ angular.module('famousAngular')
       $scope.unitMode = 'lang';
       $scope.swapMode = false;
 
+      $scope.settings = {};
+      $scope.settings.ui = {};
+      $scope.settings.ui.lang_selected = {from_id: 1, to_id: 2};
+
       // @TODO resolve
       $scope.$watch('units', function (newVal) {
         if (angular.isDefined(newVal)) {
@@ -239,9 +243,9 @@ angular.module('famousAngular')
       ///////////////////////////////////////////
       // swap languages
       $scope.swapLanguages = function () {
-        var temp = $scope.lang_selected2.from_id;
-        $scope.lang_selected2.from_id = $scope.lang_selected2.to_id;
-        $scope.lang_selected2.to_id = temp;
+        var temp = $scope.settings.ui.lang_selected.from_id;
+        $scope.settings.ui.lang_selected.from_id = $scope.settings.ui.lang_selected.to_id;
+        $scope.settings.ui.lang_selected.to_id = temp;
       };
 
       $scope.getLang = function (lang_id) {
