@@ -4,7 +4,11 @@ angular.module('famousAngular')
   .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Units', 'Words', 'Store',
     function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Units, Words, Store) {
 
+      // ui router resolved: $scope.units, $scope.conf
+      // !not words anymore
+
       var self = this;
+      var units = Units($scope.conf);
 
       self.bypass = { tableUpdate: null };
       self.promises = {}; // promises $timeout
@@ -24,8 +28,6 @@ angular.module('famousAngular')
           true: 'z-a'
         }
       };
-
-      var units = Units($scope.conf);
 
       // init stable sort at beginning
 

@@ -21,7 +21,7 @@ angular.module('famousAngular',
     function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide) {
 
       // the models to be able to resolve on them, must set even we don't know the data yet to return the identical promises
-      var AppStoreDefaultModels = ['words', 'languages'];
+      var AppStoreDefaultModels = ['words', 'languages', 'units'];
 
       ///////////////////////// interceptors ////////////////////////////
 
@@ -142,12 +142,16 @@ angular.module('famousAngular',
               return Settings;
             }],
             words: ['AppStore', function (AppStore) {
-              //return AppStore.get('words'); // will return q not the items directly so it is resolvable
+//              return AppStore.get('words');
               return true;
+            }],
+            units: ['AppStore', function (AppStore) {
+              return AppStore.get('units');
             }]
           },
-          controller: ['$scope', 'conf', 'words', function ($scope, conf, words) {
+          controller: ['$scope', 'conf', 'words', 'units', function ($scope, conf, words, units) {
             $scope.conf = conf;
+            $scope.units = units;
             //$scope.words = words;
           }],
           data: {
@@ -309,12 +313,13 @@ angular.module('famousAngular',
           //@TODO include settings
           var uisettings = UISettings(conf);
           //@TODO uid // language_id, targetlang_id form Settings
+          units.query({user_id: auth.profile.user_id}, function (units) {
+            $rootScope.units = units;
+            AppStore.set('units', units);
+          });
           languages.query({}, function (languages) {
             /* jshint camelcase: false */
             AppStore.set('languages', languages);
-            units.query({user_id: auth.profile.user_id}, function (units) {
-              $rootScope.units = units;
-            });
             $rootScope.languages = languages;
             $log.debug(languages);
             // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
