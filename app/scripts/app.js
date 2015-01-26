@@ -96,7 +96,7 @@ angular.module('famousAngular',
           auth.profilePromise.then(function (profile) {
             $rootScope.profile = profile;
             $log.debug('profile resolved:', profile);
-            $rootScope.goTo('/profile');
+            //$location.path('/profile');
             $rootScope.$broadcast('sig:::profileLoaded');
           });
 
@@ -116,7 +116,7 @@ angular.module('famousAngular',
           AppStore.init(AppStoreDefaultModels);
 
           $rootScope.profile = auth.profile;
-          //$location.path('/profile');
+          $location.path('/profile');
           $rootScope.$broadcast('sig:::profileLoaded');
         }]);
 
@@ -217,9 +217,7 @@ angular.module('famousAngular',
           }
         });
 
-      $urlRouterProvider.otherwise(function ($rootScope) {
-        $rootScope.goTo('/profile');
-      });
+      $urlRouterProvider.otherwise('/profile');
 
       $locationProvider.html5Mode(true).hashPrefix('!');
 
@@ -289,7 +287,8 @@ angular.module('famousAngular',
       });
 
       $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-        //$log.debug('$stateChangeSuccess');
+        $log.debug('$stateChangeSuccess', toState);
+        $rootScope.link = toState.url;
       });
 
         var apiCall = function (conf) {
