@@ -287,7 +287,7 @@ angular.module('famousAngular',
       });
 
       $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-        $log.debug('$stateChangeSuccess', toState);
+        //$log.debug('$stateChangeSuccess', toState);
         $rootScope.link = toState.url;
       });
 
