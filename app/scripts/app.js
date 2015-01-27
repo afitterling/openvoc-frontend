@@ -71,7 +71,6 @@ angular.module('famousAngular',
       };
 
       $httpProvider.interceptors.push('jwtInterceptor');
-//      $httpProvider.interceptors.push('myInterceptor');
 
       authProvider.init({
         domain: AUTH0_DOMAIN,
@@ -227,7 +226,8 @@ angular.module('famousAngular',
   .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'Units', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings', '$timeout',
     function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, Units, jwtHelper, store, $resource, AppStore, Languages, UISettings, $timeout) {
 
-      ValidationActionsStore.register('dropdown.lang.to'); //, function(scope.current, ){})
+      // register ui relements by their name
+      ValidationActionsStore.register('dropdown.lang.to');
       ValidationActionsStore.register('dropdown.lang.from');
 
       auth.hookEvents();
@@ -302,8 +302,6 @@ angular.module('famousAngular',
         });
       };
 
-
-
       // on profile load (authenticate/login)
       $rootScope.$on('sig:::profileLoaded', function () {
         Settings.then(function (conf) {
@@ -312,16 +310,12 @@ angular.module('famousAngular',
           var languages = Languages(conf);
           //@TODO include settings
           var uisettings = UISettings(conf);
-          //@TODO uid // language_id, targetlang_id form Settings
           units.query({user_id: auth.profile.user_id}, function (units) {
-            //$rootScope.units = units;
             AppStore.set('units', units);
           });
           languages.query({}, function (languages) {
             /* jshint camelcase: false */
             AppStore.set('languages', languages);
-            //$rootScope.languages = languages;
-            //$log.debug(languages);
           });
         });
       });
