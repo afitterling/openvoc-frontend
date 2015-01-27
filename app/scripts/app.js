@@ -21,7 +21,6 @@ angular.module('famousAngular',
     function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide, AppStoreProvider) {
 
       var AppStoreDefaultModels = ['words', 'languages', 'units'];
-      AppStoreProvider.setup(AppStoreDefaultModels);
 
       ///////////////////////// interceptors ////////////////////////////
 
@@ -87,6 +86,7 @@ angular.module('famousAngular',
 
       authProvider.on('loginSuccess', ['Settings', 'auth', 'Words', '$location', '$rootScope', '$log', '$resource', '$http', 'AppStore',
         function (Settings, auth, Words, $location, $rootScope, $log, $resource, $http, AppStore) {
+          AppStore.init(AppStoreDefaultModels);
           // resolves on auth0 profile success
           auth.profilePromise.then(function (profile) {
             $rootScope.profile = profile;
@@ -98,7 +98,6 @@ angular.module('famousAngular',
         }]);
 
       authProvider.on('logout', [ '$location', '$log', 'store', '$rootScope', 'AppStore', function ($location, $log, store, $rootScope, AppStore) {
-        //@TODO AppStore reset
         AppStore.destroy();
         store.remove('token');
         store.remove('profile');
@@ -108,6 +107,7 @@ angular.module('famousAngular',
 
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore',
         function (auth, $location, $rootScope, $log, AppStore) {
+          AppStore.init(AppStoreDefaultModels);
           $rootScope.profile = auth.profile;
           $rootScope.$broadcast('sig:::profileLoaded');
         }]);

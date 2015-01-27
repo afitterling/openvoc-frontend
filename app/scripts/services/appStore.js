@@ -53,12 +53,17 @@ angular.module('famousAngular')
           }
         };
 
-        // init/setup
         defaultObjects.map(function(obj){
           self.set(obj, null);
         });
 
+        self.init = function (ObjectKeysAsArray) {
+          angular.forEach(ObjectKeysAsArray, function (key) {
+            self.set(key, null);
+          })};
+
         return {
+          init: self.init,
           set: self.set,
           get: function (key) {
             if (self.qStore.q[key]) {
@@ -68,9 +73,7 @@ angular.module('famousAngular')
             }
           },
           destroy: function () {
-            self.qStore = $rootScope.$new();
-            self.qStore.q = {};
-            self.qStore.deferred = {};
+            self.qStore.$destroy();
           }
         };
       };
