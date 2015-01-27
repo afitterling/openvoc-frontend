@@ -58,7 +58,7 @@ angular.module('famousAngular')
           return $q.reject();
         }
       },
-      resetStore: function () {
+      destroy: function () {
         self.qStore = $rootScope.$new();
         self.qStore.q = {};
         self.qStore.deferred = {};

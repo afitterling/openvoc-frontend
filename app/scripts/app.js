@@ -88,7 +88,7 @@ angular.module('famousAngular',
       authProvider.on('loginSuccess', ['Settings', 'auth', 'Words', '$location', '$rootScope', '$log', '$resource', '$http', 'AppStore',
         function (Settings, auth, Words, $location, $rootScope, $log, $resource, $http, AppStore) {
 
-          // preinit AppStore
+          // preinit AppStore per Client
           AppStore.init(AppStoreDefaultModels);
 
           // resolves on auth0 profile success
@@ -103,7 +103,7 @@ angular.module('famousAngular',
 
       authProvider.on('logout', [ '$location', '$log', 'store', '$rootScope', 'AppStore', function ($location, $log, store, $rootScope, AppStore) {
         //@TODO AppStore reset
-        AppStore.reset();
+        AppStore.destroy();
         store.remove('token');
         store.remove('profile');
         $rootScope.profile = null;
@@ -112,7 +112,6 @@ angular.module('famousAngular',
 
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore',
         function (auth, $location, $rootScope, $log, AppStore) {
-          AppStore.init(AppStoreDefaultModels);
           $rootScope.profile = auth.profile;
           $rootScope.$broadcast('sig:::profileLoaded');
         }]);
@@ -234,7 +233,6 @@ angular.module('famousAngular',
 
       $rootScope.goTo = function (arg) {
         $location.path(arg);
-        $rootScope.link = arg;
       };
 
       $rootScope.$on('onError', function () {
@@ -283,7 +281,7 @@ angular.module('famousAngular',
         // block restricted
         if (toState.data.restricted && !auth.isAuthenticated) {
           $log.error('page restricted!');
-          $rootScope.goTo('/');
+          $location.path('/');
         }
 
       });
