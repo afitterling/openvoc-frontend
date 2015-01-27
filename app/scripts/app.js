@@ -17,11 +17,11 @@ angular.module('famousAngular',
       'pascalprecht.translate'
     ])
 
-  .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', '$provide',
-    function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide) {
+  .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', '$provide', 'AppStoreProvider',
+    function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide, AppStoreProvider) {
 
-      // the models to be able to resolve on them, must set even we don't know the data yet to return the identical promises
       var AppStoreDefaultModels = ['words', 'languages', 'units'];
+      //AppStoreProvider.setup(AppStoreDefaultModels);
 
       ///////////////////////// interceptors ////////////////////////////
 
@@ -71,7 +71,6 @@ angular.module('famousAngular',
       };
 
       $httpProvider.interceptors.push('jwtInterceptor');
-//      $httpProvider.interceptors.push('myInterceptor');
 
       authProvider.init({
         domain: AUTH0_DOMAIN,
@@ -89,7 +88,6 @@ angular.module('famousAngular',
       authProvider.on('loginSuccess', ['Settings', 'auth', 'Words', '$location', '$rootScope', '$log', '$resource', '$http', 'AppStore',
         function (Settings, auth, Words, $location, $rootScope, $log, $resource, $http, AppStore) {
 
-          // preinit AppStore
           AppStore.init(AppStoreDefaultModels);
 
           // resolves on auth0 profile success
@@ -104,7 +102,7 @@ angular.module('famousAngular',
 
       authProvider.on('logout', [ '$location', '$log', 'store', '$rootScope', 'AppStore', function ($location, $log, store, $rootScope, AppStore) {
         //@TODO AppStore reset
-        AppStore.reset();
+        AppStore.destroy();
         store.remove('token');
         store.remove('profile');
         $rootScope.profile = null;
@@ -114,9 +112,7 @@ angular.module('famousAngular',
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore',
         function (auth, $location, $rootScope, $log, AppStore) {
           AppStore.init(AppStoreDefaultModels);
-
           $rootScope.profile = auth.profile;
-//          $location.path('/profile');
           $rootScope.$broadcast('sig:::profileLoaded');
         }]);
 
@@ -133,30 +129,38 @@ angular.module('famousAngular',
           }
         });
 
+      // common resolvers used!
+      var unitResolver = ['AppStore', function (AppStore) {
+        return AppStore.get('units');
+      }];
+
+      var languageResolver = ['AppStore', function (AppStore) {
+        return AppStore.get('languages');
+      }];
+
+      var confResolver = ['Settings', function (Settings) {
+        return Settings;
+      }];
+
+      // baseInject Conf as Ctrl into ui state
+      var baseConfInject = ['$scope', 'conf', 'languages', 'units', function ($scope, conf, languages, units) {
+        $scope.conf = conf;
+        $scope.units = units;
+        $scope.languages = languages;
+      }];
+
       $stateProvider
         .state('data', {
           url: '/dictionary',
           templateUrl: 'partials/data.html',
           resolve: {
-            conf: ['Settings', function (Settings) {
-              return Settings;
-            }],
-//            words: ['AppStore', function (AppStore) {
-//              return AppStore.get('words');
-//            }],
-            units: ['AppStore', function (AppStore) {
-              return AppStore.get('units');
-            }]
+            conf: confResolver,
+            languages: languageResolver,
+            units: unitResolver
           },
-//          controller: ['$scope', 'conf', 'words', 'units', function ($scope, conf, words, units) {
-          controller: ['$scope', 'conf', 'units', function ($scope, conf, units) {
-            $scope.conf = conf;
-            $scope.units = units;
-            //$scope.words = words;
-          }],
+          controller: baseConfInject,
           data: {
-            restricted: true,
-            api: true
+            restricted: true
           }
         });
 
@@ -165,18 +169,14 @@ angular.module('famousAngular',
           url: '/learn',
           templateUrl: 'partials/learn.html',
           resolve: {
-            conf: ['Settings', function (Settings) {
-              return Settings;
-            }],
-            languages: ['AppStore', function (AppStore) {
-              return AppStore.get('languages');
-            }]
+            conf: confResolver,
+            languages: languageResolver,
+            units: unitResolver
           },
-          controller: ['$scope', 'conf', 'languages', function ($scope, conf, languages) {
-            $scope.conf = conf;
-            // resolve languages only, it will be in $rootScope and inherited
-          }],
-          data: {}
+          controller: baseConfInject,
+          data: {
+            restricted: true
+          }
         });
 
       $stateProvider
@@ -225,14 +225,14 @@ angular.module('famousAngular',
   .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'Units', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings', '$timeout',
     function (ValidationActionsStore, $log, auth, $location, $rootScope, Settings, Words, Units, jwtHelper, store, $resource, AppStore, Languages, UISettings, $timeout) {
 
-      ValidationActionsStore.register('dropdown.lang.to'); //, function(scope.current, ){})
+      // register ui relements by their name
+      ValidationActionsStore.register('dropdown.lang.to');
       ValidationActionsStore.register('dropdown.lang.from');
 
       auth.hookEvents();
 
       $rootScope.goTo = function (arg) {
         $location.path(arg);
-        $rootScope.link = arg;
       };
 
       $rootScope.$on('onError', function () {
@@ -281,7 +281,7 @@ angular.module('famousAngular',
         // block restricted
         if (toState.data.restricted && !auth.isAuthenticated) {
           $log.error('page restricted!');
-          $rootScope.goTo('/');
+          $location.path('/');
         }
 
       });
@@ -300,34 +300,20 @@ angular.module('famousAngular',
         });
       };
 
-
-
       // on profile load (authenticate/login)
       $rootScope.$on('sig:::profileLoaded', function () {
         Settings.then(function (conf) {
           apiCall(conf);
-          var words = Words(conf);
           var units = Units(conf);
           var languages = Languages(conf);
           //@TODO include settings
           var uisettings = UISettings(conf);
-          //@TODO uid // language_id, targetlang_id form Settings
           units.query({user_id: auth.profile.user_id}, function (units) {
-            $rootScope.units = units;
             AppStore.set('units', units);
           });
           languages.query({}, function (languages) {
             /* jshint camelcase: false */
             AppStore.set('languages', languages);
-            $rootScope.languages = languages;
-            $log.debug(languages);
-            // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
-//            $rootScope.lang_selected = {from_id: 1, to_id: 2};
-            //$rootScope.settings.ui.lang_selected = {from_id: 1, to_id: 2};
-//            words.query({language_id: 1, targetlang_id: 2, user_id: auth.profile.user_id}, function (words) {
-              //AppStore.set('words', null); // setup promise store
-//            });
-            $rootScope.sessionStore = {};
           });
         });
       });
@@ -340,7 +326,6 @@ angular.module('famousAngular',
 
       $rootScope.tooltips = function () {
         $timeout(function () {
-          //$('[data-toggle="tooltip"]').tooltip('destroy');
           $('[data-toggle="tooltip"]').tooltip($rootScope.bootstrap.tooltips.options);
         });
       };

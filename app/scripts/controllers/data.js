@@ -61,14 +61,12 @@ angular.module('famousAngular')
       }
 
       if (Store.has('words')) {
+        $log.debug('got words already in Store');
         $timeout(function () {
           $scope.words = Store.get('words');
         });
         self.bypass.tableUpdate = true;
       }
-
-      //// debug
-      $log.debug('words:', $scope.words);
 
       ///////////////////////////////////////////////////////////////////
       // filters
@@ -230,7 +228,7 @@ angular.module('famousAngular')
             $scope.pendingFetchMsg = null;
           }, $scope.fetch_timeout / 4);
 
-          $scope.words = [];
+          Store.set('words', null);
         }
       }, true);
 
@@ -265,9 +263,9 @@ angular.module('famousAngular')
           var temp = $scope.settings.ui.lang_selected.from_id;
           $scope.settings.ui.lang_selected.from_id = $scope.settings.ui.lang_selected.to_id;
           $scope.settings.ui.lang_selected.to_id = temp;
-        }, 200);
+        });
       };
-      // end ^^^^
+      // end
 
       /////////////////////////////////////////////////////////////
       // translation
