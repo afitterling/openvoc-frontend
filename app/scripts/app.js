@@ -101,6 +101,7 @@ angular.module('famousAngular',
         store.remove('token');
         store.remove('profile');
         $rootScope.profile = null;
+        //@TODO http://stackoverflow.com/questions/14990480/how-to-destroy-an-angularjs-app
         AppStore.destroy();
         location.href = '/';
       }]);
