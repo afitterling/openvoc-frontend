@@ -73,7 +73,9 @@ angular.module('famousAngular')
             }
           },
           destroy: function () {
-            self.qStore = {};
+            self.qStore = $rootScope.new(true);
+            self.qStore.q = {};
+            self.qStore.deferred = {};
           }
         };
       };
@@ -100,7 +102,16 @@ angular.module('famousAngular')
       },
       has: function (key) {
         return self.store[key];
+      },
+      destroy: function () {
+        self.store = $rootScope.$new(true);
+        self.store = {};
+      },
+      init: function () {
+        self.store = $rootScope.$new(true);
+        self.store = {};
       }
+
     };
 
   }])

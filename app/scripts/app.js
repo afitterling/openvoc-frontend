@@ -84,8 +84,9 @@ angular.module('famousAngular',
 
       $resourceProvider.defaults.stripTrailingSlashes = false;
 
-      authProvider.on('loginSuccess', ['Settings', 'auth', 'Words', '$location', '$rootScope', '$log', '$resource', '$http', 'AppStore',
-        function (Settings, auth, Words, $location, $rootScope, $log, $resource, $http, AppStore) {
+      authProvider.on('loginSuccess', ['Settings', 'auth', 'Words', '$location', '$rootScope', '$log', '$resource', '$http', 'AppStore', 'Store',
+        function (Settings, auth, Words, $location, $rootScope, $log, $resource, $http, AppStore, Store) {
+          Store.init();
           AppStore.init(AppStoreDefaultModels);
           // resolves on auth0 profile success
           auth.profilePromise.then(function (profile) {
@@ -101,13 +102,14 @@ angular.module('famousAngular',
         store.remove('token');
         store.remove('profile');
         $rootScope.profile = null;
-        //@TODO http://stackoverflow.com/questions/14990480/how-to-destroy-an-angularjs-app
+        $location.path('/');
         AppStore.destroy();
-        location.href = '/';
+        Store.destroy();
       }]);
 
-      authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore',
-        function (auth, $location, $rootScope, $log, AppStore) {
+      authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore', 'Store',
+        function (auth, $location, $rootScope, $log, AppStore, Store) {
+          Store.init();
           AppStore.init(AppStoreDefaultModels);
           $rootScope.profile = auth.profile;
           $rootScope.$broadcast('sig:::profileLoaded');
