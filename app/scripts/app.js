@@ -17,11 +17,11 @@ angular.module('famousAngular',
       'pascalprecht.translate'
     ])
 
-  .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', '$provide',
-    function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide) {
+  .config(['SettingsProvider', '$httpProvider', '$resourceProvider', '$stateProvider', 'authProvider', 'jwtInterceptorProvider', '$logProvider', '$locationProvider', '$urlRouterProvider', '$provide', 'AppStoreProvider',
+    function (SettingsProvider, $httpProvider, $resourceProvider, $stateProvider, authProvider, jwtInterceptorProvider, $logProvider, $locationProvider, $urlRouterProvider, $provide, AppStoreProvider) {
 
-      // the models to be able to resolve on them, must set even we don't know the data yet to return the identical promises
       var AppStoreDefaultModels = ['words', 'languages', 'units'];
+      AppStoreProvider.setup(AppStoreDefaultModels);
 
       ///////////////////////// interceptors ////////////////////////////
 
@@ -88,8 +88,7 @@ angular.module('famousAngular',
       authProvider.on('loginSuccess', ['Settings', 'auth', 'Words', '$location', '$rootScope', '$log', '$resource', '$http', 'AppStore',
         function (Settings, auth, Words, $location, $rootScope, $log, $resource, $http, AppStore) {
 
-          // preinit AppStore per Client
-          AppStore.init(AppStoreDefaultModels);
+          //AppStore.init(AppStoreDefaultModels);
 
           // resolves on auth0 profile success
           auth.profilePromise.then(function (profile) {
@@ -112,6 +111,7 @@ angular.module('famousAngular',
 
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore',
         function (auth, $location, $rootScope, $log, AppStore) {
+          //AppStore.init(AppStoreDefaultModels);
           $rootScope.profile = auth.profile;
           $rootScope.$broadcast('sig:::profileLoaded');
         }]);
