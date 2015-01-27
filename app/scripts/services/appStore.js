@@ -1,38 +1,46 @@
 'use strict';
 
+var qStore = 'AppStore';
+
 // build a global AppStore with Promises
 angular.module('famousAngular')
 
-  .factory('AppStore', ['$rootScope', '$q', function ($rootScope, $q) {
+  .factory(qStore, ['$rootScope', '$q', '$log', function ($rootScope, $q, $log) {
 
     var self = this;
-    self.appStore = $rootScope.$new(true);
+    self.qStore = $rootScope.$new(true);
 
     // promises go here
-    self.appStore.q = {};
+    self.qStore.q = {};
     // the deferred if called with null obj goes here (pe-initialization, to keep identical promises if we not yet know the data)
-    self.appStore.deferred = {};
-
+    self.qStore.deferred = {};
     // we can create promises beforehand (data=null) to be able to resolve on them at state switching
+
     // latter called with data, the identical promise gets returned
-    // we use self.set because it gets called by init
+    // latter re-set with data a new promise gets created and stored internally
     self.set = function (key, data) {
-      var deferred;
+      if (!key) {
+        $log.error('ERROR: AppStore setter must get called with key!')
+      };
       // if data set null but called with key (initialization)
-      if (!self.appStore.q.hasOwnProperty(key)) {
+      if (!data) {
         // create the defer call
-        deferred = $q.defer();
+        var deferred = $q.defer();
         // save it to pick it up when called with real data
-        self.appStore.deferred[key] = deferred;
+        self.qStore.deferred[key] = deferred;
         // save the deferred promise
-        self.appStore.q[key] = deferred.promise;
-      } else {
-        // the deferred object has been stored before
-        deferred = self.appStore.deferred[key];
+        self.qStore.q[key] = deferred.promise;
       }
-      // if data resolve deferred
+      // if data and resolved earlier reset q
+      if (!!self.qStore.q[key].$$state.status) {
+        var deferred = $q.defer();
+        self.qStore.deferred[key] = deferred;
+        self.qStore.q[key] = deferred.promise;
+      }
+      // if data - resolve deferred
       if (data) {
-        deferred.resolve(data);
+        // if resolved earlier create new q
+        self.qStore.deferred[key].resolve(data);
       }
     };
 
@@ -44,16 +52,16 @@ angular.module('famousAngular')
       },
       set: self.set,
       get: function (key) {
-        if (self.appStore.q[key]) {
-          return self.appStore.q[key];
+        if (self.qStore.q[key]) {
+          return self.qStore.q[key];
         } else {
           return $q.reject();
         }
       },
-      reset: function () {
-        self.appStore = $rootScope.$new();
-        self.appStore.q = {};
-        self.appStore.deferred = {};
+      resetStore: function () {
+        self.qStore = $rootScope.$new();
+        self.qStore.q = {};
+        self.qStore.deferred = {};
       }
     };
 
@@ -78,7 +86,7 @@ angular.module('famousAngular')
         return null;
       },
       has: function (key) {
-        return self.store.hasOwnProperty(key);
+        return self.store[key];
       }
     };
 
