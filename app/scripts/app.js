@@ -141,15 +141,15 @@ angular.module('famousAngular',
             conf: ['Settings', function (Settings) {
               return Settings;
             }],
-            words: ['AppStore', function (AppStore) {
+//            words: ['AppStore', function (AppStore) {
 //              return AppStore.get('words');
-              return true;
-            }],
+//            }],
             units: ['AppStore', function (AppStore) {
               return AppStore.get('units');
             }]
           },
-          controller: ['$scope', 'conf', 'words', 'units', function ($scope, conf, words, units) {
+//          controller: ['$scope', 'conf', 'words', 'units', function ($scope, conf, words, units) {
+          controller: ['$scope', 'conf', 'units', function ($scope, conf, units) {
             $scope.conf = conf;
             $scope.units = units;
             //$scope.words = words;

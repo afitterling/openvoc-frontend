@@ -61,7 +61,9 @@ angular.module('famousAngular')
       }
 
       if (Store.has('words')) {
-        $scope.words = Store.get('words');
+        $timeout(function () {
+          $scope.words = Store.get('words');
+        });
         self.bypass.tableUpdate = true;
       }
 
