@@ -11,6 +11,7 @@ angular.module('famousAngular')
     var self = this;
     var defaultObjects;
 
+    //@FIXME
     this.setup = function (Array) {
       defaultObjects = Array;
     };
@@ -19,8 +20,6 @@ angular.module('famousAngular')
       return new function () {
 
         self.qStore = $rootScope.$new(true);
-
-        var deferred;
 
         // promises go here
         self.qStore.q = {};
@@ -37,7 +36,7 @@ angular.module('famousAngular')
           // if data set null but called with key (initialization)
           if (!data) {
             // create the defer call
-            deferred = $q.defer();
+            var deferred = $q.defer();
             // save it to pick it up when called with real data
             self.qStore.deferred[key] = deferred;
             // save the deferred promise
@@ -45,7 +44,7 @@ angular.module('famousAngular')
           }
           // if data and resolved earlier reset q
           if (!!self.qStore.q[key].$$state.status) {
-            deferred = $q.defer();
+            var deferred = $q.defer();
             self.qStore.deferred[key] = deferred;
             self.qStore.q[key] = deferred.promise;
           }
