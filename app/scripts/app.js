@@ -96,7 +96,7 @@ angular.module('famousAngular',
           auth.profilePromise.then(function (profile) {
             $rootScope.profile = profile;
             $log.debug('profile resolved:', profile);
-            //$location.path('/profile');
+            $location.path('/profile');
             $rootScope.$broadcast('sig:::profileLoaded');
           });
 
@@ -116,7 +116,7 @@ angular.module('famousAngular',
           AppStore.init(AppStoreDefaultModels);
 
           $rootScope.profile = auth.profile;
-          $location.path('/profile');
+//          $location.path('/profile');
           $rootScope.$broadcast('sig:::profileLoaded');
         }]);
 
