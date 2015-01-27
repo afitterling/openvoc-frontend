@@ -9,16 +9,14 @@ angular.module('famousAngular')
   .provider(qStore, ['$logProvider', function ($logProvider) {
 
     var self = this;
-    var defaultObjects;
+    var defaultObjects = [];
 
-    //@FIXME
     this.setup = function (Array) {
-      defaultObjects = Array;
+      defaultObjects = Array || [];
     };
 
     this.$get = function ($rootScope, $q, $log) {
       return new function () {
-
         self.qStore = $rootScope.$new(true);
 
         // promises go here
@@ -55,15 +53,12 @@ angular.module('famousAngular')
           }
         };
 
-        self.init = function (ObjectKeysAsArray) {
-          angular.forEach(ObjectKeysAsArray, function (key) {
-            self.set(key, null);
-          })};
-
-        self.init(defaultObjects);
+        // init/setup
+        defaultObjects.map(function(obj){
+          self.set(obj, null);
+        });
 
         return {
-          init: self.init,
           set: self.set,
           get: function (key) {
             if (self.qStore.q[key]) {
