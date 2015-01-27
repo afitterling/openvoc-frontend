@@ -340,7 +340,6 @@ angular.module('famousAngular',
 
       $rootScope.tooltips = function () {
         $timeout(function () {
-          //$('[data-toggle="tooltip"]').tooltip('destroy');
           $('[data-toggle="tooltip"]').tooltip($rootScope.bootstrap.tooltips.options);
         });
       };
