@@ -101,8 +101,7 @@ angular.module('famousAngular',
         store.remove('token');
         store.remove('profile');
         $rootScope.profile = null;
-//        $location.path('/');
-//        AppStore.destroy();
+        AppStore.destroy();
         location.href = '/';
       }]);
 

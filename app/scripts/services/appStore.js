@@ -73,7 +73,7 @@ angular.module('famousAngular')
             }
           },
           destroy: function () {
-            self.qStore.$destroy();
+            self.qStore = {};
           }
         };
       };
