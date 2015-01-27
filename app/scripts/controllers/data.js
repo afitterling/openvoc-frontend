@@ -399,6 +399,12 @@ angular.module('famousAngular')
         }
       };
 
+      // finally do things necessary
+      //
+      // init filters
+      $scope.selectUnit($scope.settings.ui.selectedUnit);
+
+      // tooltips
       $timeout(function () {
         $scope.tooltips();
       }, 0);
