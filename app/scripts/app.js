@@ -131,30 +131,38 @@ angular.module('famousAngular',
           }
         });
 
+      // common resolvers used!
+      var unitResolver = ['AppStore', function (AppStore) {
+        return AppStore.get('units');
+      }];
+
+      var languageResolver = ['AppStore', function (AppStore) {
+        return AppStore.get('languages');
+      }];
+
+      var confResolver = ['Settings', function (Settings) {
+        return Settings;
+      }];
+
+      // baseInject Conf as Ctrl into ui state
+      var baseConfInject = ['$scope', 'conf', 'languages', 'units', function ($scope, conf, languages, units) {
+        $scope.conf = conf;
+        $scope.units = units;
+        $scope.languages = languages;
+      }];
+
       $stateProvider
         .state('data', {
           url: '/dictionary',
           templateUrl: 'partials/data.html',
           resolve: {
-            conf: ['Settings', function (Settings) {
-              return Settings;
-            }],
-//            words: ['AppStore', function (AppStore) {
-//              return AppStore.get('words');
-//            }],
-            units: ['AppStore', function (AppStore) {
-              return AppStore.get('units');
-            }]
+            conf: confResolver,
+            languages: languageResolver,
+            units: unitResolver
           },
-//          controller: ['$scope', 'conf', 'words', 'units', function ($scope, conf, words, units) {
-          controller: ['$scope', 'conf', 'units', function ($scope, conf, units) {
-            $scope.conf = conf;
-            $scope.units = units;
-            //$scope.words = words;
-          }],
+          controller: baseConfInject,
           data: {
-            restricted: true,
-            api: true
+            restricted: true
           }
         });
 
@@ -163,18 +171,14 @@ angular.module('famousAngular',
           url: '/learn',
           templateUrl: 'partials/learn.html',
           resolve: {
-            conf: ['Settings', function (Settings) {
-              return Settings;
-            }],
-            languages: ['AppStore', function (AppStore) {
-              return AppStore.get('languages');
-            }]
+            conf: confResolver,
+            languages: languageResolver,
+            units: unitResolver
           },
-          controller: ['$scope', 'conf', 'languages', function ($scope, conf, languages) {
-            $scope.conf = conf;
-            // resolve languages only, it will be in $rootScope and inherited
-          }],
-          data: {}
+          controller: baseConfInject,
+          data: {
+            restricted: true
+          }
         });
 
       $stateProvider
@@ -304,28 +308,20 @@ angular.module('famousAngular',
       $rootScope.$on('sig:::profileLoaded', function () {
         Settings.then(function (conf) {
           apiCall(conf);
-          var words = Words(conf);
           var units = Units(conf);
           var languages = Languages(conf);
           //@TODO include settings
           var uisettings = UISettings(conf);
           //@TODO uid // language_id, targetlang_id form Settings
           units.query({user_id: auth.profile.user_id}, function (units) {
-            $rootScope.units = units;
+            //$rootScope.units = units;
             AppStore.set('units', units);
           });
           languages.query({}, function (languages) {
             /* jshint camelcase: false */
             AppStore.set('languages', languages);
-            $rootScope.languages = languages;
-            $log.debug(languages);
-            // chained query as we need to know langs beforehand, as of this don't need to resolve on langs
-//            $rootScope.lang_selected = {from_id: 1, to_id: 2};
-            //$rootScope.settings.ui.lang_selected = {from_id: 1, to_id: 2};
-//            words.query({language_id: 1, targetlang_id: 2, user_id: auth.profile.user_id}, function (words) {
-              //AppStore.set('words', null); // setup promise store
-//            });
-            $rootScope.sessionStore = {};
+            //$rootScope.languages = languages;
+            //$log.debug(languages);
           });
         });
       });
