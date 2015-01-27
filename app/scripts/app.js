@@ -114,9 +114,7 @@ angular.module('famousAngular',
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore',
         function (auth, $location, $rootScope, $log, AppStore) {
           AppStore.init(AppStoreDefaultModels);
-
           $rootScope.profile = auth.profile;
-//          $location.path('/profile');
           $rootScope.$broadcast('sig:::profileLoaded');
         }]);
 
