@@ -98,11 +98,12 @@ angular.module('famousAngular',
         }]);
 
       authProvider.on('logout', [ '$location', '$log', 'store', '$rootScope', 'AppStore', function ($location, $log, store, $rootScope, AppStore) {
-        AppStore.destroy();
         store.remove('token');
         store.remove('profile');
         $rootScope.profile = null;
-        $location.path('/');
+//        $location.path('/');
+//        AppStore.destroy();
+        location.href = '/';
       }]);
 
       authProvider.on('authenticated', ['auth', '$location', '$rootScope', '$log', 'AppStore',
