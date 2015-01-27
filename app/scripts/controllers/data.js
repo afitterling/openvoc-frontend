@@ -68,9 +68,6 @@ angular.module('famousAngular')
         self.bypass.tableUpdate = true;
       }
 
-      //// debug
-      $log.debug('words:', $scope.words);
-
       ///////////////////////////////////////////////////////////////////
       // filters
 
