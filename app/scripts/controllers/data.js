@@ -1,18 +1,75 @@
 'use strict';
 
 angular.module('famousAngular')
-  .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Units', 'Words', 'AppStore',
-    function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Units, Words, AppStore) {
+  .controller('DataCtrl', ['ValidationActionsStore', '$rootScope', '$timeout', '$log', '$scope', '$resource', '$http', 'Units', 'Words', 'Store',
+    function (ValidationActionsStore, $rootScope, $timeout, $log, $scope, $resource, $http, Units, Words, Store) {
+
+      // ui router resolved: $scope.units, $scope.conf
+      // !not words anymore
 
       var self = this;
+      var units = Units($scope.conf);
 
-      $log.debug('words:', $scope.words);
+      self.bypass = { tableUpdate: null };
+      self.promises = {}; // promises $timeout
+      $scope.defaultUnit = {id: 0, name: 'Select Unit'};
 
-      $scope.stapleSort = true;
-      $scope.translationsOnly = false;
+      $scope.sortMode = {
+        updated_at: {
+          false: 'U+',
+          true: 'U-'
+        },
+        created_at: {
+          false: 'C+',
+          true: 'C-'
+        },
+        name: {
+          false: 'a-z',
+          true: 'z-a'
+        }
+      };
 
-      $scope.translationFilterValue = '';
-      $scope.filterValue = '';
+      // init stable sort at beginning
+
+      $scope.settings = {};
+
+      $scope.$watch('settings', function (newVal, oldVal) {
+        if (newVal === oldVal) return;
+        Store.set('settings', $scope.settings);
+      }, true);
+
+      $scope.setSortMode = function (predicate, reverse) {
+        $scope.settings.ui.predicateWord = predicate;
+        $scope.settings.ui.reverseWord = reverse;
+        if ($scope.settings.ui.stapleSort === true) {
+          $scope.settings.ui.predicateTrans = predicate;
+          $scope.settings.ui.reverseTrans = reverse;
+        }
+      };
+
+      if (Store.has('settings')) {
+        $scope.settings = Store.get('settings');
+      } else {
+        $scope.settings.ui = {};
+        $scope.settings.ui.stapleSort = true;
+        $scope.settings.ui.translationsOnly = false;
+        $scope.settings.ui.autoTag = false;
+        $scope.settings.ui.hideNewTranslations = false;
+        $scope.setSortMode('updated_at', true);
+        $scope.settings.ui.selectedUnit = $scope.defaultUnit;
+        $scope.settings.ui.lang_selected = {from_id: 1, to_id: 2};
+      }
+
+      if (Store.has('words')) {
+        $log.debug('got words already in Store');
+        $timeout(function () {
+          $scope.words = Store.get('words');
+        });
+        self.bypass.tableUpdate = true;
+      }
+
+      ///////////////////////////////////////////////////////////////////
+      // filters
 
       $scope.filters = {
         translation: '',
@@ -34,32 +91,7 @@ angular.module('famousAngular')
         }, 400);
       };
 
-      $scope.setSortMode = function (predicate, reverse) {
-        $scope.predicate = predicate;
-        $scope.reverse = reverse;
-        if ($scope.stapleSort === true) {
-          $scope.predicateT = predicate;
-          $scope.reverseT = reverse;
-        }
-      };
-
-      // init stable sort at beginning
-      $scope.setSortMode('updated_at', true);
-
-      $scope.sortMode = {
-        updated_at: {
-          false: 'U+',
-          true: 'U-'
-        },
-        created_at: {
-          false: 'C+',
-          true: 'C-'
-        },
-        name: {
-          false: 'a-z',
-          true: 'z-a'
-        }
-      };
+      // filters end //
 
       $scope.submitTest = function (data) {
         return true;
@@ -152,7 +184,7 @@ angular.module('famousAngular')
                 word.translations = [];
               }
               word.translations.push(translation);
-              if ($scope.selectedUnit.id !== 0 && $scope.autoTag) {
+              if ($scope.settings.ui.selectedUnit.id !== 0 && $scope.settings.ui.autoTag) {
                 $scope.tag(word, translation);
               }
               $scope.tooltips();
@@ -162,19 +194,23 @@ angular.module('famousAngular')
         }
       };
 
-      // $timeout fetch
       /////////////////////////////////////////////////////
+      // $timeout fetch
+
       var promise, newpromise, hidePendingFetch, countdown;
       promise = [];
-      $scope.fetch_timeout = 5000;
+      $scope.fetch_timeout = 0;
 
+      //$scope.lang is used as model on language selectors (dropdowns) and set in directives
       $scope.$watch('lang', function (newVal, oldVal) {
-        // if promise pending delete
+        if (!newVal) return;
+
         newpromise = $timeout(function () {
-          $scope.updateTableItems(newVal, function(){
+          $scope.updateTableItems(newVal, function () {
             $scope.pendingFetch = null;
           });
         }, $scope.fetch_timeout);
+        $scope.fetch_timeout = 5000;
         if (oldVal) {
           var sub = [];
           promise.map(function (p) {
@@ -192,25 +228,26 @@ angular.module('famousAngular')
             $scope.pendingFetchMsg = null;
           }, $scope.fetch_timeout / 4);
 
-          $scope.words = [];
+          Store.set('words', null);
+          $scope.words = null;
         }
       }, true);
 
-      /////////////////////////////////////////////////////
 
-      var first = 0;
       $scope.updateTableItems = function (lang, cb) {
-        if (first < 2) {
-          first += 1;
+        if (self.bypass.tableUpdate) {
+          $log.debug('bypass.tableUpdate');
+          self.bypass.tableUpdate = false;
           return;
         }
+
+        $log.debug('updateTableItems fired!');
 
         $scope.words = null;
 
         words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
-          AppStore.set('words', {}); // empty as we don't need to resolve
-          $scope.words = words;
-          $log.debug('words:', words);
+          Store.set('words', words);
+          $scope.words = Store.get('words', words);
           if (angular.isDefined(cb)) {
             cb();
             $scope.tooltips();
@@ -219,16 +256,20 @@ angular.module('famousAngular')
 
       };
 
+      ///////////////////////////////////////////
       // swap languages
       $scope.swapLanguages = function () {
-        $timeout(function () {
-          var temp = $scope.lang.from;
-          $scope.lang.from = $scope.lang.to;
-          $scope.lang.to = temp;
+        $timeout.cancel(self.promises.swapLang);
+        self.promises.swapLang = $timeout(function () {
+          var temp = $scope.settings.ui.lang_selected.from_id;
+          $scope.settings.ui.lang_selected.from_id = $scope.settings.ui.lang_selected.to_id;
+          $scope.settings.ui.lang_selected.to_id = temp;
         });
-        //$('button#swap').blur();
       };
+      // end
 
+      /////////////////////////////////////////////////////////////
+      // translation
       $scope.bingTranslate = function (word) {
         $http.get($scope.conf.API_BASEURL + '/bing_translation/?source=' + word.name + '&from=' +
             $scope.lang.from.locale_string + '&to=' + $scope.lang.to.locale_string).success(function (success) {
@@ -237,10 +278,13 @@ angular.module('famousAngular')
           });
       };
 
+      //////////////////////////////////////////////////////////////
+      // unit tagger/untaggers
+
       $scope.tag = function (word, trans) {
         var Tags = $resource($scope.conf.API_BASEURL + '/translations/tag_unit');
-        Tags.save({word_id: word.id, conversion_id: trans.id, unit_id: $scope.selectedUnit.id}, function () {
-          trans.unit_id = $scope.selectedUnit.id;
+        Tags.save({word_id: word.id, conversion_id: trans.id, unit_id: $scope.settings.ui.selectedUnit.id}, function () {
+          trans.unit_id = $scope.settings.ui.selectedUnit.id;
         });
       };
 
@@ -254,21 +298,17 @@ angular.module('famousAngular')
         });
       };
 
+      // end
+
       $scope.openUnitModal = function () {
         $('#unitModal').modal({});
       };
 
-      $scope.defaultUnit = {id: 0, name: 'Select Unit'};
-
-      $scope.selectedUnit = $scope.defaultUnit;
-
       $scope.selectUnit = function (unit) {
-        $scope.selectedUnit = unit;
+        $scope.settings.ui.selectedUnit = unit;
         $scope.setUnitFilter();
         $scope.tooltips();
       };
-
-      var units = Units($scope.conf);
 
       $scope.saveUnit = function (unit) {
         /* jshint camelcase: false */
@@ -286,8 +326,8 @@ angular.module('famousAngular')
         /* jshint camelcase: false */
         units.update({id: unit.id, name:unit.name}, function (success) {
             $scope.units[$scope.units.indexOf(unit)] = success;
-            if (angular.equals(unit.id, $scope.selectedUnit.id)) {
-              $scope.selectedUnit = success;
+            if (angular.equals(unit.id, $scope.settings.ui.selectedUnit.id)) {
+              $scope.settings.ui.selectedUnit = success;
             };
           },
           // err callback
@@ -301,8 +341,8 @@ angular.module('famousAngular')
         /* jshint camelcase: false */
         units.delete(unit, function (success) {
             $scope.units.splice($scope.units.indexOf(unit),1);
-            if (angular.equals(unit.id, $scope.selectedUnit.id)) {
-              $scope.selectedUnit = $scope.defaultUnit;
+            if (angular.equals(unit.id, $scope.settings.ui.selectedUnit.id)) {
+              $scope.settings.ui.selectedUnit = $scope.defaultUnit;
             };
           },
           // err callback
@@ -312,17 +352,13 @@ angular.module('famousAngular')
       };
 
       $scope.setUnitFilter = function () {
-        if ($scope.filterUnitItems) {
-          $scope.filterUnitId = $scope.selectedUnit.id;
+        if ($scope.settings.ui.filterUnitItems) {
+          $scope.filterUnitId = $scope.settings.ui.selectedUnit.id;
         } else {
           $scope.filterUnitId = undefined;
         }
 
       };
-
-//      $timeout(function () {
-//        $('[data-toggle="tooltip"]').tooltip();
-//      }, 5000);
 
       $scope.openLangModal = function(word, trans, mode){
         $scope.changeLangErrorMsg = false;
@@ -362,11 +398,22 @@ angular.module('famousAngular')
         }
       };
 
+      // finally do things necessary
+      //
+      // init filters
+      $scope.selectUnit($scope.settings.ui.selectedUnit);
+
+      // tooltips
       $timeout(function () {
         $scope.tooltips();
       }, 0);
 
     }])
+
+
+/////////////////////////////////////////////////////////////////////
+/// directives
+/////////////////////////////////////////////////////////////////////
 
 .directive('unitName', ['$parse', function ($parse) {
     return {

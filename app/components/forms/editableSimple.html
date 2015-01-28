@@ -26,10 +26,10 @@
     <span class="model" ng-hide="edit || !model" ng-click="edit=true" data-toggle="tooltip" data-placement="top" title="click to edit!">{{model}}&nbsp;<span style="font-size: 0.9rem;" ng-show="id" class="badge" data-toggle="tooltip" data-placement="top" title="'id': identical id means identical item" >{{$parent.trans.id}}</span></span>
     <span ng-hide="edit || !model"><button ng-click="deleteCallback(model)" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="Warning: Immediately delete without confirming?"><span class="glyphicon glyphicon-trash"></span></button></span>
     <!-- tagging -->
-    <span ng-hide="edit || !model || !tag || $parent.selectedUnit.id===0 || $parent.trans.unit_id===$parent.selectedUnit.id"
+    <span ng-hide="edit || !model || !tag || $parent.settings.ui.selectedUnit.id===0 || $parent.trans.unit_id===$parent.settings.ui.selectedUnit.id"
           data-toggle="tooltip" data-placement="top" title="Add to Unit">
         <button ng-click="$parent.tag($parent.word, $parent.trans)" class="btn btn-info btn-xs">
-            <span class="glyphicon glyphicon-plus">{{$parent.selectedUnit.name}}</span>
+            <span class="glyphicon glyphicon-plus">{{$parent.settings.ui.selectedUnit.name}}</span>
         </button>
     </span>
     <!-- lang changer -->

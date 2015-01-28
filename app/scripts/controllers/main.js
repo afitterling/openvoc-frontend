@@ -42,7 +42,6 @@ angular.module('famousAngular')
       $scope.unitMode = 'lang';
       $scope.swapMode = false;
 
-
       // mode helper
       $scope.modeHelpers = {
         all: {
@@ -80,6 +79,10 @@ angular.module('famousAngular')
 
       $scope.modeHelpers.all.filterSelected = $scope.modeHelpers.all.availableFilters[0];
 
+      $scope.settings = {};
+      $scope.settings.ui = {};
+      $scope.settings.ui.lang_selected = {from_id: 1, to_id: 2};
+
       // @TODO resolve
       $scope.$watch('units', function (newVal) {
         if (angular.isDefined(newVal)) {
@@ -110,8 +113,8 @@ angular.module('famousAngular')
                 filter: $scope.modeHelpers.all.filterSelected.identifier,
                 n_items: $scope.n_items, // works but in ui missing or commented out
                 user_id: auth.profile.user_id,
-                language_id: $scope.lang.from.id,
-                targetlang_id: $scope.lang.to.id
+                language_id: $scope.langLearnUISelector.from.id,
+                targetlang_id: $scope.langLearnUISelector.to.id
               },
               function (success) {
                 $log.debug('unit/lang:', success);
@@ -277,11 +280,12 @@ angular.module('famousAngular')
         }
       };
 
-      // monkey patch swapLanguages as we are in a sub scope
+      ///////////////////////////////////////////
+      // swap languages
       $scope.swapLanguages = function () {
-        var temp = $scope.lang.from;
-        $scope.lang.from = $scope.lang.to;
-        $scope.lang.to = temp;
+        var temp = $scope.settings.ui.lang_selected.from_id;
+        $scope.settings.ui.lang_selected.from_id = $scope.settings.ui.lang_selected.to_id;
+        $scope.settings.ui.lang_selected.to_id = temp;
       };
 
       $scope.getLang = function (lang_id) {
