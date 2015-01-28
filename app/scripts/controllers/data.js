@@ -229,6 +229,7 @@ angular.module('famousAngular')
           }, $scope.fetch_timeout / 4);
 
           Store.set('words', null);
+          $scope.words = null;
         }
       }, true);
 
