@@ -66,6 +66,19 @@
                     <li><a ng-click="n_items=50">50</a></li>
                 </ul>
             </div>
+            <br>
+            <br>
+            <label>Learn Mode</label><br>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    {{modeHelpers.all.filterSelected.name || 'Choose Mode'}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="modeHelpers.all.pickFilter(filter)" ng-repeat="filter in modeHelpers.all.availableFilters">{{filter.name}} </a></li>
+                </ul>
+            </div>
+
             <br><br>
         </div>
 

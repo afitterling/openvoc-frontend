@@ -42,6 +42,43 @@ angular.module('famousAngular')
       $scope.unitMode = 'lang';
       $scope.swapMode = false;
 
+      // mode helper
+      $scope.modeHelpers = {
+        all: {
+          pickFilter: function (filter) {
+            $scope.modeHelpers.all.filterSelected = filter;
+          },
+          availableFilters: [
+            {
+              identifier: 'random',
+              name: 'Random Pick'
+            },
+//            {
+//              identifier: 'learned-',
+//              name: 'Less Learned'
+//            },
+//            {
+//              identifier: 'missed-',
+//              name: 'Mostly Missed'
+//            },
+//            {
+//              identifier: 'learned+',
+//              name: 'Last Learned'
+//            },
+            {
+              identifier: 'updated+',
+              name: 'Last Edited'
+            },
+            {
+              identifier: 'created+',
+              name: 'Last Created'
+            }
+          ]
+        }
+      };
+
+      $scope.modeHelpers.all.filterSelected = $scope.modeHelpers.all.availableFilters[0];
+
       $scope.settings = {};
       $scope.settings.ui = {};
       $scope.settings.ui.lang_selected = {from_id: 1, to_id: 2};
@@ -72,12 +109,15 @@ angular.module('famousAngular')
             // fetch the custom unit
             AutoUnit.get({
                 shuffle: true,
+                // choose the selected filter
+                filter: $scope.modeHelpers.all.filterSelected.identifier,
                 n_items: $scope.n_items, // works but in ui missing or commented out
                 user_id: auth.profile.user_id,
                 language_id: $scope.langLearnUISelector.from.id,
                 targetlang_id: $scope.langLearnUISelector.to.id
               },
               function (success) {
+                $log.debug('unit/lang:', success);
                 $scope.request = {pending: false};
                 $scope.unit_items = success.data.unit_items;
                 if (!$scope.unit_items.length) {
