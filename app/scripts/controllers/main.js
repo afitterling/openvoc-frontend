@@ -53,18 +53,18 @@ angular.module('famousAngular')
               identifier: 'random',
               name: 'Random Pick'
             },
-            {
-              identifier: 'learned-',
-              name: 'Less Learned'
-            },
-            {
-              identifier: 'missed-',
-              name: 'Mostly Missed'
-            },
-            {
-              identifier: 'learned+',
-              name: 'Last Learned'
-            },
+//            {
+//              identifier: 'learned-',
+//              name: 'Less Learned'
+//            },
+//            {
+//              identifier: 'missed-',
+//              name: 'Mostly Missed'
+//            },
+//            {
+//              identifier: 'learned+',
+//              name: 'Last Learned'
+//            },
             {
               identifier: 'updated+',
               name: 'Last Edited'
