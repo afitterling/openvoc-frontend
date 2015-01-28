@@ -6,25 +6,27 @@ var qStore = 'AppStore';
 // build a global AppStore with Promises
 angular.module('famousAngular')
 
-  .provider(qStore, ['$logProvider', function ($logProvider) {
+  .provider(qStore, [function () {
 
     var self = this;
     var defaultObjects = [];
 
-    this.setup = function (Array) {
+    // if setup is required beforehand user handling setup as Provider
+    this.init = function (Array) {
       defaultObjects = Array || [];
     };
 
+    // we can create promises beforehand (data=null) to be able to resolve on them at state switching
     this.$get = function ($rootScope, $q, $log) {
-      return new function () {
+      self.initializeStore = function () {
         self.qStore = $rootScope.$new(true);
-
         // promises go here
         self.qStore.q = {};
         // the deferred if called with null obj goes here (pe-initialization, to keep identical promises if we not yet know the data)
         self.qStore.deferred = {};
-        // we can create promises beforehand (data=null) to be able to resolve on them at state switching
-
+      };
+      return new function () {
+        self.initializeStore();
         // latter called with data, the identical promise gets returned
         // latter re-set with data a new promise gets created and stored internally
         self.set = function (key, data) {
@@ -53,14 +55,15 @@ angular.module('famousAngular')
           }
         };
 
-        defaultObjects.map(function(obj){
-          self.set(obj, null);
-        });
-
-        self.init = function (ObjectKeysAsArray) {
-          angular.forEach(ObjectKeysAsArray, function (key) {
+        self.init = function (objs) {
+          angular.forEach(objs, function (key) {
             self.set(key, null);
-          })};
+          });
+        };
+
+        if (angular.isDefined()) {
+          self.init(defaultObjects);
+        }
 
         return {
           init: self.init,
@@ -72,11 +75,7 @@ angular.module('famousAngular')
               return $q.reject();
             }
           },
-          destroy: function () {
-            self.qStore = $rootScope.new(true);
-            self.qStore.q = {};
-            self.qStore.deferred = {};
-          }
+          destroy: self.initializeStore
         };
       };
     };
@@ -92,6 +91,11 @@ angular.module('famousAngular')
       self.store[key] = data;
     };
 
+    self.init = function () {
+      self.store = $rootScope.$new(true);
+      self.store = {};
+    };
+
     return {
       set: self.set,
       get: function (key) {
@@ -103,15 +107,8 @@ angular.module('famousAngular')
       has: function (key) {
         return self.store[key];
       },
-      destroy: function () {
-        self.store = $rootScope.$new(true);
-        self.store = {};
-      },
-      init: function () {
-        self.store = $rootScope.$new(true);
-        self.store = {};
-      }
-
+      destroy: self.init,
+      init: self.init
     };
 
   }])
