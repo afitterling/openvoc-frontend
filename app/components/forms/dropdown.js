@@ -12,7 +12,8 @@ angular.module('directives.formHelpers', [])
         model: '=',
         name: '@',
         onChange: '&',
-        ready: '='
+        ready: '=',
+        disabled: '='
       },
       link: function (scope, elm, attrs) {
 

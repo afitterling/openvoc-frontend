@@ -1,7 +1,7 @@
 <form ng-hide="!ready" name="dropdown" novalidate="">
     <div class="dropdown">
         <button class="btn btn-default dropdown-toggle" ng-class="{'btn-danger': $parent.status==false}" type="button"
-                id="dropdownMenu1" data-toggle="dropdown"
+                id="dropdownMenu1" data-toggle="dropdown" ng-disabled="disabled"
                 aria-expanded="true">
             {{model.name}}
             <span class="caret"></span>
