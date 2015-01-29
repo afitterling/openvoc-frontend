@@ -81,23 +81,24 @@
         <dropdown id="lang.from" class="langDropdown selector" name="dropdown.lang.from" model="lang.from" selected="settings.ui.lang_selected.from_id"
                   list-model="languages" ready="ready"
                   data-toggle="tooltip" data-placement="top" title="Select Language!"
+                  disabled="pendingRequests"
                 ></dropdown>
         <!--<span class="message error-message">{{error}}</span>-->
         &nbsp;
         <button id="swap" ng-show="ready" class="btn btn-default btn-small langDropdown" ng-click="swapLanguages($event)"
                 data-toggle="tooltip" data-placement="top" title="Swap Languages!"
+                ng-disabled="pendingRequests"
                 ><span class="glyphicon glyphicon-transfer"></span>
         </button>
         &nbsp;
         <dropdown id="lang.to" class="langDropdown selector" ready="ready" name="dropdown.lang.to" model="lang.to" ui-state-item-name="dropdown.to"
                   selected="settings.ui.lang_selected.to_id" list-model="languages"
                   data-toggle="tooltip" data-placement="top" title="Select Language!"
+                  disabled="pendingRequests"
                 ></dropdown>
         <br>
 
-        <!--<span class="small text-info" ng-show="pendingFetch"><img src="images/ajax-loader.gif"/> update pending</span>-->
-        <span class="small text-danger label label-default" ng-show="pendingFetchMsg">update scheduled in {{fetch_timeout/1000}}s - can still change UI</span>
-        <!--<span class="small text-info" ng-show="pendingFetch==false">menu change - update scheduled.</span>-->
+        <!--<span class="small text-danger label label-default" ng-show="pendingFetchNotice">Table refresh scheduled in {{fetch_timeout/1000}}s!</span>-->
         <br>
         <br>
         <div class="btn-group" data-toggle="tooltip" data-placement="top" title="Select Sort Mode!">
@@ -209,14 +210,19 @@
 <div class="row">
     <table class="table table-bordered">
         <tr>
-            <th class="col-lg-6">{{lang.from.name}}
-                <!--<span ng-show="pendingFetchMsg" class="label label-danger">re-marked for delayed update</span>-->
-                <span ng-show="pendingFetch" class="label label-danger">
-                    marked for delayed update - please wait
-                    <!--<span class="three-quarters"><span class="glyphicon glyphicon-leaf"></span></span>-->
-                </span>
+            <th class="col-lg-6">
+                <span ng-hide="pendingFetch">{{lang.from.name}}</span>
+                <span ng-show="pendingFetch && !pendingRequests" class="glyphicon glyphicon-time"></span>
+                <span ng-show="pendingFetchNotice">Lazy table refresh scheduled</span>
+                <span ng-show="pendingFetch && !pendingRequests && !pendingFetchNotice">Wait ...</span>
+                <!--<span ng-show="pendingFetch && pendingRequests" class="glyphicon glyphicon-refresh"></span>-->
+                <span ng-show="pendingFetch && pendingRequests">{{lang.from.name}}</span>
             </th>
-            <th class="col-lg-6">{{lang.to.name}}</th>
+            <th class="col-lg-6">
+                <span ng-hide="pendingFetch">{{lang.to.name}}</span>
+                <!--<span ng-show="pendingFetch && pendingRequests" class="glyphicon glyphicon-refresh"></span>-->
+                <span ng-show="pendingFetch && pendingRequests">{{lang.to.name}}</span>
+            </th>
         </tr>
         <tr ng-show="!settings.ui.translationsOnly">
             <td class="col-lg-6">

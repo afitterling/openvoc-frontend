@@ -220,16 +220,16 @@ angular.module('famousAngular')
           promise.push(newpromise);
           $scope.timer = $scope.fetch_timeout;
           $scope.pendingFetch = true;
-          $scope.pendingFetchMsg = true;
+          $scope.pendingFetchNotice = true;
           if (hidePendingFetch) {
             $timeout.cancel(hidePendingFetch);
           }
           hidePendingFetch = $timeout(function () {
-            $scope.pendingFetchMsg = null;
+            $scope.pendingFetchNotice = null;
           }, $scope.fetch_timeout / 4);
 
           Store.set('words', null);
-          $scope.words = null;
+          //$scope.words = null;
         }
       }, true);
 
