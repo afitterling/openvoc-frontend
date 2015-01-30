@@ -78,6 +78,12 @@
                     <li><a ng-click="modeHelpers.all.pickFilter(filter)" ng-repeat="filter in modeHelpers.all.availableFilters">{{filter.name}} </a></li>
                 </ul>
             </div>
+            <br>
+            <br>
+            <div class="btn-group btn-group-sm" role="group" aria-label="button group">
+                <button type="button" class="btn btn-default" ng-class="{'active': !shuffle}" ng-click="shuffle=false" ng-disabled="!shuffleAllowed">off</button>
+                <button type="button" class="btn btn-default" ng-class="{'active': shuffle}" ng-click="shuffle=true" ng-disabled="!shuffleAllowed">on</button>
+            </div> <label>Shuffle</label>
 
             <br><br>
         </div>
@@ -98,7 +104,7 @@
             <div class="btn-group btn-group-sm" role="group" aria-label="button group">
                 <button type="button" class="btn btn-default" ng-class="{'active': !shuffle}" ng-click="shuffle=false">off</button>
                 <button type="button" class="btn btn-default" ng-class="{'active': shuffle}" ng-click="shuffle=true">on</button>
-            </div> <label>shuffle</label>
+            </div> <label>Shuffle</label>
             <br>
             <br>
         </div>

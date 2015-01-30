@@ -47,6 +47,11 @@ angular.module('famousAngular')
         all: {
           pickFilter: function (filter) {
             $scope.modeHelpers.all.filterSelected = filter;
+            if (filter.identifier === 'random') {
+              $scope.shuffleAllowed = false;
+            } else {
+              $scope.shuffleAllowed = true;
+            }
           },
           availableFilters: [
             {
@@ -108,7 +113,7 @@ angular.module('famousAngular')
             $scope.request = {pending: true};
             // fetch the custom unit
             AutoUnit.get({
-                shuffle: null, // not used
+                shuffle: $scope.shuffle,
                 // choose the selected filter
                 filter: $scope.modeHelpers.all.filterSelected.identifier,
                 n_items: $scope.n_items, // works but in ui missing or commented out
@@ -147,7 +152,7 @@ angular.module('famousAngular')
         $scope.queryUnit = unit;
 
         Unit.get({
-            shuffle: $scope.shuffle,
+            shuffle: null, // client site shuffle
             unit_id: $scope.queryUnit.id
           },
 
