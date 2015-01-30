@@ -19,9 +19,19 @@
   -o-animation: spin 1250ms infinite linear;
   animation: spin 1250ms infinite linear;
   position: relative;
-  top: 2px;
-  width: 18px;
-  height: 18px;
-  //line-height: 1.7rem;
   text-align: center;
+  &.glyphicon-time {
+    //top: 2px;
+    width: 16px;
+    height: 14px;
+    //border: 1px solid red;
+    //line-height: 1.7rem;
+  }
+  &.glyphicon-refresh {
+    //top: 2px;
+    width: 18px;
+    height: 14px;
+    //border: 1px solid red;
+    //line-height: 1.7rem;
+  }
 }
