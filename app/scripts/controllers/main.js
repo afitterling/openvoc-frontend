@@ -108,7 +108,7 @@ angular.module('famousAngular')
             $scope.request = {pending: true};
             // fetch the custom unit
             AutoUnit.get({
-                shuffle: true,
+                shuffle: null, // not used
                 // choose the selected filter
                 filter: $scope.modeHelpers.all.filterSelected.identifier,
                 n_items: $scope.n_items, // works but in ui missing or commented out
@@ -135,6 +135,8 @@ angular.module('famousAngular')
               });
             break;
           case 'unit':
+            //@FIXME $scope.preFetchUnit($scope.currentUnit); // or shuffle with js
+            //http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
             $scope.unit = { inProgress: true, idx: 0, finished: false };
             break;
         }
