@@ -206,22 +206,21 @@
 <!--<div class="row" ng-show="!words">-->
     <!--<span>Receiving ....</span>-->
 <!--</div>-->
-
 <div class="row">
     <table class="table table-bordered">
         <tr>
             <th class="col-lg-6">
-                <span ng-hide="pendingFetch">{{lang.from.name}}</span>
-                <span ng-show="pendingFetch && !pendingRequests" class="glyphicon glyphicon-time"></span>
-                <span ng-show="pendingFetchNotice">Lazy table refresh scheduled</span>
-                <span ng-show="pendingFetch && !pendingRequests && !pendingFetchNotice">Wait ...</span>
+                <span ng-hide="pendingFetchNotice">{{lang.from.name}}</span>
+                <span ng-show="pendingFetch && !pendingRequests" class="spin glyphicon glyphicon-time"></span>
+                <span ng-show="pendingFetchNotice" class="btn btn-xs btn-info">Lazy table refresh scheduled in {{fetch_timeout/1000 | number:2}}s - you can still change UI.</span>
+                <!--<span ng-show="pendingFetch && !pendingRequests && !pendingFetchNotice"></span>-->
                 <!--<span ng-show="pendingFetch && pendingRequests" class="glyphicon glyphicon-refresh"></span>-->
-                <span ng-show="pendingFetch && pendingRequests">{{lang.from.name}}</span>
+                <!--<span ng-show="pendingFetch && pendingRequests">{{lang.from.name}}</span>-->
             </th>
             <th class="col-lg-6">
-                <span ng-hide="pendingFetch">{{lang.to.name}}</span>
+                <span ng-hide="pendingFetchNotice">{{lang.to.name}}</span>
                 <!--<span ng-show="pendingFetch && pendingRequests" class="glyphicon glyphicon-refresh"></span>-->
-                <span ng-show="pendingFetch && pendingRequests">{{lang.to.name}}</span>
+                <!--<span ng-show="pendingFetch && pendingRequests">{{lang.to.name}}</span>-->
             </th>
         </tr>
         <tr ng-show="!settings.ui.translationsOnly">

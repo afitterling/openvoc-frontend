@@ -226,7 +226,7 @@ angular.module('famousAngular')
           }
           hidePendingFetch = $timeout(function () {
             $scope.pendingFetchNotice = null;
-          }, $scope.fetch_timeout / 4);
+          }, $scope.fetch_timeout / 2.5);
 
           Store.set('words', null);
           //$scope.words = null;
