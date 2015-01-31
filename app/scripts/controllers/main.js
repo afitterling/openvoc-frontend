@@ -143,8 +143,7 @@ angular.module('famousAngular')
             $scope.unit = { inProgress: true, idx: 0, finished: false };
             $log.debug('unit_items:', $scope.unit_items);
             if ($scope.shuffle) {
-              var tmp = _.shuffle($scope.unit_items);
-              $scope.unit_items = tmp;
+              $scope.unit_items = _.shuffle($scope.unit_items);
             }
             break;
         }
