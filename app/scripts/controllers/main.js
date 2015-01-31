@@ -140,9 +140,12 @@ angular.module('famousAngular')
               });
             break;
           case 'unit':
-            //@FIXME $scope.preFetchUnit($scope.currentUnit); // or shuffle with js
-            //http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
             $scope.unit = { inProgress: true, idx: 0, finished: false };
+            $log.debug('unit_items:', $scope.unit_items);
+            if ($scope.shuffle) {
+              var tmp = _.shuffle($scope.unit_items);
+              $scope.unit_items = tmp;
+            }
             break;
         }
         $scope.tooltips();
