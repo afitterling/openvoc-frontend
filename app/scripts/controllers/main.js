@@ -62,10 +62,10 @@ angular.module('famousAngular')
 //              identifier: 'learned-',
 //              name: 'Less Learned'
 //            },
-//            {
-//              identifier: 'missed-',
-//              name: 'Mostly Missed'
-//            },
+            {
+              identifier: 'missed-',
+              name: 'Mostly Missed'
+            },
 //            {
 //              identifier: 'learned+',
 //              name: 'Last Learned'
