@@ -82,6 +82,8 @@ angular.module('famousAngular')
         }
       };
 
+      var Translation = $resource($scope.conf.API_BASEURL + '/translations/write_attr');
+
       $scope.modeHelpers.all.filterSelected = $scope.modeHelpers.all.availableFilters[0];
 
       $scope.settings = {};
@@ -276,6 +278,9 @@ angular.module('famousAngular')
 
         if (!$scope.variant) {
           $('#noMatch').modal({});
+          //{{unit_items[unit.idx].from.name}}
+          var unit_item = $scope.unit_items[$scope.unit.idx];
+          Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: 1});
           $timeout(function () {
             $('#noMatch').modal('hide');
             $('[name="inputForm"] #query').focus();
