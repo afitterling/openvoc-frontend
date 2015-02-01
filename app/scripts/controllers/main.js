@@ -254,9 +254,16 @@ angular.module('famousAngular')
       }
 
       $scope.validator = function (input, model) {
+
+        var unit_item = $scope.unit_items[$scope.unit.idx];
+
         if (angular.equals(input, model.to.name)) {
 
+          // right
+
           // tag translation as learned
+          Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: -1, learned: 1});
+
           if (!$scope.variant) {
             $('#match').modal({});
             $timeout(function () {
@@ -276,11 +283,12 @@ angular.module('famousAngular')
           return;
         }
 
+        // wrong
+
+        Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: 1, learned: -1});
+
         if (!$scope.variant) {
           $('#noMatch').modal({});
-          //{{unit_items[unit.idx].from.name}}
-          var unit_item = $scope.unit_items[$scope.unit.idx];
-          Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: 1});
           $timeout(function () {
             $('#noMatch').modal('hide');
             $('[name="inputForm"] #query').focus();
