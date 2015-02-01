@@ -187,6 +187,10 @@ angular.module('famousAngular')
           var tmp = item.from;
           item.from = item.to;
           item.to = tmp;
+          var t_to = item.translation.to;
+          var t_from = item.translation.from;
+          item.translation.from = t_to;
+          item.translation.to = t_from;
           swappedItems.push(item);
         }, swappedItems);
         $scope.unit_items = swappedItems;
