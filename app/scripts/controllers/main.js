@@ -108,7 +108,8 @@ angular.module('famousAngular')
         $scope.noItems = false;
         $scope.show = false;
         $scope.interactive = true;
-        $scope.variant = false;
+        if ($scope.conf.tip) $scope.variant = true;
+        $scope.score = true;
         $scope.tipLength = tipDefaultLength;
         switch ($scope.unitMode) {
           case 'lang':
@@ -262,7 +263,9 @@ angular.module('famousAngular')
           // right
 
           // tag translation as learned
-          Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: -1, learned: 1});
+          if ($scope.score) {
+            Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: -1, learned: 1});
+          }
 
           if (!$scope.variant) {
             $('#match').modal({});
@@ -285,7 +288,9 @@ angular.module('famousAngular')
 
         // wrong
 
-        Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: 1, learned: -1});
+        if ($scope.score) {
+          Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: 1, learned: -1});
+        }
 
         if (!$scope.variant) {
           $('#noMatch').modal({});

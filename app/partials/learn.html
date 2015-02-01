@@ -138,15 +138,21 @@
                 ng-class="{'active': variant}">
             <span class="glyphicon glyphicon-start">Tips</span>
         </button>&nbsp;
+        <button data-toggle="tooltip" data-placement="top" title="Rate up or down on rights or wrongs" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="score=!score"
+                ng-class="{'active': score}">
+            <span class="glyphicon glyphicon-thumbs-up">Score</span>
+        </button>&nbsp;
         <button data-toggle="tooltip" data-placement="top" title="interactive: show input field" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="interactive=!interactive"
                 ng-class="{'active': interactive}">
             <span class="glyphicon glyphicon-start">i</span>
         </button>&nbsp;
-
-        <button data-toggle="tooltip" data-placement="top" title="Swap Direction!" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="swap()"
+        <button data-toggle="tooltip" data-placement="top" title="Direction swapped" ng-show="unit.inProgress" class="btn btn-default btn-small btn-xs" ng-click="swap()"
         ng-class="{'active': swapMode}">
         <span class="glyphicon glyphicon-retweet"></span>
         </button>&nbsp;
+
+        <br>
+        <br>
 
         <button ng-show="unit.inProgress" class="btn btn-default btn-small btn-warning" ng-disabled="unit.idx==0"
                 ng-click="prev()">
