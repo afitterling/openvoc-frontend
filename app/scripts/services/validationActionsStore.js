@@ -7,7 +7,7 @@ angular.module('famousAngular')
   .factory('ValidationActionsStore', ['$rootScope', function ($rootScope) {
 
     var self = this;
-    self.validationStore = $rootScope.$new();
+    self.validationStore = $rootScope.$new(true);
 
     // register the UI element with a name we like to be considered in validation process
     self.register = function (component) {
