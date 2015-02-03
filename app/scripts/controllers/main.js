@@ -262,13 +262,8 @@ angular.module('famousAngular')
 
           // right
 
-          if ($scope.show && $scope.score){
-            // even right tag as unlearned when "show translation" is active
-            Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: 1, learned: 0});
-          }
-
           // tag translation as learned
-          if (!$scope.show && $scope.score) {
+          if ($scope.score) {
             Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: -1, learned: 1});
           }
 
