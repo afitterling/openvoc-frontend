@@ -64,6 +64,7 @@ angular.module('famousAngular')
         $log.debug('got words already in Store');
         $timeout(function () {
           $scope.words = Store.get('words');
+          $log.debug('words=', $scope.words);
         });
         self.bypass.tableUpdate = true;
       }
@@ -248,6 +249,7 @@ angular.module('famousAngular')
         words.query({language_id: lang.from.id, targetlang_id: lang.to.id, user_id: $scope.profile.user_id}, function (words) {
           Store.set('words', words);
           $scope.words = Store.get('words', words);
+          $log.debug('words=', $scope.words);
           if (angular.isDefined(cb)) {
             cb();
             $scope.tooltips();

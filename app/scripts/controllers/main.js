@@ -62,10 +62,10 @@ angular.module('famousAngular')
 //              identifier: 'learned-',
 //              name: 'Less Learned'
 //            },
-//            {
-//              identifier: 'missed-',
-//              name: 'Mostly Missed'
-//            },
+            {
+              identifier: 'missed-',
+              name: 'Mostly Missed'
+            },
 //            {
 //              identifier: 'learned+',
 //              name: 'Last Learned'
@@ -81,6 +81,8 @@ angular.module('famousAngular')
           ]
         }
       };
+
+      var Translation = $resource($scope.conf.API_BASEURL + '/translations/write_attr');
 
       $scope.modeHelpers.all.filterSelected = $scope.modeHelpers.all.availableFilters[0];
 
@@ -106,7 +108,8 @@ angular.module('famousAngular')
         $scope.noItems = false;
         $scope.show = false;
         $scope.interactive = true;
-        $scope.variant = false;
+        if ($scope.conf.tip) $scope.variant = true;
+        $scope.score = true;
         $scope.tipLength = tipDefaultLength;
         switch ($scope.unitMode) {
           case 'lang':
@@ -187,6 +190,10 @@ angular.module('famousAngular')
           var tmp = item.from;
           item.from = item.to;
           item.to = tmp;
+          var t_to = item.translation.to;
+          var t_from = item.translation.from;
+          item.translation.from = t_to;
+          item.translation.to = t_from;
           swappedItems.push(item);
         }, swappedItems);
         $scope.unit_items = swappedItems;
@@ -248,9 +255,23 @@ angular.module('famousAngular')
       }
 
       $scope.validator = function (input, model) {
+
+        var unit_item = $scope.unit_items[$scope.unit.idx];
+
         if (angular.equals(input, model.to.name)) {
 
+          // right
+
+          if ($scope.show && $scope.score){
+            // even right tag as unlearned when "show translation" is active
+            Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: 1, learned: 0});
+          }
+
           // tag translation as learned
+          if (!$scope.show && $scope.score) {
+            Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: -1, learned: 1});
+          }
+
           if (!$scope.variant) {
             $('#match').modal({});
             $timeout(function () {
@@ -268,6 +289,12 @@ angular.module('famousAngular')
           }
 
           return;
+        }
+
+        // wrong
+
+        if ($scope.score) {
+          Translation.save({word_id: unit_item.from.id, conversion_id: unit_item.to.id, missed: 1, learned: -1});
         }
 
         if (!$scope.variant) {
