@@ -80,6 +80,13 @@ angular.module('famousAngular',
       var conf;
       SettingsProvider.readConf().then(function (data) {
         conf = data;
+        if (conf.debug) {
+          $logProvider.debugEnabled(conf.debug);
+          console.log('default conf:', conf);
+        }
+        if (conf.html5) {
+          $locationProvider.html5Mode(conf.html5).hashPrefix('!');
+        }
       });
 
       $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -217,8 +224,6 @@ angular.module('famousAngular',
         });
 
       $urlRouterProvider.otherwise('/profile');
-
-      $locationProvider.html5Mode(true).hashPrefix('!');
 
     }])
   .run(['ValidationActionsStore', '$log', 'auth', '$location', '$rootScope', 'Settings', 'Words', 'Units', 'jwtHelper', 'store', '$resource', 'AppStore', 'Languages', 'UISettings', '$timeout',
