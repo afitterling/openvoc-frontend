@@ -1,4 +1,6 @@
 {
   "API_BASEURL": "https://sp33c.de/openvocapi-production/api/",
-  "debug": false
+  "debug": false,
+  "tip": false,
+  "html5": true
 }
