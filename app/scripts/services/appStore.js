@@ -12,12 +12,12 @@ angular.module('famousAngular')
     var defaultObjects = [];
 
     // if setup is required beforehand user handling setup as Provider
-    this.init = function (Array) {
+    self.init = function (Array) {
       defaultObjects = Array || [];
     };
 
     // we can create promises beforehand (data=null) to be able to resolve on them at state switching
-    this.$get = function ($rootScope, $q, $log) {
+    self.$get = function ($rootScope, $q, $log) {
       self.initializeStore = function () {
         self.qStore = $rootScope.$new(true);
         // promises go here
